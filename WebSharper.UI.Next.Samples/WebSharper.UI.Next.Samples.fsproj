@@ -121,4 +121,15 @@
       <HintPath>..\..\lib\WebSharper.UI.Next.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <RootFiles Include="*.js" />
+      <RootFiles Include="*.html" />
+      <RootFiles Include="*.css" />
+      <ContentFiles Include="Content/*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(RootFiles)" DestinationFolder="..\build\html" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ContentFiles)" DestinationFolder="..\build\html\Content" SkipUnchangedFiles="true" />
+  </Target>
 </Project>
+
