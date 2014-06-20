@@ -8,6 +8,7 @@ module Client =
         let ( !+ ) x = Samples.Set.Singleton(x)
 
         Samples.Set.Create [
+            !+ Calculator.Calculator.Sample
             !+ SimpleTextBox.SimpleTextBox.Sample
             !+ TodoList.TodoList.Sample
             !+ PhoneExample.PhoneExample.Sample
