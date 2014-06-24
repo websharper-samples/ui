@@ -16,6 +16,9 @@ framework presented with types in F#.  Have a look:
 * API for [Doc/Attr](api/Doc.fsi)
 * [Examples](http://intellifactory.github.io/websharper.ui.next/)
 
+If successful, the combinators will be released as part of WebSharper
+3.0, as a recommended way to construct interactions with DOM.
+
 ## API 
 
 Let us introduce the basics. A `Var` is an observable ref-cell.  Just
