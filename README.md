@@ -12,7 +12,8 @@ WebSharper.UI.Next is an experiemntal project that aims to:
 At this stage, you can think of it as a minimalistic JavaScript MVC
 framework presented with types in F#.  Have a look:
 
-* API ([Var/View](api/Reactive.fsi), [Doc/Attr][api/Doc.fsi])
+* API for [Var/View](api/Reactive.fsi)
+* API for [Doc/Attr](api/Doc.fsi)
 * [Examples](http://intellifactory.github.io/websharper.ui.next/)
 
 ## API 
