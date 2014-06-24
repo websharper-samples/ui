@@ -164,10 +164,10 @@ commonly used special cases such as:
 F# also has first-class imperative events, the IObservable interface
 and the associated library of event stream combinators (Rx).  We did
 not go with combinators such as Rx.  Just like FRP, these are tricky,
-especially in the dynamic case, as it is easy to introduce a memory
-leak by accidentally retaining the entire event stream history.  It
-also should be possible to use these libraries with F#/WebSharper
-already.
+especially in the dynamic case.  It is easy to miss occurences or else
+introduce a memory leak by accidentally retaining the entire event
+stream history.  It also should be possible to use these libraries
+with F#/WebSharper already.
 
 ## UI Components
 
