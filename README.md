@@ -1,7 +1,6 @@
 # WebSharper.UI.Next
 
-These notes present the WebSharper.UI.Next project.  The project aims
-to:
+WebSharper.UI.Next is an experiemntal project that aims to:
 
 1. provide improved typed F#/WebSharper combinators for constructing
    time-varying interfaces based on JavaScript DOM API (`Doc` and
@@ -10,33 +9,41 @@ to:
 2. experiment with new types and functions for expressing time-varying
    values in general (`Var` and `View` types)
 
-You can think of it as a light-weight JavaScript MVC framework
-presented with types in F#.  Before reading on, have a look at the API
-and some examples.
+At this stage, you can think of it as a minimalistic JavaScript MVC
+framework presented with types in F#.  Have a look:
+
+* API ([Var/View](api/Reactive.fsi), [Doc/Attr][api/Doc.fsi])
+* [Examples](http://intellifactory.github.io/websharper.ui.next/)
 
 ## API 
 
 Let us introduce the basics. A `Var` is an observable ref-cell.  Just
 like for the simple ref cell, you have:
 
-    Var.Create : unit -> Var<'T>
-    Var.Get : Var<'T> -> 'T
-    Var.Set : Var<'T> -> 'T -> unit
+```fsharp
+Var.Create : unit -> Var<'T>
+Var.Get : Var<'T> -> 'T
+Var.Set : Var<'T> -> 'T -> unit
+```
 
 A `View<'T>` is a time-varying value computed from one or more vars:
 
-    View.Const : 'T -> View<'T>
-    View.FromVar : Var<'T> -> View<'T> // shorthand: var.View
-    View.Map : ('A -> 'B) -> View<'A> -> View<'B>
-    View.Map2 : ('A -> 'B -> 'C) -> View<'A> -> View<'B> -> View<'C>
-    View.Join : View<View<'T>> -> View<'T>
+```fsharp
+View.Const : 'T -> View<'T>
+View.FromVar : Var<'T> -> View<'T> // shorthand: var.View
+View.Map : ('A -> 'B) -> View<'A> -> View<'B>
+View.Map2 : ('A -> 'B -> 'C) -> View<'A> -> View<'B> -> View<'C>
+View.Join : View<View<'T>> -> View<'T>
+```
 
 These combinators can define dynamic graphs of Views.  You can observe
 a View imperatively by providing a function that will be called with
 the most current computed value of the View when it changes; this will
 be called at least once (for a constant View):
 
-    View.Sink : ('T -> unit) -> View<'T> -> unit
+```fsharp
+View.Sink : ('T -> unit) -> View<'T> -> unit
+```
 
 `Doc` is a special case of a time-varying value: it is a time-varying
 list of items representing HTML elements and text nodes. Similarly,
@@ -44,8 +51,10 @@ list of items representing HTML elements and text nodes. Similarly,
 elements, text nodes and attributes.  In addition, lists and
 time-varying fragments are conveniently embedded in a single type:
 
-    Doc.Concat : seq<Doc> -> Doc
-    Doc.EmbedView : View<Doc> -> Doc
+```fsharp
+Doc.Concat : seq<Doc> -> Doc
+Doc.EmbedView : View<Doc> -> Doc
+```
 
 ## Design Choices
 
@@ -55,12 +64,14 @@ We opt for explicit ML-style sharing (handling of identity).  F#
 programmers would know the difference between these two code
 fragments:
 
-    let r = ref ()
-    fun () -> f r
+```fsharp
+let r = ref ()
+fun () -> f r
 
-    fun () ->
-        let r = ref ()
-        f r
+fun () ->
+    let r = ref ()
+    f r
+```
 
 Similarly to ref cells, `Var`, `Doc` and `View` values have identity
 that matters.  For DOM nodes this is used to encapsulate widget state.
@@ -107,7 +118,9 @@ Having a single often implicit `Concat` operation lets users write
 code as the following, without worrying if `x`, `y`, and `z` are nodes
 or node-lists.
 
-    ul [x; y; z]
+```fsharp
+ul [x; y; z]
+```
 
 This has grown out of frustration with previous HTML combinators in
 WebSharper, which made a distinction between nodes and node-lists in
