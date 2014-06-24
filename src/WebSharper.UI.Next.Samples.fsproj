@@ -122,4 +122,17 @@
       <HintPath>..\..\websharper.ui.next\WebSharper.UI.Next\WebSharper.UI.Next\bin\Release\WebSharper.UI.Next.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <Target Name="DeploySite" AfterTargets="Build">
+    <ItemGroup>
+      <SiteFiles Include="*.html" />
+      <SiteFiles Include="*.js" />
+      <SiteFiles Include="*.json" />
+      <SiteFiles Include="*.css" />
+      <SiteFiles Include="*.csv" />
+      <SiteFiles Include="*.tsv" />
+      <SiteContentFiles Include="Content/*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(SiteFiles)" DestinationFolder="..\build\html" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(SiteContentFiles)" DestinationFolder="..\build\html\Content" SkipUnchangedFiles="true" />
+  </Target>
 </Project>
