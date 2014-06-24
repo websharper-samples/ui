@@ -105,10 +105,11 @@
     <Compile Include="Samples.fs" />
     <Compile Include="CheckBoxTest.fs" />
     <Compile Include="PhoneExample.fs" />
-    <Compile Include="SimpleTextBox.fs" />
     <Compile Include="TodoList.fs" />
     <None Include="Style.css" />
     <Compile Include="MouseChase.fs" />
+    <Compile Include="Calculator.fs" />
+    <Compile Include="SimpleTextBox.fs" />
     <Compile Include="Client.fs" />
   </ItemGroup>
   <ItemGroup>
@@ -118,18 +119,7 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
     <Reference Include="WebSharper.UI.Next">
-      <HintPath>..\..\lib\WebSharper.UI.Next.dll</HintPath>
+      <HintPath>..\..\websharper.ui.next\WebSharper.UI.Next\WebSharper.UI.Next\bin\Release\WebSharper.UI.Next.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <Target Name="AfterBuild">
-    <ItemGroup>
-      <RootFiles Include="*.js" />
-      <RootFiles Include="*.html" />
-      <RootFiles Include="*.css" />
-      <ContentFiles Include="Content/*.*" />
-    </ItemGroup>
-    <Copy SourceFiles="@(RootFiles)" DestinationFolder="..\build\html" SkipUnchangedFiles="true" />
-    <Copy SourceFiles="@(ContentFiles)" DestinationFolder="..\build\html\Content" SkipUnchangedFiles="true" />
-  </Target>
 </Project>
-
