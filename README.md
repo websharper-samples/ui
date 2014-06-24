@@ -142,7 +142,7 @@ miscellaneous JavaScript widgets libraries.  However, for this
 iteration of UI.Next, we opted on focusing on a simpler subset of
 functinality.  Thus, no FRP.
 
-## No Events
+### No Events
 
 We do not provide event-stream combinators.  The default in F# UIs is
 to use callbacks that mutate objects to describe change.  This is what
@@ -169,7 +169,7 @@ introduce a memory leak by accidentally retaining the entire event
 stream history.  It also should be possible to use these libraries
 with F#/WebSharper already.
 
-## UI Components
+### UI Components
 
 What are the design considerations for structuring user interfaces?
 As with all design, we want to compose an application from components
