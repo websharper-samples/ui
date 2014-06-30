@@ -1,4 +1,4 @@
-# WebSharper.UI.Next
+# WebSharper.UI.Next [![Build status](https://ci.appveyor.com/api/projects/status/scmqf68re8otea8h)](https://ci.appveyor.com/project/Jand42/websharper-ui-next)
 
 WebSharper.UI.Next is an experiemntal project that aims to:
 
