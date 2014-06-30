@@ -30,3 +30,7 @@ These articles cover various design choices and aspects of the system:
 * [Component design](docs/Components.md)
 
 * [A case for Concurrent ML](docs/CML.md)
+
+## Talks
+
+* [Video: Tackle UI with Reactive DOM in F# and WebSharper](https://www.youtube.com/watch?v=wEkS09s3KBc) - in this Community for FSharp event, t0yv0 presents the basics of the library and the motivations for the dataflow design 
