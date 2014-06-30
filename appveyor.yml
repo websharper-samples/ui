@@ -1,0 +1,23 @@
+version: 0.1.{build}
+
+branches:
+  only:
+    - master
+
+init:
+  - git config --global core.autocrlf input
+
+build_script:
+  - cmd: build.cmd
+
+test: off
+
+on_success:
+  - ps: .\tools\publish-site.ps1
+  - ps: .\tools\gh-pages.ps1 -action publish -env appveyor
+
+environment:
+  GH_TOKEN:
+    secure: JZ+3Cp4KpFEnyoBGS2SSPnv6uPt4exUh5XMHw8SLrL/v6LcI/XL5PyxbH9ydo6of
+  NG_TOKEN:
+    secure: o2jXDX8IRjrA9m33qDh2Y7GHdYlMGeNFpuXdQB5lvdPLalOoQ6XpH46v679bnA+r
