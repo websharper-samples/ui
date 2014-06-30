@@ -9,9 +9,10 @@ simplifying constructing UI components in the browser.
 * [Dataflow API](api/Reactive.fsi)
 * [DOM API](api/Doc.fsi)
 
-If successful, the combinators will be released as part of
+If successful, the F# combinators will be released as part of
 [WebSharper](http://websharper.com) 3.0, and become the recommended
-way to construct UI in WebSharper.
+way to construct UI in WebSharper.  We also have plans for releasing the library
+as standalone JavaScript with TypeScript bindings.
 
 ## Documentation
 
@@ -34,3 +35,15 @@ These articles cover various design choices and aspects of the system:
 ## Talks
 
 * [Video: Tackle UI with Reactive DOM in F# and WebSharper](https://www.youtube.com/watch?v=wEkS09s3KBc) - in this Community for FSharp event, t0yv0 presents the basics of the library and the motivations for the dataflow design 
+
+## Acknowledgements
+
+This design is a result of vibrant discussion and experimentation.  The list of people who have contributed
+time, ideas and code includes:
+
+* Simon Fowler
+* Anton Tayanovskyy
+* Andras Janko
+* Loic Denuziere
+* Adam Granicz
+* Vesa Karvonen
