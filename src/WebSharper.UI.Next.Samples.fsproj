@@ -113,14 +113,15 @@
     <Compile Include="Client.fs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="IntelliFactory.WebSharper.UI.Next">
+      <HintPath>..\packages\WebSharper.UI.Next.0.1.1.2\lib\net40\IntelliFactory.WebSharper.UI.Next.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
-    <Reference Include="WebSharper.UI.Next">
-      <HintPath>..\..\websharper.ui.next\WebSharper.UI.Next\WebSharper.UI.Next\bin\Release\WebSharper.UI.Next.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Target Name="DeploySite" AfterTargets="Build">
     <ItemGroup>
