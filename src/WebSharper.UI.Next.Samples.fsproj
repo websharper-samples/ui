@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
@@ -13,6 +13,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <NuGetPackageImportStamp>bdd9d61d</NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -58,7 +59,6 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <Import Project="..\packages\WebSharper.2.5.111.45\build\WebSharper.targets" Condition="Exists('..\packages\WebSharper.2.5.111.45\build\WebSharper.targets')" />
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties Guid="{349c5851-65df-11da-9384-00065b846f21}">
@@ -123,6 +123,20 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
   </ItemGroup>
+  <!-- <LOCAL> link to locally checked out websharper.ui.next if available. -->
+  <PropertyGroup>
+    <LocalLib>..\..\websharper.ui.next\src\WebSharper.UI.Next\bin\Release\WebSharper.UI.Next.dll</LocalLib>
+  </PropertyGroup>
+  <Target Name="LinkLocal" BeforeTargets="ResolveAssemblyReferences" Condition="Exists('$(LocalLib)')">
+    <ItemGroup>
+      <Reference Remove="IntelliFactory.WebSharper.UI.Next" />
+      <Reference Include="IntelliFactory.WebSharper.UI.Next">
+        <HintPath>$(LocalLib)</HintPath>
+        <Private>True</Private>
+      </Reference>
+    </ItemGroup>
+  </Target>
+  <!-- </LOCAL> -->
   <Target Name="DeploySite" AfterTargets="Build">
     <ItemGroup>
       <SiteFiles Include="*.html" />
@@ -135,5 +149,12 @@
     </ItemGroup>
     <Copy SourceFiles="@(SiteFiles)" DestinationFolder="..\build\html" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(SiteContentFiles)" DestinationFolder="..\build\html\Content" SkipUnchangedFiles="true" />
+  </Target>
+  <Import Project="..\packages\WebSharper.2.5.118.53\build\WebSharper.targets" Condition="Exists('..\packages\WebSharper.2.5.118.53\build\WebSharper.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\WebSharper.2.5.118.53\build\WebSharper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\sln\packages\WebSharper.2.5.118.53\build\WebSharper.targets'))" />
   </Target>
 </Project>
