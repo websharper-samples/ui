@@ -27,7 +27,6 @@ module MouseChase =
         let SetupMouseHook () =
             let doc = Dom.Document.Current
             let onMouseMove (evt: Dom.Event) =
-                // Update the RVars for the X and Y positions
                 // Update the RVars for the X and Y positions, from the information
                 // contained within the event.
                 let px = evt?pageX
@@ -40,22 +39,20 @@ module MouseChase =
 
         let widthAttr = Attr.Create "width" "200"
         let heightAttr = Attr.Create "height" "100"
-        let xAttr = Attr.View "x" (View.Map string rvX.View)
-        let yAttr = Attr.View "y" (View.Map string rvY.View)
+        // Create reactive style attributes for the CSS properties we wish to modify.
+        // Notice we're using ViewStyle here and not View, as we're modifying CSS instead
+        // of node attributes.
+        let xView = Attr.ViewStyle "left" (View.Map (fun x -> string(x) + "px") rvX.View)
+        let yView = Attr.ViewStyle "top" (View.Map (fun y -> string(y) + "px") rvY.View)
+        // We also add static attributes for positioning and colour.
+        let bgAttr = Attr.CreateStyle "background-color" "#b0c4de"
+        let posAttr = Attr.CreateStyle "position" "absolute"
 
-        // Set the position of the box, using the views of our reactive variables.
-        let rviStyle =
-            // Map2 is like Map, but takes two arguments instead of just the one.
-            View.Map2 (fun x y ->
-                "background-color: #b0c4de; position:absolute; left:" + string(x)
-                + "px; top:" + string(y) + "px;") rvX.View rvY.View
-
-        let styleAttr = Attr.View "style" rviStyle
         let div xs = Doc.Element "div" [] [xs]
 
         // Finally wire everything up and set it in motion!
         let mouseDiv =
-            Doc.Element "div" [styleAttr] [
+            Doc.Element "div" [xView ; yView; bgAttr; posAttr] [
                 View.Map (fun x -> "X: " + string(x)) rvX.View |> Doc.TextView |> div
                 View.Map (fun y -> "Y: " + string(y)) rvY.View |> Doc.TextView |> div
             ]
