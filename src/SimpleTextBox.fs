@@ -23,7 +23,7 @@ module SimpleTextBox =
         let elem name attr xs = Doc.Element name attr xs
         let ( => ) k v = Attr.Create k v
 
-    let Main parent =
+    let Main =
 
         // Create a reactive variable and view.
         // Reactive *variables* are data *sources*.
@@ -53,8 +53,6 @@ module SimpleTextBox =
                 el "div" [label]
             ]
         ]
-        // Finally, "Run" sets everything in motion
-        |> Doc.Run parent
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =

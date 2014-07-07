@@ -110,7 +110,7 @@ module PhoneExample =
             ]
         ]
 
-    let Main parent =
+    let Main =
         // Here, we make a couple of phones, and declare a phonesWidget, then run the example.
         let defPhone name snip age =
             {
@@ -124,7 +124,6 @@ module PhoneExample =
             defPhone "Motorola XOOM with Wi-Fi" "The Next, Next generation tablet" 3
             defPhone "Samsung Galaxy" "The Ultimate Phone" 4
         ]
-        |> Doc.Run parent
 
     // Boilerplate..
     let Sample =

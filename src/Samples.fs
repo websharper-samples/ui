@@ -15,10 +15,13 @@ open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.JQuery
 open IntelliFactory.WebSharper.Html
 
+open IntelliFactory.WebSharper.UI.Next
+
 /// Support code for the sample catalog.
 [<JavaScript>]
 module Samples =
-
+    // A Sample consists of a file name, identifier, list of keywords,
+    // rendering function, and title.
     type Sample =
         private {
             FileName : string
@@ -28,6 +31,9 @@ module Samples =
             Title : string
         }
 
+    // ++ :: (a opt) -> a -> a
+    // Takes two values. If the first is Some, then that's returned.
+    // If not, then the second (default) argument is, instead.
     let private ( ++ ) a b =
         match a with
         | Some _ -> a

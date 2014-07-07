@@ -17,16 +17,14 @@ open IntelliFactory.WebSharper
 module Client =
 
     let All =
-        let ( !+ ) x = Samples.Set.Singleton(x)
-
-        Samples.Set.Create [
-            !+ SimpleTextBox.Sample
-            !+ TodoList.Sample
-            !+ PhoneExample.Sample
-            !+ CheckBoxTest.Sample
-            !+ MouseChase.Sample
-            !+ Calculator.Sample
+        [
+            SimpleTextBox.Sample
+            TodoList.Sample
+            PhoneExample.Sample
+            CheckBoxTest.Sample
+            MouseChase.Sample
+            Calculator.Sample
         ]
 
     let Main =
-        All.Show ()
+        Samples.Show All

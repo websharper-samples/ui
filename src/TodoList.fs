@@ -138,8 +138,8 @@ module TodoList =
         ]
 
     // ...and run it.
-    let Main parent =
-        Doc.Run parent (TodoExample ())
+    let Main =
+        TodoExample ()
 
     let Sample =
         Samples.Build()

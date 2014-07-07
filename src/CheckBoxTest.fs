@@ -33,7 +33,7 @@ module CheckBoxTest =
             Person.Create "Andy" 51
         ]
 
-    let Main parent =
+    let Main =
 
         // We make a variable containing the initial list of selected people.
         let selPeople = Var.Create []
@@ -52,7 +52,6 @@ module CheckBoxTest =
 
         // Create a document fragment and run!
         Doc.Concat [chkBox; label]
-        |> Doc.Run parent
 
     // Boilerplate for the sample viewer...
     let Sample =

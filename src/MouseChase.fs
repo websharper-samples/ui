@@ -17,7 +17,7 @@ open IntelliFactory.WebSharper.UI.Next
 [<JavaScript>]
 module MouseChase =
 
-    let Main parent =
+    let Main =
 
         // RVars / views for X and Y co-ords of mouse
         let rvX = Var.Create 0
@@ -57,7 +57,7 @@ module MouseChase =
                 View.Map (fun y -> "Y: " + string(y)) rvY.View |> Doc.TextView |> div
             ]
 
-        Doc.Run parent mouseDiv
+        mouseDiv
 
     let Sample =
         Samples.Build()

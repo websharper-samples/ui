@@ -102,10 +102,9 @@ module Calculator =
         ]
 
     // Run it!
-    let Main parent =
+    let Main =
         // Create a reactive variable and view.
-        let rvCalc = Var.Create initCalc
-        Doc.Run parent (calcView rvCalc)
+        Var.Create initCalc |> calcView
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
