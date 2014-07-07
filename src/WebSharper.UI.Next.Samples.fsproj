@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
@@ -14,6 +14,8 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <NuGetPackageImportStamp>bdd9d61d</NuGetPackageImportStamp>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\sln\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -102,7 +104,7 @@
     <Content Include="index.html" />
     <Content Include="Web.config" />
     <None Include="packages.config" />
-    <Compile Include="Samples.fs" />
+    <Compile Include="SamplesUINext.fs" />
     <Compile Include="CheckBoxTest.fs" />
     <Compile Include="PhoneExample.fs" />
     <Compile Include="TodoList.fs" />
@@ -113,15 +115,18 @@
     <Compile Include="Client.fs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="IntelliFactory.WebSharper.UI.Next">
-      <HintPath>..\packages\WebSharper.UI.Next.0.1.1.2\lib\net40\IntelliFactory.WebSharper.UI.Next.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\websharper.ui.next\src\WebSharper.UI.Next\WebSharper.UI.Next.fsproj">
+      <Name>WebSharper.UI.Next</Name>
+      <Project>{085a6f78-50a7-46cf-b040-9853ec580be5}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <!-- <LOCAL> link to locally checked out websharper.ui.next if available. -->
   <PropertyGroup>
@@ -157,4 +162,5 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\WebSharper.2.5.118.53\build\WebSharper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\sln\packages\WebSharper.2.5.118.53\build\WebSharper.targets'))" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
 </Project>
