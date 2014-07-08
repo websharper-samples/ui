@@ -53,6 +53,13 @@ module CheckBoxTest =
         // Create a document fragment and run!
         Doc.Concat [chkBox; label]
 
+    let el name = Doc.Element name []
+
+    let description =
+        el "div" [
+            Doc.TextNode "An application which shows the selected values."
+        ]
+
     // Boilerplate for the sample viewer...
     let Sample =
         Samples.Build()
@@ -60,4 +67,5 @@ module CheckBoxTest =
             .FileName(__SOURCE_FILE__)
             .Keywords(["todo"])
             .Render(Main)
+            .RenderDescription(description)
             .Create()

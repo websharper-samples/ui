@@ -125,6 +125,17 @@ module PhoneExample =
             defPhone "Samsung Galaxy" "The Ultimate Phone" 4
         ]
 
+    let link txt href =
+        Doc.Element "a" [(Attr.Create "href" href)] [Doc.TextNode txt]
+
+    // Todo: I don't like this. There's got to be a nicer way of embedding links.
+    let description =
+        el "div" [
+            Doc.TextNode "Taken from the"
+            link "AngularJS Tutorial" "AngularJS Tutorial"
+            Doc.TextNode ", a list filtering and sorting application for phones."
+        ]
+
     // Boilerplate..
     let Sample =
         Samples.Build()
@@ -132,4 +143,5 @@ module PhoneExample =
             .FileName(__SOURCE_FILE__)
             .Keywords(["todo"])
             .Render(Main)
+            .RenderDescription(description)
             .Create()

@@ -156,7 +156,9 @@ module Samples =
                 match model.ActiveSample with
                 | Some sample ->
                     [
-                      sample.RenderDescription
+                      el "p" [] [
+                        sample.RenderDescription
+                      ]
                       el "a" (btnAttrs sample) [ txt "Source" ]
                     ] |> Doc.Concat
                 | None -> Doc.Empty) view |> Doc.EmbedView
@@ -169,56 +171,3 @@ module Samples =
         Doc.RunById "sample-navs" (navBar rvModel)
         Doc.RunById "sample-main" (mainContent rvModel)
         Doc.RunById "sample-side" (sideContent rvModel)
-
-    (*
-
-        member s.Show() =
-            let sMain = Dom.Document.Current.GetElementById("sample-main")
-            let sSide = Dom.Document.Current.GetElementById("sample-side")
-            Clear sMain
-            Clear sSide
-            s.Render(sMain)
-            let url = "http://github.com/intellifactory/websharper.ui.next/blob/master/src/" + s.FileName
-            let side =
-                Div [
-                    Div []
-                    |>! OnAfterRender (fun self ->
-                        match Dom.Document.Current.GetElementById(s.Id) with
-                        | null -> ()
-                        | el ->
-                            let copy = el.CloneNode(true)
-                            copy.Attributes.RemoveNamedItem("id") |> ignore
-                            self.Append(copy))
-                    A [Attr.Class "btn btn-primary btn-lg"; HRef url] -< [Text "Source"]
-                ]
-            side.AppendTo("sample-side")
-
-//////////////////////////
-
-    type Sample with
-
-    type Set =
-        private
-        | Set of list<Sample>
-
-        static member Create(ss) = Set [for (Set xs) in ss do yield! xs]
-        static member Singleton(s) = Set [s]
-
-        member s.Show() =
-            JQuery.JQuery.Of(fun () ->
-                let (Set samples) = s
-                let doc = Dom.Document.Current
-                let select (s: Sample) (dom: Dom.Element) =
-                    let j = JQuery.Of("#sample-navs ul").Children("li").RemoveClass("active")
-                    JQuery.Of(dom).AddClass("active").Ignore
-                    s.Show()
-                let rec navs =
-                    UL [Attr.Class "nav nav-pills"] -< (
-                        samples
-                        |> List.mapi (fun i s ->
-                            LI [A [HRef "#"] -< [Text s.Title]]
-                            |>! OnAfterRender (fun self -> if i = 0 then select s self.Dom)
-                            |>! OnClick (fun self _ -> select s self.Dom))
-                    )
-                navs.AppendTo("sample-navs"))
-                *)

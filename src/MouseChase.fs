@@ -59,10 +59,18 @@ module MouseChase =
 
         mouseDiv
 
+    let el name = Doc.Element name []
+
+    let description =
+        el "div" [
+            Doc.TextNode "A box which follows the mouse, containing the co-ordinates."
+        ]
+
     let Sample =
         Samples.Build()
             .Id("MouseChase")
             .FileName(__SOURCE_FILE__)
             .Keywords(["todo"])
             .Render(Main)
+            .RenderDescription(description)
             .Create()

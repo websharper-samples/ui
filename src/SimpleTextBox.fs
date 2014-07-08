@@ -54,6 +54,11 @@ module SimpleTextBox =
             ]
         ]
 
+    let description =
+        el "div" [
+            Doc.TextNode "A label which copies the contents of a text box."
+        ]
+
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
         Samples.Build()
@@ -61,4 +66,5 @@ module SimpleTextBox =
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])
             .Render(Main)
+            .RenderDescription(description)
             .Create()
