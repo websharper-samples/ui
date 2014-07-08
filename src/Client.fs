@@ -24,6 +24,7 @@ module Client =
             CheckBoxTest.Sample
             MouseChase.Sample
             Calculator.Sample
+            ContactFlow.Sample
         ]
 
     let Main =

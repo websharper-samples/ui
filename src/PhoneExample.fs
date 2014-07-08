@@ -131,8 +131,8 @@ module PhoneExample =
     // Todo: I don't like this. There's got to be a nicer way of embedding links.
     let description =
         el "div" [
-            Doc.TextNode "Taken from the"
-            link "AngularJS Tutorial" "AngularJS Tutorial"
+            Doc.TextNode "Taken from the "
+            link "AngularJS Tutorial" "https://docs.angularjs.org/tutorial/"
             Doc.TextNode ", a list filtering and sorting application for phones."
         ]
 
