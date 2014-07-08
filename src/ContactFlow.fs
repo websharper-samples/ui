@@ -1,26 +1,26 @@
 ﻿namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next.Flow
 
 [<JavaScript>]
 module ContactFlow =
 
-    type ContactType = EmailTy | PhoneTy
+    type ContactType = | EmailTy | PhoneTy
 
     type ContactDetails =
-    | Email of string
-    | PhoneNumber of string
+        | Email of string
+        | PhoneNumber of string
 
-    type Person = {
-        Name : string
-        Address : string
-    }
+    type Person =
+        {
+            Name : string
+            Address : string
+        }
 
     let el name = Doc.Element name []
 
     let personFlowlet =
-        Define (fun cont ->
+        Flow.Define (fun cont ->
             let rvName = Var.Create ""
             let rvAddress = Var.Create ""
             let nameView = View.FromVar rvName
@@ -47,7 +47,7 @@ module ContactFlow =
         )
 
     let contactTypeFlowlet =
-        Define (fun cont ->
+        Flow.Define (fun cont ->
             el "div" [
                 el "div" [
                     Doc.Button "E-Mail Address" [] (fun () -> cont EmailTy)
@@ -65,7 +65,7 @@ module ContactFlow =
             | EmailTy -> ("E-Mail Address", Email)
             | PhoneTy -> ("Phone Number", PhoneNumber)
 
-        Define ( fun cont ->
+        Flow.Define ( fun cont ->
             let rvContact = Var.Create ""
             el "div" [
                 el "div" [ Doc.TextNode label ]
@@ -93,12 +93,13 @@ module ContactFlow =
         ]
 
     let exampleFlow =
-        flow {
+        Flow.Do {
             let! person = personFlowlet
             let! ct = contactTypeFlowlet
             let! contactDetails = contactFlowlet ct
             return! Flow.Static (finalPage person contactDetails)
-        } |> Embed
+        }
+        |> Flow.Embed
 
     let description =
         el "div" [

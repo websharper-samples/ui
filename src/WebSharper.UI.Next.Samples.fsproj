@@ -112,6 +112,7 @@
     <Compile Include="MouseChase.fs" />
     <Compile Include="Calculator.fs" />
     <Compile Include="SimpleTextBox.fs" />
+    <Compile Include="ContactFlow.fs" />
     <Compile Include="Client.fs" />
   </ItemGroup>
   <ItemGroup>
