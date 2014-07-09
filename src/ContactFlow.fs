@@ -1,21 +1,21 @@
 ﻿namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next.Flow
 
 [<JavaScript>]
 module ContactFlow =
 
-    type ContactType = EmailTy | PhoneTy
+    type ContactType = | EmailTy | PhoneTy
 
     type ContactDetails =
-    | Email of string
-    | PhoneNumber of string
+        | Email of string
+        | PhoneNumber of string
 
-    type Person = {
-        Name : string
-        Address : string
-    }
+    type Person =
+        {
+            Name : string
+            Address : string
+        }
 
     let el name = Doc.Element name []
     let elA = Doc.Element
@@ -41,7 +41,7 @@ module ContactFlow =
         ]
 
     let personFlowlet =
-        Define (fun cont ->
+        Flow.Define (fun cont ->
             let rvName = Var.Create ""
             let rvAddress = Var.Create ""
             let nameView = View.FromVar rvName
@@ -65,19 +65,19 @@ module ContactFlow =
         )
 
     let contactTypeFlowlet =
-        Define (fun cont ->
+        Flow.Define (fun cont ->
             elA "form" [cls "form-horizontal" ; at "role" "form"] [
                 elA "div" [cls "form-group"] [
-                //    el "div" [
+                    el "div" [
                         Doc.Button "E-Mail Address" [cls "btn" ; cls "btn-default"]
                             (fun () -> cont EmailTy)
-                  //  ]
+                    ]
 
-                    //el "div" [
+                    el "div" [
                         Doc.Button "Phone Number" [cls "btn" ; cls "btn-default"]
                             (fun () -> cont PhoneTy)
-                    //]
-                ]
+                    ]
+               ]
             ]
         )
 
@@ -87,7 +87,7 @@ module ContactFlow =
             | EmailTy -> ("E-Mail Address", Email)
             | PhoneTy -> ("Phone Number", PhoneNumber)
 
-        Define ( fun cont ->
+        Flow.Define ( fun cont ->
             let rvContact = Var.Create ""
             elA "form" [cls "form-horizontal" ; at "role" "form"] [
 //                el "div" [ Doc.TextNode label ]
@@ -124,7 +124,8 @@ module ContactFlow =
             let! ct = contactTypeFlowlet
             let! contactDetails = contactFlowlet ct
             return! Flow.Static (finalPage person contactDetails)
-        } |> Embed
+        }
+        |> Flow.Embed
 
     let description =
         el "div" [
