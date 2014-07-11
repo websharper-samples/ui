@@ -111,23 +111,22 @@
     <None Include="Style.css" />
     <Compile Include="MouseChase.fs" />
     <Compile Include="Calculator.fs" />
-    <Compile Include="SimpleTextBox.fs" />
+    <Compile Include="InputTransform.fs" />
     <Compile Include="ContactFlow.fs" />
+    <Compile Include="MessageBoard.fs" />
+    <Compile Include="SimpleTextBox.fs" />
     <Compile Include="Client.fs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="IntelliFactory.WebSharper.UI.Next">
+      <HintPath>..\packages\WebSharper.UI.Next.0.1.3.4\lib\net40\IntelliFactory.WebSharper.UI.Next.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\websharper.ui.next\src\WebSharper.UI.Next\WebSharper.UI.Next.fsproj">
-      <Name>WebSharper.UI.Next</Name>
-      <Project>{085a6f78-50a7-46cf-b040-9853ec580be5}</Project>
-      <Private>True</Private>
-    </ProjectReference>
   </ItemGroup>
   <!-- <LOCAL> link to locally checked out websharper.ui.next if available. -->
   <PropertyGroup>

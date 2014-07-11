@@ -19,6 +19,7 @@ module Client =
     let All =
         [
             SimpleTextBox.Sample
+            InputTransform.Sample
             TodoList.Sample
             PhoneExample.Sample
             CheckBoxTest.Sample
