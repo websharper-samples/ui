@@ -113,7 +113,6 @@
     <Compile Include="Calculator.fs" />
     <Compile Include="InputTransform.fs" />
     <Compile Include="ContactFlow.fs" />
-    <Compile Include="MessageBoard.fs" />
     <Compile Include="SimpleTextBox.fs" />
     <Compile Include="Client.fs" />
   </ItemGroup>
