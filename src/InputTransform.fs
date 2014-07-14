@@ -61,11 +61,21 @@ module InputTransform =
 
         // Now, we make views of the text, which we mutate using Map.
         let view = View.FromVar rvText
-        let viewCaps = View.Map (fun (s : string) -> s.ToUpper ()) view
-        let viewReverse = View.Map (fun (s : string) -> new string ((s.ToCharArray ()) |> Array.rev)) view
-        let viewWordCount = View.Map (fun (s : string) -> s.Split([| ' ' |]).Length) view
-        let viewWordCountStr = View.Map string viewWordCount
-        let viewWordOddEven = View.Map (fun i -> if i % 2 = 0 then "Even" else "Odd") viewWordCount
+
+        let viewCaps =
+            view |> View.Map (fun s -> s.ToUpper () )
+
+        let viewReverse =
+            view |> View.Map (fun s -> new string ((s.ToCharArray ()) |> Array.rev))
+
+        let viewWordCount =
+            view |> View.Map (fun s -> s.Split([| ' ' |]).Length)
+
+        let viewWordCountStr =
+            View.Map string viewWordCount
+
+        let viewWordOddEven =
+            View.Map (fun i -> if i % 2 = 0 then "Even" else "Odd") viewWordCount
 
         let views =
             [
