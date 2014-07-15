@@ -14,18 +14,17 @@ namespace IntelliFactory.WebSharper.UI.Next
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
 
+// A to-do list application, showcasing time-varying collections of tim-varying
+// elements.
+// See this live at http://intellifactory.github.io/websharper.ui.next/#TodoList.fs !
+
 [<JavaScript>]
 module TodoList =
 
     [<AutoOpen>]
     module private Util =
-        let t x = Doc.TextNode x
-        let el name xs = Doc.Element name [] xs
-        let elem name attr xs = Doc.Element name attr xs
-        let ( => ) k v = Attr.Create k v
-        let divc cl rest = elem "div" ["class" => cl] rest
-        let input x = Doc.Input ["class" => "form-control"] x
-        let button name handler = Doc.Button name ["class" => "btn btn-default"] handler
+        let input x = Doc.Input ["class" ==> "form-control"] x
+        let button name handler = Doc.Button name ["class" ==> "btn btn-default"] handler
 
         let fresh =
             let c = ref 0
@@ -82,8 +81,8 @@ module TodoList =
                 // Let us render the item differently depending on whether it's done.
                 |> View.Map (fun isDone ->
                     if isDone
-                        then el "del" [ t todo.TodoText ]
-                        else t todo.TodoText)
+                        then el "del" [ txt todo.TodoText ]
+                        else txt todo.TodoText)
                 // Finally, we embed this possibly-changing fragment into the tree.
                 // Whenever the input changes, the parts of the tree change automatically.
                 |> Doc.EmbedView
@@ -110,7 +109,7 @@ module TodoList =
         let rviInput = View.FromVar rvInput
         el "form" [
             divc "form-group" [
-                el "label" [t "New entry: "]
+                el "label" [txt "New entry: "]
                 // Here, we make the Input box, backing it by the reactive variable.
                 input rvInput
             ]
@@ -130,7 +129,7 @@ module TodoList =
     // Finally, we put it all together...
     let TodoExample () =
         let m = Create ()
-        elem "table" ["class" => "table table-hover"] [
+        elA "table" ["class" ==> "table table-hover"] [
             el "tbody" [
                 TodoList m
                 TodoForm m

@@ -16,6 +16,7 @@ open IntelliFactory.WebSharper.UI.Next
 
 // This example is a translation of the basics from the AngularJS tutorial,
 // found here: https://docs.angularjs.org/tutorial/.
+// See this live at http://intellifactory.github.io/websharper.ui.next/#PhoneExample.fs !
 
 [<JavaScript>]
 module PhoneExample =
@@ -46,18 +47,6 @@ module PhoneExample =
             ph.Name.Contains(q)
             || ph.Snippet.Contains(q)
 
-    [<AutoOpen>]
-    module private Utils =
-
-        // A handy helper function to create a static text node.
-        let t x = Doc.TextNode x
-
-        // Another handy helper function to make an element without attributes.
-        let el name xs = Doc.Element name [] xs
-
-        // Helper for a div with a class.
-        let divc c rest = Doc.Element "div" [Attr.Create "class" c] rest
-
     // This is our phones widget. We take a list of phones, and return
     // an document tree which can be rendered.
     let PhonesWidget (phones: list<Phone>) =
@@ -81,8 +70,8 @@ module PhoneExample =
         // A simple function for displaying the details of a phone:
         let showPhone ph =
             el "li" [
-                el "span" [ t ph.Name ]
-                el "p" [ t ph.Snippet ]
+                el "span" [ txt ph.Name ]
+                el "p" [ txt ph.Snippet ]
             ]
 
         let showPhones phones =
@@ -94,11 +83,11 @@ module PhoneExample =
             divc "col-sm-6" [
 
                 // We specify a label, and an input box linked to our query RVar.
-                t "Search: "
+                txt "Search: "
                 Doc.Input [Attr.Create "class" "form-control"] query
 
                 // We then have a select box, linked to our orders variable
-                t "Sort by: "
+                txt "Sort by: "
                 Doc.Select [Attr.Create "class" "form-control"] Order.Show [Newest; Alphabetical] order
 
             ]

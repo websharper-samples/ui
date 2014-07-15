@@ -104,6 +104,7 @@
     <Content Include="index.html" />
     <Content Include="Web.config" />
     <None Include="packages.config" />
+    <Compile Include="Utilities.fs" />
     <Compile Include="SamplesUINext.fs" />
     <Compile Include="CheckBoxTest.fs" />
     <Compile Include="PhoneExample.fs" />

@@ -14,6 +14,9 @@ namespace IntelliFactory.WebSharper.UI.Next
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
 
+// An example of a div chasing the mouse, displaying mouse co-ordinates.
+// See this live at http://intellifactory.github.io/websharper.ui.next/#MouseChase.fs !
+
 [<JavaScript>]
 module MouseChase =
 
@@ -48,8 +51,6 @@ module MouseChase =
         let bgAttr = Attr.CreateStyle "background-color" "#b0c4de"
         let posAttr = Attr.CreateStyle "position" "absolute"
 
-        let div xs = Doc.Element "div" [] [xs]
-
         // Finally wire everything up and set it in motion!
         let mouseDiv =
             Doc.Element "div" [xView ; yView; bgAttr; posAttr] [
@@ -58,8 +59,6 @@ module MouseChase =
             ]
 
         mouseDiv
-
-    let el name = Doc.Element name []
 
     let description =
         el "div" [

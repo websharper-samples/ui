@@ -14,14 +14,12 @@ namespace IntelliFactory.WebSharper.UI.Next
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
 
+// A simple example consisting of a label which mirrors the content of a text
+// box.
+// See this live at http://intellifactory.github.io/websharper.ui.next/#SimpleTextBox.fs !
+
 [<JavaScript>]
 module SimpleTextBox =
-
-    [<AutoOpen>]
-    module private Util =
-        let el name xs = Doc.Element name [] xs
-        let elem name attr xs = Doc.Element name attr xs
-        let ( => ) k v = Attr.Create k v
 
     let Main =
 
@@ -40,9 +38,6 @@ module SimpleTextBox =
         // A TextView is a component, backed by a reactive view, that updates
         // its contents automatically whenever the variable changes.
         let label = Doc.TextView rvText.View
-
-        // Shorthand for a div with a class attribute.
-        let divc cl = elem "div" ["class" => cl]
 
         // Put together our RDOM structures; some bootstrap stuff
         divc "panel-default" [

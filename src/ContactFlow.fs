@@ -2,9 +2,19 @@
 
 open IntelliFactory.WebSharper
 
+// An example of a flowlet for getting contact details from a user.
+// See this live at http://intellifactory.github.io/websharper.ui.next/#ContactFlow.fs !
+
 [<JavaScript>]
 module ContactFlow =
 
+    // The idea behind this example is that we first get some common details
+    // from a user: in this case a name and address.
+    // We then ask which type of contact details they wish to supply, so in
+    // this case, either a phone number or e-mail address.
+    // Finally, we get them to specify this, and display the results.
+
+    // Firstly, we define the types we need to use.
     type ContactType = | EmailTy | PhoneTy
 
     type ContactDetails =
@@ -17,37 +27,32 @@ module ContactFlow =
             Address : string
         }
 
-    let el name = Doc.Element name []
-    let elA = Doc.Element
-    let cls = Attr.CreateClass
-    let at = Attr.Create
-
+    // Helper function to display an input field within a form prettily.
     let inputRow rv id lblText =
         elA "div" [cls "form-group"] [
             elA "label"
-                [at "for" id
+                ["for" ==> id
                  cls "col-sm-2"
                  cls "control-label"
                 ] [Doc.TextNode lblText]
 
             elA "div" [cls "col-sm-10"] [
                 Doc.Input
-                    [at "type" "text"
+                    ["type" ==> "text"
                      cls "form-control"
-                     at "id" id
-                     at "placeholder" lblText
+                     "id" ==> id
+                     "placeholder" ==> lblText
                     ] rv
             ]
         ]
 
+    // The initial "page" of the flowlet, which gets name and address detiails
     let personFlowlet =
         Flow.Define (fun cont ->
             let rvName = Var.Create ""
             let rvAddress = Var.Create ""
-            let nameView = View.FromVar rvName
-            let addrView = View.FromVar rvAddress
 
-            elA "form" [cls "form-horizontal" ; at "role" "form"] [
+            elA "form" [cls "form-horizontal" ; "role" ==> "form"] [
                 // Name
                 inputRow rvName "lblName" "Name"
                 // Address
@@ -57,6 +62,8 @@ module ContactFlow =
                         Doc.Button "Next" [cls "btn" ; cls "btn-default"] (fun () ->
                             let name = Var.Get rvName
                             let addr = Var.Get rvAddress
+                            // We use the continuation function to return the
+                            // data we retrieved from the form.
                             cont ({Name = name ; Address = addr})
                         )
                     ]
@@ -65,9 +72,11 @@ module ContactFlow =
 
         )
 
+    // The second page of the flowlet, which asks whether the user wants
+    // to specify an e-mail address or phone number.
     let contactTypeFlowlet =
         Flow.Define (fun cont ->
-            elA "form" [cls "form-horizontal" ; at "role" "form"] [
+            elA "form" [cls "form-horizontal" ; "role" ==> "form"] [
                 elA "div" [cls "form-group"] [
                     el "div" [
                         Doc.Button "E-Mail Address" [cls "btn" ; cls "btn-default"]
@@ -82,7 +91,9 @@ module ContactFlow =
             ]
         )
 
+    // Using this, we either get an e-mail address or phone number from the user.
     let contactFlowlet contactTy =
+        // Determine the label and constructor to use.
         let (label, constr) =
             match contactTy with
             | EmailTy -> ("E-Mail Address", Email)
@@ -90,13 +101,13 @@ module ContactFlow =
 
         Flow.Define ( fun cont ->
             let rvContact = Var.Create ""
-            elA "form" [cls "form-horizontal" ; at "role" "form"] [
-//                el "div" [ Doc.TextNode label ]
-//                el "div" [ Doc.Input [] rvContact ]
+            elA "form" [cls "form-horizontal" ; "role" ==> "form"] [
                 inputRow rvContact "contact" label
                 elA "div" [cls "form-group"] [
                     elA "div" [cls "col-sm-offset-2" ; cls "col-sm-10"] [
                         Doc.Button "Finish" [cls "btn" ; cls "btn-default"]
+                            // Call the continuation with the contact details
+                            // and the constructor to use.
                             ( fun () ->
                                 Var.Get rvContact
                                 |> constr
@@ -119,6 +130,10 @@ module ContactFlow =
             Doc.TextNode <| " and you provided " + detailsStr + "."
         ]
 
+    // Put it all together! This flow is like a roadmap of the application.
+    // We firstly get the person details, then the contact type, then the
+    // contact details (using the contact type we got in the previous step).
+    // Finally, we display a static end page.
     let exampleFlow =
         Flow.Do {
             let! person = personFlowlet

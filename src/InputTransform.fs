@@ -14,15 +14,12 @@ namespace IntelliFactory.WebSharper.UI.Next
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
 
+// An example which takes some input from a text box, and outputs
+// it with different functions applied to it, making use of View.Map.
+// See this live at http://intellifactory.github.io/websharper.ui.next/#InputTransform.fs !
+
 [<JavaScript>]
 module InputTransform =
-
-    [<AutoOpen>]
-    module private Util =
-        let el name xs = Doc.Element name [] xs
-        let elA = Doc.Element
-        let ( => ) k v = Attr.Create k v
-        let cls = Attr.CreateClass
 
     let Main =
 
@@ -45,14 +42,14 @@ module InputTransform =
                 ]
 
                 elA "div" [cls "panel-body"] [
-                    elA "form-horizontal" ["role" => "form"] [
+                    elA "form-horizontal" ["role" ==> "form"] [
                         elA "div" [cls "form-group"] [
-                            elA "label" [cls "col-sm-2" ; cls "control-label" ; "for" => "inputBox"] [
+                            elA "label" [cls "col-sm-2" ; cls "control-label" ; "for" ==> "inputBox"] [
                                 Doc.TextNode "Write something: "
                             ]
 
                             elA "div" [cls "col-sm-10"] [
-                                Doc.Input ["class" => "form-control" ; "id" => "inputBox"] rvText
+                                Doc.Input ["class" ==> "form-control" ; "id" ==> "inputBox"] rvText
                             ]
                         ]
                     ]

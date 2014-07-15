@@ -13,6 +13,10 @@ namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Notation
+
+// A calculator application, showing model-view separation.
+// See this live at http://intellifactory.github.io/websharper.ui.next/#Calculator.fs !
 
 [<JavaScript>]
 module Calculator =
@@ -61,11 +65,7 @@ module Calculator =
             let ans = (opFn c.Operation) c.Memory c.Operand
             { c with Memory = 0 ; Operand = ans ; Operation = Add } )
 
-    let (<*>) = View.Apply
-
     // ============== VIEW ============== //
-
-    let el name xs = Doc.Element name [] xs
 
     // Displays the number on the calculator's screen
     let displayCalc rvCalc =

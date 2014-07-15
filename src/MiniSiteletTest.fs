@@ -3,6 +3,9 @@
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next.Notation
 
+// A small example of a single-page mini-sitelet.
+// See this live at http://intellifactory.github.io/websharper.ui.next/#MiniSiteletTest.fs !
+
 [<JavaScript>]
 module MiniSiteletTest =
     type Action =
@@ -14,10 +17,6 @@ module MiniSiteletTest =
         {
             Go : Action -> unit
         }
-
-    let el name = Doc.Element name []
-    let elA = Doc.Element
-    let cls = Attr.CreateClass
 
     let GlobalGo var (act : Action) =
         Var.Set var act
@@ -80,7 +79,7 @@ module MiniSiteletTest =
             el "div" [
                 el "h1" [Doc.TextNode "Page 3"]
                 el "p" [Doc.TextNode "Some exciting content from page 3!"]
-                Doc.Button "Go to P1" [] (fun () -> ctx.Go A1)
+                Doc.Button "Go to P1" [cls "btn" ; cls "btn-default"] (fun () -> ctx.Go A1)
             ]
         ]
 
