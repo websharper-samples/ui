@@ -27,6 +27,7 @@ module Client =
             Calculator.Sample
             ContactFlow.Sample
             MiniSiteletTest.Sample
+            MessageBoard.Sample
         ]
 
     let Main =

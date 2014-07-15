@@ -54,8 +54,8 @@ module MouseChase =
         // Finally wire everything up and set it in motion!
         let mouseDiv =
             Doc.Element "div" [xView ; yView; bgAttr; posAttr] [
-                View.Map (fun x -> "X: " + string(x)) rvX.View |> Doc.TextView |> div
-                View.Map (fun y -> "Y: " + string(y)) rvY.View |> Doc.TextView |> div
+                View.Map (fun x -> "X: " + string(x)) rvX.View |> Doc.TextView |> fun x -> div [x]
+                View.Map (fun y -> "Y: " + string(y)) rvY.View |> Doc.TextView |> fun x -> div [x]
             ]
 
         mouseDiv

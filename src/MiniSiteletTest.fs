@@ -2,48 +2,56 @@
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next.Notation
+open IntelliFactory.WebSharper.UI.Next.MiniSitelet
 
 // A small example of a single-page mini-sitelet.
 // See this live at http://intellifactory.github.io/websharper.ui.next/#MiniSiteletTest.fs !
 
 [<JavaScript>]
 module MiniSiteletTest =
-    type Action =
-        | A1
-        | A2 of int
-        | A3
 
-    type Context =
-        {
-            Go : Action -> unit
-        }
+    // Page is a record that we use to represent the current page we're on.
+    // Notice that this doesn't specify anything about the rendering of the
+    // page. That comes later.
+    type Page =
+        | P1
+        | P2 of int
+        | P3
 
-    let GlobalGo var (act : Action) =
+    // Sets the variable to a given action, changing the page. This can be
+    // called from anywhere.
+    let GlobalGo var (act : Page) =
         Var.Set var act
 
+    // Gives a textual representation of a Page type. We use this in the Navabr.
     let showAct = function
-        | A1 -> "Page 1"
-        | A2 i -> "Page 2 (" + string(i) + ")"
-        | A3 -> "Page 3"
+        | P1 -> "Page 1"
+        | P2 i -> "Page 2 (" + string(i) + ")"
+        | P3 -> "Page 3"
 
-    let pages = [A1 ; A2 0 ; A2 1 ; A3]
+    // A list of pages in the site
+    let pages = [P1 ; P2 0 ; P2 1 ; P3]
 
+    // A record containing a continuation function we can use within pages.
+    type Context = {
+        Go : Page -> unit
+    }
+
+    // Creates a navigation bar using the variable containing the current page.
     let NavBar var =
         View.FromVar var
         |> View.Map (fun active ->
 
             let evtLink act =
-                Doc.ElementWithEvents "a" [Attr.Create "href" "#"]
+                Doc.ElementWithEvents "a" ["href" ==> "#"]
                     [EventHandler.CreateHandler "click" (fun _ -> GlobalGo var act)]
 
             let renderLink action =
-                let attr =
-                    if action = active then
-                        cls "active"
-                    else Attr.Empty
+                let attr = if action = active then cls "active" else Attr.Empty
+
                 elA "li" [attr] [
                     evtLink action [
-                        Doc.TextNode <| showAct action
+                        showAct action |> txt
                     ]
                 ]
 
@@ -54,13 +62,16 @@ module MiniSiteletTest =
             ])
         |> Doc.EmbedView
 
+    // Each page takes the context record we created earlier. We could also just have it
+    // taking the continuation function.
+    // To change the page, we call this function with the action we want to perform.
     let Page1 ctx =
         Doc.Concat [
             el "div" [
                 el "h1" [Doc.TextNode "Page 1"]
                 el "p" [Doc.TextNode "Some exciting content from page 1!"]
-                Doc.Button "Go to P2/0" [cls "btn" ; cls "btn-default"] (fun () -> ctx.Go (A2 0))
-                Doc.Button "Go to P2/1" [cls "btn" ; cls "btn-default"] (fun () -> ctx.Go (A2 1))
+                Doc.Button "Go to P2/0" [cls "btn" ; cls "btn-default"] (fun () -> ctx.Go (P2 0))
+                Doc.Button "Go to P2/1" [cls "btn" ; cls "btn-default"] (fun () -> ctx.Go (P2 1))
             ]
         ]
 
@@ -69,8 +80,8 @@ module MiniSiteletTest =
             el "div" [
                 el "h1" [Doc.TextNode "Page 2"]
                 el "p" [Doc.TextNode <| "Some exciting content from page 2 (" + string(v) + ") !"]
-                Doc.Button "Go to P1" [cls "btn" ; cls "btn-default"] (fun () -> ctx.Go A1)
-                Doc.Button "Go to P3" [cls "btn" ; cls "btn-default"] (fun () -> ctx.Go A3)
+                Doc.Button "Go to P1" [cls "btn" ; cls "btn-default"] (fun () -> ctx.Go P1)
+                Doc.Button "Go to P3" [cls "btn" ; cls "btn-default"] (fun () -> ctx.Go P3)
             ]
         ]
 
@@ -79,36 +90,35 @@ module MiniSiteletTest =
             el "div" [
                 el "h1" [Doc.TextNode "Page 3"]
                 el "p" [Doc.TextNode "Some exciting content from page 3!"]
-                Doc.Button "Go to P1" [cls "btn" ; cls "btn-default"] (fun () -> ctx.Go A1)
+                Doc.Button "Go to P1" [cls "btn" ; cls "btn-default"] (fun () -> ctx.Go P1)
             ]
         ]
 
-    // Var<Action> is the model for the page we're currently displaying to
-    // the user.
-    // We should be able to do local / global actions: local actions are
-    // specific to each individual page, whereas global ones can happen on
-    // any page.
-    // Essentially Pack allows the composition of the var and the pages.
-    // "Outside forces" should be able to set `model', and the page should
-    // update accordingly. Similarly, the Pack function should allow the
-    // local changes to also set the variable.
-    let Pack (model: Var<'T>) (main: ('T -> unit) -> ('T -> Doc)) : Doc =
-        View.FromVar model
-        |> View.Map (main (Var.Set model))
-        |> Doc.EmbedView
-
+    // Here we define the sitelet.
     let Main () =
-        let m = Var.Create A1
-        Pack m (fun go ->
+        // We first create a variable to hold our current page
+        let m = Var.Create P1
+
+        // withNavbar adds a navigation bar at the top of the page.
+        let withNavbar =
+            Doc.Append (NavBar m)
+
+        // Here, we create the sitelet. We supply the Create function
+        // with the variable we created, and we get a continuation function,
+        // go, which we can use to change the page.
+        MiniSitelet.Create m (fun go ->
+            // Here, we wrap the continuation function in a context record.
+            // We could just as easily pass the continuation into a function,
+            // however.
             let ctx = { Go = go }
             let controller = function
-                | A1 -> Doc.Append (NavBar m) (Page1 ctx)
-                | A2 d -> Doc.Append (NavBar m) (Page2 ctx d)
-                | A3 -> Doc.Append (NavBar m) (Page3 ctx)
+                | P1 -> Page1 ctx |> withNavbar
+                | P2 d -> Page2 ctx d |> withNavbar
+                | P3 -> Page3 ctx |> withNavbar
             controller)
 
     let description =
-        Doc.Element "div" [] [
+        div [
             Doc.TextNode "A small sitelet example"
         ]
 

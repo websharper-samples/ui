@@ -15,7 +15,7 @@ module Utilities =
         // Static attribute
         let ( ==> ) k v = Attr.Create k v
         // Div without attributes
-        let div xs = Doc.Element "div" [] [xs]
+        let (div : seq<Doc> -> Doc) = Doc.Element "div" []
         // Div with single class
         let divc c = Doc.Element "div" [cls c]
         // Text node
