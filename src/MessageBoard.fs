@@ -6,25 +6,45 @@ open IntelliFactory.WebSharper.UI.Next.MiniSitelet
 [<JavaScript>]
 module MessageBoard =
 
-    // Some helpers
-    let freshTid =
-        let tid = ref 0
-        fun () ->
-            incr tid
-            !tid
+    // Helpers ----------------------------------------------------------------
 
-    let freshPid =
-        let pid = ref 0
-        fun () ->
-            incr pid
-            !pid
+    module Fresh =
 
-    // --------- Model ---------- //
+        let Int =
+            let tid = ref 0
+            fun () ->
+                incr tid
+                !tid
+
     type ViewModel<'T> =
         {
             Projection : 'T -> int
             Items : Model<seq<'T>,ResizeArray<'T>>
         }
+
+    module ViewModel =
+
+        /// Adds an item to the collection.
+        let Add m item =
+            m.Items
+            |> Model.Update (fun all -> all.Add(item))
+
+        let Create proj =
+            let items =
+                ResizeArray()
+                |> Model.Create (fun arr -> arr.ToArray() :> seq<_>)
+            { Items = items ; Projection = proj }
+
+        /// Removes an item from the collection.
+        let Remove m item =
+            m.Items
+            |> Model.Update (fun all ->
+                seq { 0 .. all.Count - 1 }
+                |> Seq.filter (fun i -> m.Projection all.[i] = m.Projection item)
+                |> Seq.toArray
+                |> Array.iter (fun i -> all.RemoveAt(i)))
+
+    // Auth -------------------------------------------------------------------
 
     type User =
         {
@@ -32,7 +52,131 @@ module MessageBoard =
             Password : string
         }
 
-    // A post within a thread
+    module Auth =
+
+        type Component =
+            {
+                LoggedIn : View<option<User>>
+                LoginForm : Doc
+                StatusWidget : Doc
+                HideForm : unit -> unit
+                ShowForm : unit -> unit
+            }
+
+        type private LoginResult =
+            | Success of User
+            | NoSuchUser
+            | InvalidPassword
+
+        /// TODO: Something more async'y, to emulate a server
+        let private CheckLogin name pass =
+            match (name, pass) with
+            | ("TestUser", "TestPass") -> Some { Name = name; Password = pass }
+            | _ -> None
+
+        let private LoginForm onLogin =
+            let rvUser = Var.Create ""
+            let rvPass = Var.Create ""
+            let message =
+                el "div" [
+                    elA "p" [cls "bg-danger"] [
+                        (rvUser.View, rvPass.View)
+                        ||> View.Map2 (fun u p ->
+                            match u, p with
+                            | "", "" -> Doc.Empty
+                            | u, p ->
+                                match CheckLogin u p with
+                                | None -> Doc.TextNode "Invalid credentials"
+                                | _ -> Doc.Empty)
+                        |> Doc.EmbedView
+                    ]
+                ]
+            // Row of the login form
+            let inputRow rv id lblText isPass =
+                let control = if isPass then Doc.PasswordBox else Doc.Input
+                elA "div" [cls "form-group"] [
+                    elA "label"
+                        [
+                            "for" ==> id
+                            cls "col-sm-2"
+                            cls "control-label"
+                        ] [Doc.TextNode lblText]
+                    elA "div" [cls "col-sm-2"] [
+                        control
+                            [
+                                cls "form-control"
+                                "id" ==> id
+                                "placeholder" ==> lblText
+                            ] rv
+                    ]
+                ]
+            // Main login page markup
+            el "div" [
+                message
+                // Login form
+                elA "form" [cls "form-horizontal"; "role" ==> "form"] [
+                    inputRow rvUser "user" "Username" false
+                    inputRow rvPass "pass" "Password" true
+                    elA "div" [cls "form-group"] [
+                        elA "div" [cls "col-sm-offset-2" ; cls "col-sm-10"] [
+                            Doc.Button "Log In" [cls "btn" ; cls "btn-primary"] (fun () ->
+                                match CheckLogin rvUser.Value rvPass.Value with
+                                | Some user ->
+                                    Var.Set rvUser ""
+                                    Var.Set rvPass ""
+                                    onLogin user
+                                | None -> ())
+                        ]
+                    ]
+                ]
+            ]
+
+        let private StatusWidget (login: unit -> unit) (logout: unit -> unit) (view: View<option<User>>) =
+            view
+            |> View.Map (function
+                | Some usr ->
+                    let t = "Welcome, " + usr.Name + "!"
+                    Doc.Concat [
+                        Doc.TextNode t
+                        Doc.Button "Logout" [] logout
+                    ]
+                | None ->
+                    Doc.Concat [
+                        Doc.TextNode "You are not logged in."
+                        Doc.Button "Login" [] login
+                    ])
+            |> Doc.EmbedView
+
+        let Create () =
+            let loggedIn = Var.Create None
+            let hidden = Var.Create true
+            let hide () = hidden.Value <- true
+            let show () = hidden.Value <- false
+            let display =
+                hidden.View
+                |> View.Map (fun yes -> if yes then "none" else "block")
+            let loginForm =
+                elA "div" [Attr.ViewStyle "display" display] [
+                    LoginForm (fun user ->
+                        loggedIn.Value <- Some user
+                        hide ())
+                ]
+            let login () =
+                show ()
+            let logout () =
+                loggedIn.Value <- None
+                hide ()
+            {
+                LoggedIn = loggedIn.View
+                LoginForm = loginForm
+                HideForm = hide
+                ShowForm = show
+                StatusWidget = StatusWidget login logout loggedIn.View
+            }
+
+    // Model ------------------------------------------------------------------
+
+    /// A post within a thread.
     type Post =
         {
             PostId : int
@@ -40,7 +184,7 @@ module MessageBoard =
             Content : string
         }
 
-    // A thread, containing 0 or more posts
+    /// A thread, containing 0 or more posts.
     type Thread =
         {
             ThreadId : int
@@ -49,247 +193,120 @@ module MessageBoard =
             Posts : ViewModel<Post>
         }
 
-    // Threads are time-varying objects. For example, they might get
-    // deleted, their posts might change, and so on.
-    // For this reason, we need a thread model.
+    /// Various "places" in the application.
     type Action =
-        | Login
-        | ThreadList
-        | ShowThread of Thread
         | NewThread
-        | LogOut
+        | ShowThread of Thread
+        | ThreadList
 
-    let showAction = function
-        | Login -> "Log In (credentials: TestUser / TestPass)"
-        | ThreadList -> "Show All Threads"
-        | ShowThread t -> "Thread " + t.Title
+    let ShowAction act =
+        match act with
         | NewThread -> "Create New Thread"
-        | LogOut -> "Log Out"
-
-    type LoginResult =
-        | Success of User
-        | NoSuchUser
-        | InvalidPassword
+        | ShowThread t -> "Thread " + t.Title
+        | ThreadList -> "Show All Threads"
 
     type State =
         {
-            LoggedIn : Var<User option>
+            Auth : Auth.Component
+            // Threads are time-varying objects. For example, they might get
+            // deleted, their posts might change, and so on.
+            // For this reason, we need a thread model.
             Threads : ViewModel<Thread>
             Go : Action -> unit
         }
 
-    let Create proj =
-        let items =
-            ResizeArray()
-            |> Model.Create (fun arr -> arr.ToArray() :> seq<_>)
-        { Items = items ; Projection = proj }
-
-    /// Adds an item to the collection.
-    let Add m item =
-        m.Items
-        |> Model.Update (fun all -> all.Add(item))
-
-    /// Removes an item from the collection.
-    let Remove m item =
-        m.Items
-        |> Model.Update (fun all ->
-            seq { 0 .. all.Count - 1 }
-            |> Seq.filter (fun i -> m.Projection all.[i]= m.Projection item)
-            |> Seq.toArray
-            |> Array.iter (fun i -> all.RemoveAt(i)))
-
-    let createThread author title =
+    let CreateThread author title =
         {
-            ThreadId = freshTid ()
+            ThreadId = Fresh.Int ()
             ThreadAuthorName = author
             Title = title
-            Posts = Create (fun p -> p.PostId)
+            Posts = ViewModel.Create (fun p -> p.PostId)
         }
 
-    let initialThreads =
-        let thread = createThread "SimonJF" "Hello, World! This is a topic."
-        let threadModel = Create (fun t -> t.ThreadId)
-        Add threadModel thread
+    let InitialThreads () =
+        let thread = CreateThread "SimonJF" "Hello, World! This is a topic."
+        let threadModel = ViewModel.Create (fun t -> t.ThreadId)
+        ViewModel.Add threadModel thread
         threadModel
 
-    let createPost user content =
+    let CreatePost user content =
         {
-            PostId = freshPid ()
+            PostId = Fresh.Int ()
             PostAuthorName = user.Name
             Content = content
         }
 
-    // FIXME: This is a hack, and IMO a weakness of the current abstraction.
-    // It'd be better to find some way of making this nicer...
-    let getUser st =
-        let usrVar = Var.Get st
-        match usrVar with
-        | Some user -> user
-        | None -> failwith "Not logged in"
-
-    // Navbar : State -> Doc
-    let loggedInLabel st =
-        let usrOpt = Var.Get st.LoggedIn
-        match usrOpt with
-        | Some usr -> "Welcome, " + usr.Name + "!"
-        | None -> "You are not logged in."
-        |> txt
-
-    let GlobalGo = Var.Set
-
-    let loggedIn st = Option.isSome (Var.Get st.LoggedIn)
-
-    // Navigation bar, different for logged in / not logged in
-    let NavBar var st =
-        View.FromVar var
-        |> View.Map (fun active ->
-
-            let loggedInActions = [ThreadList ; NewThread ; LogOut]
-            let notLoggedInActions = [Login]
-            let actions =
-                if loggedIn st then loggedInActions else notLoggedInActions
-            let evtLink act =
-                Doc.ElementWithEvents "a" ["href" ==> "#"]
-                    [EventHandler.CreateHandler "click" (fun _ -> GlobalGo var act)]
-
-            let renderLink action =
-                let attr = if showAction action = showAction active then cls "active" else Attr.Empty
-
-                elA "li" [attr] [
-                    evtLink action [
-                        showAction action |> txt
-                    ]
+    /// Navigation bar, different for logged in / not logged in
+    let NavBar (auth: Auth.Component) var st =
+        let actions = [ThreadList; NewThread]
+        let evtLink act =
+            Doc.ElementWithEvents "a" ["href" ==> "#"]
+                [EventHandler.CreateHandler "click" (fun _ -> st.Go act)]
+        let renderLink action =
+            View.FromVar var
+            |> View.Map (fun active ->
+                let attr = if ShowAction action = ShowAction active then cls "active" else Attr.Empty
+                elA "li" [attr] [ evtLink action [ ShowAction action |> txt ] ])
+            |> Doc.EmbedView
+        elA "nav" [cls "navbar"; cls "navbar-default"; Attr.Create "role" "navigation"] [
+            elA "div" [] [
+                elA "ul" [cls "nav" ; cls "navbar-nav" ; cls "navbar-right"] [
+                    el "li" [ auth.StatusWidget ]
                 ]
-
-            elA "nav" [cls "navbar" ; cls "navbar-default" ; Attr.Create "role" "navigation"] [
-                elA "div" [] [
-                    elA "ul" [cls "nav" ; cls "navbar-nav" ; cls "navbar-right"] [
-                        el "li" [loggedInLabel st]
-                    ]
-
-                    elA "ul" [cls "nav" ; cls "navbar-nav"] [
-                        List.map renderLink actions |> Doc.Concat
-
-                    ]
-
-                ]
-            ])
-        |> Doc.EmbedView
-
-    let LoginPage st =
-        let rvUser = Var.Create ""
-        let rvPass = Var.Create ""
-        let rvMsg = Var.Create ""
-
-        // TODO: Something more async'y, to emulate a server
-        let checkLogin name pass =
-            match (name, pass) with
-            | ("TestUser", "TestPass") -> Success { Name = name ; Password = pass }
-            | ("TestUser", _) -> InvalidPassword
-            | (_, _) -> NoSuchUser
-
-        // Row of the login form
-        let inputRow rv id lblText isPass =
-            let control = if isPass then Doc.PasswordBox else Doc.Input
-            elA "div" [cls "form-group"] [
-                elA "label"
-                    [
-                        "for" ==> id
-                        cls "col-sm-2"
-                        cls "control-label"
-                    ] [Doc.TextNode lblText]
-
-                elA "div" [cls "col-sm-2"] [
-                    control
-                        [
-                            cls "form-control"
-                            "id" ==> id
-                            "placeholder" ==> lblText
-                        ] rv
-                ]
-            ]
-
-        // Main login page markup
-        el "div" [
-            // Message -- was the login successful?
-            el "div" [
-                elA "p" [cls "bg-danger"] [
-                    Doc.TextView (View.FromVar rvMsg)
-                ]
-            ]
-
-            // Login form
-            elA "form" [cls "form-horizontal" ; "role" ==> "form"] [
-
-                inputRow rvUser "user" "Username" false
-                inputRow rvPass "pass" "Password" true
-                elA "div" [cls "form-group"] [
-                    elA "div" [cls "col-sm-offset-2" ; cls "col-sm-10"] [
-                        Doc.Button "Log In" [cls "btn" ; cls "btn-primary"] (fun () ->
-                            let loginRes = checkLogin (Var.Get rvUser) (Var.Get rvPass)
-                            match loginRes with
-                            | Success user ->
-                                // On success, reset cvar, set the thing in the state,
-                                // then continue to the thread list
-                                Var.Set rvMsg ""
-                                Var.Set st.LoggedIn (Some user)
-                                st.Go ThreadList
-                            | NoSuchUser -> Var.Set rvMsg "No such user."
-                            | InvalidPassword -> Var.Set rvMsg "Invalid password."
-                        )
-                    ]
+                elA "ul" [cls "nav" ; cls "navbar-nav"] [
+                    List.map renderLink actions |> Doc.Concat
                 ]
             ]
         ]
 
-    // Page to allow users to create a new thread
+    /// Page to allow users to create a new thread.
     let NewThreadPage st =
-        let user = getUser st.LoggedIn
-        // Vars for title and post content
-        let rvTitle = Var.Create ""
-        let rvPost = Var.Create ""
-
-        elA "div" [cls "panel" ; cls "panel-default"] [
-            elA "div" [cls "panel-heading"] [
-                elA "h3" [cls "panel-title"] [
-                    Doc.TextNode "New Thread"
+        let doc user =
+            let rvTitle = Var.Create ""
+            let rvPost = Var.Create ""
+            let add () =
+                let newThread = CreateThread user.Name (Var.Get rvTitle)
+                let post = CreatePost user (Var.Get rvPost)
+                ViewModel.Add newThread.Posts post
+                ViewModel.Add st.Threads newThread
+                ShowThread newThread |> st.Go
+            elA "div" [cls "panel" ; cls "panel-default"] [
+                elA "div" [cls "panel-heading"] [
+                    elA "h3" [cls "panel-title"] [
+                        Doc.TextNode "New Thread"
+                    ]
                 ]
-            ]
-
-            elA "div" [cls "panel-body"] [
-                elA "form" [cls "form-horizontal"; "role" ==> "form"] [
-                    elA "div" [cls "form-group"] [
-                        elA "label" ["for" ==> "threadTitle"; cls "col-sm-2 control-label"] [
-                            Doc.TextNode "Title"
+                elA "div" [cls "panel-body"] [
+                    elA "form" [cls "form-horizontal"; "role" ==> "form"] [
+                        elA "div" [cls "form-group"] [
+                            elA "label" ["for" ==> "threadTitle"; cls "col-sm-2 control-label"] [
+                                Doc.TextNode "Title"
+                            ]
+                            elA "div" [cls "col-sm-10"] [
+                                Doc.Input ["id" ==> "threadTitle"] rvTitle
+                            ]
                         ]
-                        elA "div" [cls "col-sm-10"] [
-                            Doc.Input ["id" ==> "threadTitle"] rvTitle
+                        elA "div" [cls "form-group"] [
+                            elA "label" ["for" ==> "postContent"; cls "col-sm-2 control-label"] [
+                                Doc.TextNode "Content"
+                            ]
+                            elA "div" [cls "col-sm-10"] [
+                                Doc.InputArea ["id" ==> "postContent"; "rows" ==> "5"] rvPost
+                            ]
                         ]
-                    ]
-
-                    elA "div" [cls "form-group"] [
-                        elA "label" ["for" ==> "postContent"; cls "col-sm-2 control-label"] [
-                            Doc.TextNode "Content"
-                        ]
-                        elA "div" [cls "col-sm-10"] [
-                            Doc.InputArea ["id" ==> "postContent" ; "rows" ==> "5"] rvPost
-                        ]
-                    ]
-
-                    elA "div" [cls "form-group"] [
-                        elA "div" [cls "col-sm-offset-2" ; cls "col-sm-10"] [
-                            Doc.Button "Submit" [cls "btn" ; cls "btn-primary"] ( fun () ->
-                                let newThread = createThread user.Name (Var.Get rvTitle)
-                                let post = createPost user (Var.Get rvPost)
-                                Add newThread.Posts post
-                                Add st.Threads newThread
-                                ShowThread newThread |> st.Go
-                            )
+                        elA "div" [cls "form-group"] [
+                            elA "div" [cls "col-sm-offset-2" ; cls "col-sm-10"] [
+                                Doc.Button "Submit" [cls "btn"; cls "btn-primary"] add
+                            ]
                         ]
                     ]
                 ]
             ]
-        ]
+        st.Auth.LoggedIn
+        |> View.Map (function
+            | Some user -> doc user
+            | None -> st.Auth.ShowForm (); Doc.Empty)
+        |> Doc.EmbedView
 
     let ThreadListPage st =
         let renderThread (m : ViewModel<Thread>) thread =
@@ -303,21 +320,18 @@ module MessageBoard =
                         [Doc.TextNode thread.Title]
                 ]
             ]
-
         let threads = st.Threads
         elA "table" [cls "table" ; cls "table-hover"] [
             Doc.EmbedBagBy threads.Projection (renderThread threads) threads.Items.View
         ]
 
     let ShowThreadPage st thread =
-        let user = getUser st.LoggedIn
-
+        // let user = getUser st.LoggedIn
         let renderPost (model : ViewModel<Post>) (post : Post) =
             el "tr" [
                 el "td" [Doc.TextNode post.PostAuthorName]
                 el "td" [Doc.TextNode post.Content]
             ]
-
         // List of posts
         let postList m =
             elA "div" [cls "panel" ; cls "panel-default"] [
@@ -326,26 +340,25 @@ module MessageBoard =
                         Doc.TextNode <| "Posts in thread \"" + thread.Title + "\""
                     ]
                 ]
-
                 elA "div" [cls "panel-body"] [
                     elA "table" [cls "table" ; cls "table-hover" ] [
                         Doc.EmbedBagBy m.Projection (renderPost m) m.Items.View
                     ]
                 ]
             ]
-
         // New post form
-        let newPostForm =
+        let newPostForm (user: User) =
             // Var for post content
             let rvPost = Var.Create ""
-
+            let add () =
+                CreatePost user rvPost.Value
+                |> ViewModel.Add thread.Posts
             elA "div" [cls "panel" ; cls "panel-default"] [
                 elA "div" [cls "panel-heading"] [
                     elA "h3" [cls "panel-title"] [
                         Doc.TextNode "New Post"
                     ]
                 ]
-
                 elA "div" [cls "panel-body"] [
                     elA "form" [cls "form-horizontal"; "role" ==> "form"] [
                         elA "div" [cls "form-group"] [
@@ -356,50 +369,43 @@ module MessageBoard =
                                 Doc.InputArea ["id" ==> "postContent" ; "rows" ==> "5"] rvPost
                             ]
                         ]
-
                         elA "div" [cls "form-group"] [
                             elA "div" [cls "col-sm-offset-2" ; cls "col-sm-10"] [
-                                Doc.Button "Submit" [cls "btn" ; cls "btn-primary"] ( fun () ->
-                                    createPost user rvPost.Value
-                                    |> Add thread.Posts
-                                )
+                                Doc.Button "Submit" [cls "btn" ; cls "btn-primary"] add
                             ]
                         ]
                     ]
                 ]
             ]
-
-        // Main page render
         el "div" [
             postList thread.Posts
-            newPostForm
+            st.Auth.LoggedIn
+            |> View.Map (function
+                | None -> Doc.Empty
+                | Some user -> newPostForm user)
+            |> Doc.EmbedView
         ]
 
-    let DoLogOut st =
-        Var.Set st.LoggedIn None
-
     let Main () =
-        let actVar = Var.Create Login
-        let loggedInVar = Var.Create None
-
-        let threadModel = initialThreads
+        let actVar = Var.Create ThreadList
+        let auth = Auth.Create ()
+        let threadModel = InitialThreads ()
         MiniSitelet.Create actVar (fun go ->
-            let st = { Go = go ; LoggedIn = loggedInVar ; Threads = threadModel}
-
-            // withNavbar adds a navigation bar at the top of the page.
-            let withNavbar =
-                Doc.Append <| NavBar actVar st
-
-            let routeFn = function
-                | Login -> LoginPage st |> withNavbar
-                | NewThread -> NewThreadPage st |> withNavbar
-                | ThreadList -> ThreadListPage st |> withNavbar
-                | LogOut ->
-                    DoLogOut st
-                    LoginPage st |> withNavbar
-                | ShowThread t -> ShowThreadPage st t |> withNavbar
-            routeFn
-        )
+            let st = { Go = go; Auth = auth; Threads = threadModel }
+            let navbar = NavBar auth actVar st
+            let layout x =
+                Doc.Concat [
+                    navbar
+                    auth.LoginForm
+                    x
+                ]
+            let routeFn act =
+                auth.HideForm ()
+                match act with
+                | NewThread -> NewThreadPage st
+                | ThreadList -> ThreadListPage st
+                | ShowThread t -> ShowThreadPage st t
+            routeFn >> layout)
 
     let description =
         el "div" [ Doc.TextNode "A message board application built using MiniSitelets."]
