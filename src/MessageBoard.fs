@@ -112,6 +112,7 @@ module MessageBoard =
                 ]
             // Main login page markup
             el "div" [
+                el "div" [ txt "Hint: TestUser/TestPass" ]
                 message
                 // Login form
                 elA "form" [cls "form-horizontal"; "role" ==> "form"] [
