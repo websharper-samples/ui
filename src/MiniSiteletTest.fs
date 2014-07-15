@@ -96,7 +96,7 @@ module MiniSiteletTest =
 
     // Here we define the sitelet.
     let Main () =
-        // We first create a variable to hold our current page
+        // We first create a variable to hold our current page.
         let m = Var.Create P1
 
         // withNavbar adds a navigation bar at the top of the page.
