@@ -12,6 +12,8 @@ module Utilities =
         let elA = Doc.Element
         // Class attribute
         let cls = Attr.CreateClass
+        // Style attribute
+        let sty = Attr.CreateStyle
         // Static attribute
         let ( ==> ) k v = Attr.Create k v
         // Div without attributes
@@ -20,3 +22,7 @@ module Utilities =
         let divc c = Doc.Element "div" [cls c]
         // Text node
         let txt = Doc.TextNode
+        // Button with Bootstrap attributes
+        let btn caption = Doc.Button caption [cls "btn" ; cls "btn-default"]
+        // Link with click callback
+        let link = Doc.Link
