@@ -102,7 +102,7 @@ module Samples =
         let handlerFn (evt : Dom.Event) =
             Var.Update rvModel (fun model -> { model with ActiveSample = Some sample } )
 
-        let clickHandler = EventHandler.CreateHandler "click" handlerFn
+        let clickHandler = Attr.Handler "click" handlerFn
 
         // Attribute list: add the "active" class if selected
         let optActive = getActive rvModel
@@ -113,12 +113,12 @@ module Samples =
         // Finally, put it all together to render the link
         elA "li" liAttr [
             //el "a" attributeList [ txt sample.Title ]
-            Doc.ElementWithEvents "a" [Attr.Create "href" "#"] [clickHandler] [txt sample.Title]
+            Doc.Element "a" [clickHandler; Attr.Create "href" "#"] [txt sample.Title]
         ]
 
     let navBar (rvModel : Var<SampleModel>) =
         View.Map (fun model ->
-            elA "ul" [Attr.CreateClass "nav" ; Attr.CreateClass "nav-pills"] [
+            elA "ul" [cls "nav"; cls "nav-pills"] [
                 List.map (renderLink rvModel) model.Samples |> Doc.Concat
             ]
         ) !* rvModel
@@ -136,10 +136,10 @@ module Samples =
         let url s = "http://github.com/intellifactory/websharper.ui.next/blob/master/src/" + s.FileName
         let view = View.FromVar rvModel
         let btnAttrs sample = [
-            Attr.CreateClass "btn"
-            Attr.CreateClass "btn-primary"
-            Attr.CreateClass "btn-lg"
-            Attr.Create "href" (url sample)
+            cls "btn"
+            cls "btn-primary"
+            cls "btn-lg"
+            "href" ==> url sample
         ]
 
         el "div" [

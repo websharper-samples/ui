@@ -227,7 +227,7 @@ module MessageBoard =
                 hidden.View
                 |> View.Map (fun yes -> if yes then "none" else "block")
             let loginForm =
-                elA "div" [Attr.ViewStyle "display" display] [
+                elA "div" [Attr.DynamicStyle "display" display] [
                     LoginForm (fun user ->
                         loggedIn.Value <- Some user
                         hide ())

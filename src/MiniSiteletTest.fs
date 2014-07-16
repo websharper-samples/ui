@@ -43,8 +43,7 @@ module MiniSiteletTest =
         |> View.Map (fun active ->
 
             let evtLink act =
-                Doc.ElementWithEvents "a" ["href" ==> "#"]
-                    [EventHandler.CreateHandler "click" (fun _ -> GlobalGo var act)]
+                Doc.Element "a" ["href" ==> "#"; Attr.Handler "click" (fun ev -> GlobalGo var act)]
 
             let renderLink action =
                 let attr = if action = active then cls "active" else Attr.Empty

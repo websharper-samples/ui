@@ -45,11 +45,11 @@ module MouseChase =
         // Create reactive style attributes for the CSS properties we wish to modify.
         // Notice we're using ViewStyle here and not View, as we're modifying CSS instead
         // of node attributes.
-        let xView = Attr.ViewStyle "left" (View.Map (fun x -> string(x) + "px") rvX.View)
-        let yView = Attr.ViewStyle "top" (View.Map (fun y -> string(y) + "px") rvY.View)
+        let xView = Attr.DynamicStyle "left" (View.Map (fun x -> string(x) + "px") rvX.View)
+        let yView = Attr.DynamicStyle "top" (View.Map (fun y -> string(y) + "px") rvY.View)
         // We also add static attributes for positioning and colour.
-        let bgAttr = Attr.CreateStyle "background-color" "#b0c4de"
-        let posAttr = Attr.CreateStyle "position" "absolute"
+        let bgAttr = Attr.Style "background-color" "#b0c4de"
+        let posAttr = Attr.Style "position" "absolute"
 
         // Finally wire everything up and set it in motion!
         let mouseDiv =
