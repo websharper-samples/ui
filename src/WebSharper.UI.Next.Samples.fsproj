@@ -117,6 +117,8 @@
     <Compile Include="SimpleTextBox.fs" />
     <Compile Include="MiniSiteletTest.fs" />
     <Compile Include="MessageBoard.fs" />
+    <Compile Include="ObjectConstancy.fs" />
+    <None Include="ObjectConstancy.csv" />
     <Compile Include="Client.fs" />
   </ItemGroup>
   <ItemGroup>

@@ -28,6 +28,7 @@ module Client =
             ContactFlow.Sample
             MiniSiteletTest.Sample
             MessageBoard.Sample
+            ObjectConstancy.Sample
         ]
 
     let Main =
