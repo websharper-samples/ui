@@ -23,6 +23,7 @@ module Samples =
             Render : Doc
             RenderDescription: Doc
             Title : string
+            Router : (string -> Doc option)
         }
 
     // ++ :: (a opt) -> a -> a
@@ -38,6 +39,9 @@ module Samples =
         | None -> failwith ("Required property not set: " + name)
         | Some r -> r
 
+    let private defaultRoute filename render str =
+        if filename = str then Some render else None
+
     type Builder =
         private {
             mutable BFileName : option<string>
@@ -46,18 +50,22 @@ module Samples =
             mutable BRender : option<Doc>
             mutable BRenderDescription : option<Doc>
             mutable BTitle : option<string>
+            mutable BRouter : option<string -> Doc option>
         }
 
         member b.Create() =
             let id = req "Id" (b.BId ++ b.BTitle)
             let title = defaultArg (b.BTitle ++ b.BId) "Sample"
+            let filename = req "FileName" b.BFileName
+            let renderFn = defaultArg b.BRender Doc.Empty
             {
-                FileName = req "FileName" b.BFileName
+                FileName = filename
                 Id = id
                 Keywords = b.BKeywords
-                Render = req "Render" b.BRender
+                Render = renderFn
                 RenderDescription = defaultArg b.BRenderDescription Doc.Empty
                 Title = title
+                Router = defaultArg b.BRouter (defaultRoute filename renderFn)
             }
 
         member b.FileName(x) = b.BFileName <- Some x; b
@@ -66,6 +74,7 @@ module Samples =
         member b.Render(x) = b.BRender <- Some x; b
         member b.RenderDescription(x) = b.BRenderDescription <- Some x; b
         member b.Title(x) = b.BTitle <- Some x; b
+        member b.Router(x) = b.BRouter <- Some x; b
 
     let Build () =
         {
@@ -75,6 +84,7 @@ module Samples =
             BRender = None
             BRenderDescription = None
             BTitle = None
+            BRouter = None
         }
 
     // The model type, consisting of the list of samples and the currently-active
@@ -82,54 +92,43 @@ module Samples =
     type SampleModel =
         private {
             ActiveSample : Sample option
+            ToRender : Doc
             Samples : Sample list
         }
 
-    // Creates a model RVar, given a list of samples, and an optional initial sample.
-    // If initExample is None, then the first example in the list is used, if the
-    // list is non-empty.
-    let createModelRv samples initExample =
-        let activeSample =
-            initExample ++ if List.isEmpty samples then None else List.head samples |> Some
-        Var.Create { ActiveSample = activeSample; Samples = samples }
+    let createModel active toRender samples =
+        {
+            ActiveSample = active
+            ToRender = toRender
+            Samples = samples
+        }
 
     let getActive rvModel =
         (Var.Get rvModel).ActiveSample
 
     // Renders a link, based on the model and the link
-    let renderLink rvModel sample =
-        // Handler function: updates the model to show the updated sample
-        let handlerFn (evt : Dom.Event) =
-            Var.Update rvModel (fun model -> { model with ActiveSample = Some sample } )
-
-        let clickHandler = Attr.Handler "click" handlerFn
-
+    let renderLink view sample =
         // Attribute list: add the "active" class if selected
-        let optActive = getActive rvModel
-        let isActive =
-                Option.exists (fun a -> a.Id = sample.Id) optActive
-        let liAttr = if isActive then [cls "active"] else []
+        let isActive m = Option.exists (fun a -> a.Id = sample.Id) m.ActiveSample
+        let liAttr = Attr.DynamicClass "active" view isActive
 
         // Finally, put it all together to render the link
-        elA "li" liAttr [
+        elA "li" [liAttr] [
             //el "a" attributeList [ txt sample.Title ]
-            Doc.Element "a" [clickHandler; Attr.Create "href" "#"] [txt sample.Title]
+            Doc.Element "a" ["href" ==> ("#" + sample.FileName)] [txt sample.Title]
         ]
 
-    let navBar (rvModel : Var<SampleModel>) =
-        View.Map (fun model ->
-            elA "ul" [cls "nav"; cls "nav-pills"] [
-                List.map (renderLink rvModel) model.Samples |> Doc.Concat
-            ]
-        ) !* rvModel
-        |> Doc.EmbedView
+    let navBar rvModel =
+        let view = View.FromVar rvModel
+
+        elA "ul" [cls "nav"; cls "nav-pills"] [
+            List.map (renderLink view) rvModel.Value.Samples |> Doc.Concat
+        ]
 
     let mainContent (rvModel : Var<SampleModel>) =
-        let view = View.FromVar rvModel
-        View.Map (fun model ->
-            match model.ActiveSample with
-            | Some sample -> sample.Render
-            | None -> Doc.Empty) view |> Doc.EmbedView
+        View.FromVar rvModel
+        |> View.Map (fun model -> model.ToRender)
+        |> Doc.EmbedView
 
     // Sidebar content, displaying a description of the current example
     let sideContent (rvModel : Var<SampleModel>) =
@@ -161,14 +160,38 @@ module Samples =
         | (x :: xs) when x.FileName = filename -> Some x
         | (_ :: xs) -> initExample filename xs
 
+    let defaultSample samples =
+        if List.isEmpty samples then None else Some (List.head samples)
+
+    let defaultRender = function
+    | None -> Doc.Empty
+    | Some sample -> sample.Render
+
+   // string -> SampleModel
+    let routeFn samples (str : string) =
+        // We only want to look at the latest thing in the hash route in this
+        // simple case.
+        let loc = if str.Length > 0 then str.Substring(1) else ""
+        let split = loc.Split([| '/' |])
+        let def = defaultSample samples
+        let defaultModel = createModel def (defaultRender def) samples
+        if split.Length > 0 then
+            let seg = split.[split.Length - 1]
+            let rec findFirstRoute = function
+            | [] -> defaultModel
+            | (x :: xs) ->
+                match x.Router seg with
+                | Some doc -> createModel (Some x) doc samples
+                | None -> findFirstRoute xs
+            findFirstRoute samples
+        else defaultModel
+
     let Show samples =
         // Create the model variable
         let loc = Window.Self.Location.Hash.Substring(1)
-        let initialExample =
-            if loc <> "" then initExample loc samples else None
-        let rvModel = createModelRv samples (initExample loc samples)
+        let rf = routeFn samples
+        let rvModel = Router.Install rf
 
-        // Create the view
         Doc.RunById "sample-navs" (navBar rvModel)
         Doc.RunById "sample-main" (mainContent rvModel)
         Doc.RunById "sample-side" (sideContent rvModel)

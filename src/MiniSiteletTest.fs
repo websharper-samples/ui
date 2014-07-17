@@ -42,16 +42,14 @@ module MiniSiteletTest =
         View.FromVar var
         |> View.Map (fun active ->
 
-            let evtLink act =
-                Doc.Element "a" ["href" ==> "#"; Attr.Handler "click" (fun ev -> GlobalGo var act)]
+            //let evtLink act =
+              //  Doc.Element "a" ["href" ==> "#"; Attr.Handler "click" (fun ev -> GlobalGo var act)]
 
             let renderLink action =
                 let attr = if action = active then cls "active" else Attr.Empty
 
                 elA "li" [attr] [
-                    evtLink action [
-                        showAct action |> txt
-                    ]
+                    link (showAct action) [] (fun _ -> GlobalGo var action)
                 ]
 
             elA "nav" [cls "navbar" ; cls "navbar-default" ; Attr.Create "role" "navigation"] [
