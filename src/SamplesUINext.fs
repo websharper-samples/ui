@@ -2,11 +2,6 @@
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next.Notation
-open IntelliFactory.WebSharper.Html5
-
-open System
-
-// The Samples site, built using the WebSharper.UI.Next framework.
 
 [<JavaScript>]
 module Samples =
@@ -38,6 +33,10 @@ module Samples =
         | None -> failwith ("Required property not set: " + name)
         | Some r -> r
 
+    let private defaultSample = function
+    | [] -> failwith "Samples list can't be empty."
+    | (x :: _) -> x
+
     type Builder =
         private {
             mutable BFileName : option<string>
@@ -51,11 +50,13 @@ module Samples =
         member b.Create() =
             let id = req "Id" (b.BId ++ b.BTitle)
             let title = defaultArg (b.BTitle ++ b.BId) "Sample"
+            let filename = req "FileName" b.BFileName
+            let renderFn = defaultArg b.BRender Doc.Empty
             {
-                FileName = req "FileName" b.BFileName
+                FileName = filename
                 Id = id
                 Keywords = b.BKeywords
-                Render = req "Render" b.BRender
+                Render = renderFn
                 RenderDescription = defaultArg b.BRenderDescription Doc.Empty
                 Title = title
             }
@@ -77,62 +78,30 @@ module Samples =
             BTitle = None
         }
 
-    // The model type, consisting of the list of samples and the currently-active
-    // sample.
-    type SampleModel =
-        private {
-            ActiveSample : Sample option
-            Samples : Sample list
-        }
+    let navBar rvModel samples =
+        let view = View.FromVar rvModel
+        // Renders a link, based on the model and the link
+        let renderLink view sample =
+            let isActive x = x.Id = sample.Id
+            // Attribute list: add the "active" class if selected
+            let liAttr = Attr.DynamicClass "active" view isActive
 
-    // Creates a model RVar, given a list of samples, and an optional initial sample.
-    // If initExample is None, then the first example in the list is used, if the
-    // list is non-empty.
-    let createModelRv samples initExample =
-        let activeSample =
-            initExample ++ if List.isEmpty samples then None else List.head samples |> Some
-        Var.Create { ActiveSample = activeSample; Samples = samples }
+            // Finally, put it all together to render the link
+            elA "li" [liAttr] [
+                link sample.Title [] (fun () -> Var.Set rvModel sample)
+            ]
 
-    let getActive rvModel =
-        (Var.Get rvModel).ActiveSample
-
-    // Renders a link, based on the model and the link
-    let renderLink rvModel sample =
-        // Handler function: updates the model to show the updated sample
-        let handlerFn (evt : Dom.Event) =
-            Var.Update rvModel (fun model -> { model with ActiveSample = Some sample } )
-
-        let clickHandler = Attr.Handler "click" handlerFn
-
-        // Attribute list: add the "active" class if selected
-        let optActive = getActive rvModel
-        let isActive =
-                Option.exists (fun a -> a.Id = sample.Id) optActive
-        let liAttr = if isActive then [cls "active"] else []
-
-        // Finally, put it all together to render the link
-        elA "li" liAttr [
-            //el "a" attributeList [ txt sample.Title ]
-            Doc.Element "a" [clickHandler; Attr.Create "href" "#"] [txt sample.Title]
+        elA "ul" [cls "nav"; cls "nav-pills"] [
+            List.map (renderLink view) samples |> Doc.Concat
         ]
 
-    let navBar (rvModel : Var<SampleModel>) =
-        View.Map (fun model ->
-            elA "ul" [cls "nav"; cls "nav-pills"] [
-                List.map (renderLink rvModel) model.Samples |> Doc.Concat
-            ]
-        ) !* rvModel
+    let mainContent (rvModel : Var<Sample>) =
+        View.FromVar rvModel
+        |> View.Map (fun model -> model.Render)
         |> Doc.EmbedView
 
-    let mainContent (rvModel : Var<SampleModel>) =
-        let view = View.FromVar rvModel
-        View.Map (fun model ->
-            match model.ActiveSample with
-            | Some sample -> sample.Render
-            | None -> Doc.Empty) view |> Doc.EmbedView
-
-    // Sidebar content, displaying a description of the current example
-    let sideContent (rvModel : Var<SampleModel>) =
+            // Sidebar content, displaying a description of the current example
+    let sideContent (rvModel : Var<Sample>) =
         let url s = "http://github.com/intellifactory/websharper.ui.next/blob/master/src/" + s.FileName
         let view = View.FromVar rvModel
         let btnAttrs sample = [
@@ -143,32 +112,30 @@ module Samples =
         ]
 
         el "div" [
-            View.Map (fun model ->
-                match model.ActiveSample with
-                | Some sample ->
-                    [
-                      el "p" [
-                        sample.RenderDescription
-                      ]
-                      elA "a" (btnAttrs sample) [ txt "Source" ]
-                    ] |> Doc.Concat
-                | None -> Doc.Empty) view |> Doc.EmbedView
+            View.Map (fun sample ->
+                [
+                  el "p" [
+                    sample.RenderDescription
+                  ]
+                  elA "a" (btnAttrs sample) [ txt "Source" ]
+                ] |> Doc.Concat) !* rvModel |> Doc.EmbedView
         ]
 
-    // Given the a filename
-    let rec initExample filename = function
-        | [] -> None
-        | (x :: xs) when x.FileName = filename -> Some x
-        | (_ :: xs) -> initExample filename xs
+    // Serialisation's simple: just take the filename
+    let ser samp = samp.FileName
+
+    let deser sampleMap def (str : string) =
+        let key = str.Split([| '/' |]).[0]
+        match Map.tryFind key sampleMap with
+        | Some samp -> samp
+        | None -> def
 
     let Show samples =
-        // Create the model variable
-        let loc = Window.Self.Location.Hash.Substring(1)
-        let initialExample =
-            if loc <> "" then initExample loc samples else None
-        let rvModel = createModelRv samples (initExample loc samples)
+        let samplesMap =
+            List.map (fun s -> (s.FileName, s)) samples
+            |> Map.ofList
+        let rvModel = Router.Install ser (deser samplesMap (defaultSample samples))
 
-        // Create the view
-        Doc.RunById "sample-navs" (navBar rvModel)
+        Doc.RunById "sample-navs" (navBar rvModel samples)
         Doc.RunById "sample-main" (mainContent rvModel)
         Doc.RunById "sample-side" (sideContent rvModel)
