@@ -13,51 +13,13 @@ namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.JQuery
+open IntelliFactory.WebSharper.UI.Next
 
 /// Attempt to reconstruct this D3 example in UI.Next:
 /// http://bost.ocks.org/mike/constancy/
 
 [<JavaScript>]
 module ObjectConstancy =
-
-    /// Utilities for generating SVG.
-    module Svg =
-
-        type Transform =
-            | Tr of array<string>
-
-        /// Applies a transform.
-        let Apply (Tr tr) docs =
-            Doc.Element "g" ["transform" ==> String.concat " " tr] docs
-
-        /// Combines two transforms.
-        let Combine (Tr a) (Tr b) = Tr (Array.append a b)
-
-        /// Translate transform.
-        let Translate (x: double) (y: double) =
-            Tr [| "translate(" + string x + "," + string y + ")" |]
-
-        /// Scale transform.
-        let Scale (x: double) (y: double) =
-            Tr [| "scale(" + string x + "," + string y + ")" |]
-
-        /// Sets fill (background) color in SVG.
-        let Fill (color: string) docs =
-            Doc.Element "g" [Attr.Style "fill" color] docs
-
-        /// Vertical layout of multiple elements in SVG.
-        let Vertical docs =
-            let docs = Seq.toArray docs
-            match docs.Length with
-            | 0 -> Doc.Empty
-            | 1 -> docs.[0]
-            | n ->
-                let frac = 1. / double n
-                Doc.Concat [|
-                    for i in 0 .. n - 1 ->
-                        let tr = Combine (Translate 0. (double i * frac)) (Scale 1. frac)
-                        Apply tr [docs.[i]]
-                |]
 
     type AgeBracket =
         | AgeAny
@@ -74,7 +36,6 @@ module ObjectConstancy =
 
         static member All =
             [
-                AgeAny
                 AgeUnder5
                 Age5To13
                 Age14to17
@@ -159,6 +120,15 @@ module ObjectConstancy =
                     ok (DataSet.ParseCSV (As<string> data)))
                 |> ignore)
 
+    type StateView =
+        {
+            MaxValue : double
+            Position : int
+            State : string
+            Total : int
+            Value : double
+        }
+
     let SetupDataModel () =
         let dataSet =
             View.Const ()
@@ -168,85 +138,122 @@ module ObjectConstancy =
         let shownData =
             (dataSet, bracket.View)
             ||> View.Map2 DataSet.TopStatesByRatio
-        (bracket, shownData)
-
-    type StateView =
-        {
-            Position : int
-            State : string
-            Total : int
-            Value : double
-        }
-
-    let AnimateDouble x y k =
-        async {
-            for i in 0 .. 25 do
-                let f = double i / 25.
-                let v = x + (y - x) * f
-                do! Async.Sleep 5
-                do k v
-        }
-        |> Anim.Custom
-
-    [<Sealed>]
-    type SimpleTransition() =
-        interface ITransition<double> with
-            member tr.AnimateEnter x k = AnimateDouble 1.0 x k
-            member tr.AnimateExit x k = AnimateDouble x 1.0 k
-            member tr.AnimateChange x y k = AnimateDouble x y k
-            member tr.CanAnimateEnter = true
-            member tr.CanAnimateExit = true
-
-    let Main () =
-        let smooth : ITransition<double> = SimpleTransition () :> _
-        let (bracket, shownData) = SetupDataModel ()
         let shownData =
             shownData
             |> View.Map (fun xs ->
                 let n = xs.Length
+                let m =
+                    xs
+                    |> Array.map snd
+                    |> Array.max
                 xs
                 |> Array.mapi (fun i (State st, d) ->
                     {
+                        MaxValue = m
                         Position = i
                         Total = n
                         State = st
                         Value = d
                     })
                 |> Array.toSeq)
-        let render (state: View<StateView>) =
-            let ( => ) k (f: StateView -> double) =
-                let v = View.Map f state
-                Attr.Animated k smooth v string
-            Svg.Fill "steelblue" [
+        (bracket, shownData)
+
+    let AnimateDouble x y k =
+        async {
+            let N = 25
+            for i in 0 .. N do
+                let f = double i / double N
+                let v = x + (y - x) * f
+                do k v
+                do! Async.Sleep (50 / N)
+        }
+        |> Anim.Custom
+
+    [<Sealed>]
+    type InOutTransition(off: double) =
+        interface ITransition<double> with
+            member tr.AnimateEnter x k = AnimateDouble off x k
+            member tr.AnimateExit x k = AnimateDouble x off k
+            member tr.AnimateChange x y k = AnimateDouble x y k
+            member tr.CanAnimateEnter = true
+            member tr.CanAnimateExit = true
+
+    [<Sealed>]
+    type SimpleTransition() =
+        interface ITransition<double> with
+            member tr.AnimateEnter x k = Anim.Empty
+            member tr.AnimateExit x k = Anim.Empty
+            member tr.AnimateChange x y k = AnimateDouble x y k
+            member tr.CanAnimateEnter = false
+            member tr.CanAnimateExit = false
+
+    let Width = 960.
+    let Height = 250.
+
+    let InOut = InOutTransition Height
+    let Simple = SimpleTransition ()
+
+    let Percent (x: double) =
+        string (floor (100. * x)) + "." + string (int (floor (1000. * x)) % 10) + "%"
+
+    let Render (state: View<StateView>) =
+        let anim name kind (proj: StateView -> double) =
+            Attr.Animated name kind (View.Map proj state) string
+        let x st = Width * st.Value / st.MaxValue
+        let y st = Height * double st.Position / double st.Total
+        let h st = Height / double st.Total - 2.
+        let txt f attr = elA "text" attr [state |> View.Map f |> Doc.TextView]
+        Doc.Concat [
+            elA "g" [Attr.Style "fill" "steelblue"] [
                 elA "rect" [
                     "x" ==> "0"
-                    "width" => fun st -> st.Value
-                    "height" => fun st -> 1. / double st.Total - 0.02
-                    "y" => fun st -> double st.Position / double st.Total
+                    anim "y" InOut y
+                    anim "width" Simple x
+                    anim "height" Simple h
                 ] []
             ]
+            txt (fun s -> Percent s.Value) [
+                "text-anchor" ==> "end"
+                anim "x" Simple x; anim "y" InOut y
+                "dx" ==> "-2"; "dy" ==> "14"
+                sty "fill" "white"
+                sty "font" "12px sans-serif"
+            ]
+            txt (fun s -> s.State) [
+                "x" ==> "0"; anim "y" InOut y
+                "dx" ==> "2"; "dy" ==> "16"
+                sty "fill" "white"
+                sty "font" "14px sans-serif"
+                sty "font-weight" "bold"
+            ]
+        ]
+
+    let Main () =
+        let (bracket, shownData) = SetupDataModel ()
         let displayForm =
             shownData
-            |> View.ConvertSeqBy (fun s -> s.State) render
-            |> View.Map Doc.Concat
-            |> Doc.EmbedView
-        let textForm =
-            shownData
-            |> View.Map (Seq.map (fun st -> div [Doc.TextNode (st.State + ": " + string (round (1000. * st.Value)))]))
+            |> View.ConvertSeqBy (fun s -> s.State) Render
             |> View.Map Doc.Concat
             |> Doc.EmbedView
         el "div" [
-            elA "svg" ["width" ==> "960"; "height" ==> "250"] [
-                elA "g" ["transform" ==> "scale(960,250)"] [
-                    displayForm
-                ]
+            el "h2" [txt "Top States by Age Bracket, 2008"]
+            Doc.Select [cls "form-control"] AgeBracket.Describe AgeBracket.All bracket
+            elA "div" [cls "skip"] []
+            elA "svg" ["width" ==> string Width; "height" ==> string Height] [
+                displayForm
             ]
-            textForm
-            Doc.Select [] AgeBracket.Describe AgeBracket.All bracket
+            el "p" [
+                txt "Source: "
+                elA "a" ["href" ==> "http://www.census.gov/popest/data/historical/2000s/vintage_2008/"] [txt "Census Bureau"]
+            ]
+            el "p" [
+                txt "Original Sample by Mike Bostock: "
+                elA "a" ["href" ==> "http://bost.ocks.org/mike/constancy/"] [txt "Object Constancy"]
+            ]
         ]
 
     let Description () =
-        div [txt "TODO.."]
+        div [txt "This sample show-cases declarative animation and interpolation (tweening)"]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
