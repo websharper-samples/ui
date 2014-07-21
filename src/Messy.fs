@@ -44,7 +44,7 @@ module Messy =
 
     let Sample =
         Samples.Routed(TheRouter, HOME)
-            .Id("Messy")
+            .Id("Sub-Routing")
             .FileName(__SOURCE_FILE__)
             .Render(Main)
             .RenderDescription(Desc)

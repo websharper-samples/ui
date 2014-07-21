@@ -115,16 +115,16 @@
     <Compile Include="InputTransform.fs" />
     <Compile Include="ContactFlow.fs" />
     <Compile Include="SimpleTextBox.fs" />
-    <Compile Include="MiniSiteletTest.fs" />
     <Compile Include="MessageBoard.fs" />
     <Compile Include="Messy.fs" />
     <Compile Include="ObjectConstancy.fs" />
     <None Include="ObjectConstancy.csv" />
+    <Compile Include="BobsleighSite.fs" />
     <Compile Include="Client.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="IntelliFactory.WebSharper.UI.Next">
-      <HintPath>..\packages\WebSharper.UI.Next.0.1.7.8\lib\net40\IntelliFactory.WebSharper.UI.Next.dll</HintPath>
+      <HintPath>..\packages\WebSharper.UI.Next.0.1.10.11\lib\net40\IntelliFactory.WebSharper.UI.Next.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />

@@ -165,7 +165,7 @@ module BobsleighSite =
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
         Samples.Build()
-            .Id("Bobsleigh MiniSitelet")
+            .Id("Bobsleigh MiniSite")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])
             .Render(Main)
