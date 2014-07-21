@@ -21,58 +21,19 @@ open IntelliFactory.WebSharper.UI.Next
 [<JavaScript>]
 module ObjectConstancy =
 
-    type AgeBracket =
-        | AgeAny
-        | AgeUnder5
-        | Age5To13
-        | Age14to17
-        | Age18to24
-        | Age16AndOver
-        | Age18AndOver
-        | Age15to44
-        | Age45to64
-        | Age65AndOver
-        | Age85AndOver
-
-        static member All =
-            [
-                AgeUnder5
-                Age5To13
-                Age14to17
-                Age18to24
-                Age16AndOver
-                Age18AndOver
-                Age15to44
-                Age45to64
-                Age65AndOver
-                Age85AndOver
-            ]
-
-        static member Describe bracket =
-            match bracket with
-            | AgeAny -> "Any Age"
-            | AgeUnder5 -> "Under 5 Years"
-            | Age5To13 -> "5 to 13 Years"
-            | Age14to17-> "14 to 17 Years"
-            | Age18to24 -> "18 to 24 Years"
-            | Age16AndOver -> "16 Years and Over"
-            | Age18AndOver -> "18 Years and Over"
-            | Age15to44 -> "15 to 44 Years"
-            | Age45to64 -> "45 to 64 Years"
-            | Age65AndOver -> "65 Years and Over"
-            | Age85AndOver -> "85 Years and Over"
-
-    type State =
-        | State of string
+    type AgeBracket = | AgeBracket of string
+    type State = | State of string
 
     type DataSet =
         {
+            Brackets : AgeBracket []
             Population : AgeBracket -> State -> int
             States : State []
         }
 
         static member Ratio ds br st =
-            double (ds.Population br st) / double (ds.Population AgeAny st)
+            let total = AgeBracket "Total"
+            double (ds.Population br st) / double (ds.Population total st)
 
         static member TopStatesByRatio ds bracket =
             let sorted =
@@ -85,31 +46,18 @@ module ObjectConstancy =
             let all =
                 data.Split [|'\r'; '\n'|]
                 |> Array.filter (fun s -> s <> "")
+            let brackets =
+                let all = all.[0].Split ','
+                Array.map AgeBracket all.[1..]
             let data =
                 Array.sub all 1 (all.Length - 1)
                 |> Array.map (fun s -> s.Split ',')
-            let states =
-                data
-                |> Array.map (fun d -> State d.[0])
-            let stateIndex st =
-                data
-                |> Array.findIndex (fun d -> d.[0] = st)
-            let bracketIndex bracket =
-                match bracket with
-                | AgeAny -> 1
-                | AgeUnder5 -> 2
-                | Age5To13 -> 3
-                | Age14to17 -> 4
-                | Age18to24 -> 5
-                | Age16AndOver -> 6
-                | Age18AndOver -> 7
-                | Age15to44 -> 8
-                | Age45to64 -> 9
-                | Age65AndOver -> 10
-                | Age85AndOver -> 11
-            let pop bracket (State st) =
-                int data.[stateIndex st].[bracketIndex bracket]
+            let states = data |> Array.map (fun d -> State d.[0])
+            let stIx st = data |> Array.findIndex (fun d -> d.[0] = st)
+            let brIx bracket = Array.findIndex ((=) bracket) brackets
+            let pop bracket (State st) = int data.[stIx st].[1 + brIx bracket]
             {
+                Brackets = brackets
                 Population = pop
                 States = states
             }
@@ -132,66 +80,37 @@ module ObjectConstancy =
     let SetupDataModel () =
         let dataSet =
             View.Const ()
-            |> View.MapAsync (fun () ->
-                DataSet.LoadFromCSV "ObjectConstancy.csv")
-        let bracket = Var.Create AgeBracket.AgeUnder5
+            |> View.MapAsync (fun () -> DataSet.LoadFromCSV "ObjectConstancy.csv")
+        let bracket = Var.Create (AgeBracket "Under 5 Years")
         let shownData =
-            (dataSet, bracket.View)
-            ||> View.Map2 DataSet.TopStatesByRatio
-        let shownData =
-            shownData
+            View.Map2 DataSet.TopStatesByRatio dataSet bracket.View
             |> View.Map (fun xs ->
                 let n = xs.Length
-                let m =
-                    xs
-                    |> Array.map snd
-                    |> Array.max
+                let m = Array.map snd xs |> Array.max
                 xs
                 |> Array.mapi (fun i (State st, d) ->
                     {
-                        MaxValue = m
-                        Position = i
-                        Total = n
-                        State = st
-                        Value = d
+                        MaxValue = m; Position = i; Total = n
+                        State = st; Value = d
                     })
                 |> Array.toSeq)
-        (bracket, shownData)
-
-    let AnimateDouble x y k =
-        async {
-            let N = 25
-            for i in 0 .. N do
-                let f = double i / double N
-                let v = x + (y - x) * f
-                do k v
-                do! Async.Sleep (50 / N)
-        }
-        |> Anim.Custom
-
-    [<Sealed>]
-    type InOutTransition(off: double) =
-        interface ITransition<double> with
-            member tr.AnimateEnter x k = AnimateDouble off x k
-            member tr.AnimateExit x k = AnimateDouble x off k
-            member tr.AnimateChange x y k = AnimateDouble x y k
-            member tr.CanAnimateEnter = true
-            member tr.CanAnimateExit = true
-
-    [<Sealed>]
-    type SimpleTransition() =
-        interface ITransition<double> with
-            member tr.AnimateEnter x k = Anim.Empty
-            member tr.AnimateExit x k = Anim.Empty
-            member tr.AnimateChange x y k = AnimateDouble x y k
-            member tr.CanAnimateEnter = false
-            member tr.CanAnimateExit = false
+        (dataSet, bracket, shownData)
 
     let Width = 960.
     let Height = 250.
 
-    let InOut = InOutTransition Height
-    let Simple = SimpleTransition ()
+    let SimpleAnimation x y =
+        Anim.Simple Interpolation.Double Easing.CubicInOut
+            300. // duration, ms
+            x y
+
+    let SimpleTransition =
+        Trans.Create SimpleAnimation
+
+    let InOutTransition =
+        SimpleTransition
+        |> Trans.Enter (fun x -> SimpleAnimation Height x)
+        |> Trans.Exit (fun x -> SimpleAnimation x Height)
 
     let Percent (x: double) =
         string (floor (100. * x)) + "." + string (int (floor (1000. * x)) % 10) + "%"
@@ -207,20 +126,20 @@ module ObjectConstancy =
             elA "g" [Attr.Style "fill" "steelblue"] [
                 elA "rect" [
                     "x" ==> "0"
-                    anim "y" InOut y
-                    anim "width" Simple x
-                    anim "height" Simple h
+                    anim "y" InOutTransition y
+                    anim "width" SimpleTransition x
+                    anim "height" SimpleTransition h
                 ] []
             ]
             txt (fun s -> Percent s.Value) [
                 "text-anchor" ==> "end"
-                anim "x" Simple x; anim "y" InOut y
+                anim "x" SimpleTransition x; anim "y" InOutTransition y
                 "dx" ==> "-2"; "dy" ==> "14"
                 sty "fill" "white"
                 sty "font" "12px sans-serif"
             ]
             txt (fun s -> s.State) [
-                "x" ==> "0"; anim "y" InOut y
+                "x" ==> "0"; anim "y" InOutTransition y
                 "dx" ==> "2"; "dy" ==> "16"
                 sty "fill" "white"
                 sty "font" "14px sans-serif"
@@ -229,26 +148,30 @@ module ObjectConstancy =
         ]
 
     let Main () =
-        let (bracket, shownData) = SetupDataModel ()
-        let displayForm =
-            shownData
-            |> View.ConvertSeqBy (fun s -> s.State) Render
-            |> View.Map Doc.Concat
-            |> Doc.EmbedView
+        let (dataSet, bracket, shownData) = SetupDataModel ()
+        let link text href = elA "a" ["href" ==> href] [txt text]
         el "div" [
             el "h2" [txt "Top States by Age Bracket, 2008"]
-            Doc.Select [cls "form-control"] AgeBracket.Describe AgeBracket.All bracket
+            dataSet
+            |> View.Map (fun dS ->
+                Doc.Select [cls "form-control"] (fun (AgeBracket b) -> b)
+                    (List.ofArray dS.Brackets.[1..]) bracket)
+            |> Doc.EmbedView
             elA "div" [cls "skip"] []
             elA "svg" ["width" ==> string Width; "height" ==> string Height] [
-                displayForm
+                shownData
+                |> View.ConvertSeqBy (fun s -> s.State) Render
+                |> View.Map Doc.Concat
+                |> Doc.EmbedView
             ]
             el "p" [
                 txt "Source: "
-                elA "a" ["href" ==> "http://www.census.gov/popest/data/historical/2000s/vintage_2008/"] [txt "Census Bureau"]
+                link "Census Bureau" "http://www.census.gov/popest/data\
+                    /historical/2000s/vintage_2008/"
             ]
             el "p" [
                 txt "Original Sample by Mike Bostock: "
-                elA "a" ["href" ==> "http://bost.ocks.org/mike/constancy/"] [txt "Object Constancy"]
+                link "Object Constancy" "http://bost.ocks.org/mike/constancy/"
             ]
         ]
 
