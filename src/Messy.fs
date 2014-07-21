@@ -1,7 +1,6 @@
 ﻿namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next.MiniSitelet
 
 [<JavaScript>]
 module Messy =
