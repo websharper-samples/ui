@@ -29,6 +29,7 @@ module Client =
             MiniSiteletTest.Sample
             MessageBoard.Sample
             ObjectConstancy.Sample
+            Messy.Sample
         ]
 
     let Main =

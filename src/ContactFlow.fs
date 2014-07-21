@@ -134,7 +134,7 @@ module ContactFlow =
     // We firstly get the person details, then the contact type, then the
     // contact details (using the contact type we got in the previous step).
     // Finally, we display a static end page.
-    let exampleFlow =
+    let ExampleFlow () =
         Flow.Do {
             let! person = personFlowlet
             let! ct = contactTypeFlowlet
@@ -143,7 +143,7 @@ module ContactFlow =
         }
         |> Flow.Embed
 
-    let description =
+    let Description () =
         el "div" [
             Doc.TextNode "A WS.UI.Next flowlet implementation."
         ]
@@ -151,9 +151,9 @@ module ContactFlow =
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
         Samples.Build()
-            .Id("Flowlet")
+            .Id("ContactFlow")
             .FileName(__SOURCE_FILE__)
             .Keywords(["flowlet"])
-            .Render(exampleFlow)
-            .RenderDescription(description)
+            .Render(ExampleFlow)
+            .RenderDescription(Description)
             .Create()

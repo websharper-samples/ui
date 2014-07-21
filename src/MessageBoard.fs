@@ -488,15 +488,15 @@ module MessageBoard =
                 | ShowThread t -> ShowThreadPage st t
             routeFn >> layout)
 
-    let description =
+    let Description () =
         el "div" [ Doc.TextNode "A message board application built using MiniSitelets."]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
         Samples.Build()
-            .Id("Message Board")
+            .Id("MessageBoard")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])
-            .Render(Main())
-            .RenderDescription(description)
+            .Render(Main)
+            .RenderDescription(Description)
             .Create()

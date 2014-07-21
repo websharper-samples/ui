@@ -114,7 +114,7 @@ module MiniSiteletTest =
                 | P3 -> Page3 ctx |> withNavbar
             controller)
 
-    let description =
+    let Description () =
         div [
             Doc.TextNode "A small sitelet example"
         ]
@@ -122,9 +122,9 @@ module MiniSiteletTest =
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
         Samples.Build()
-            .Id("MiniSitelet Example")
+            .Id("MiniSiteletTest")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])
-            .Render(Main ())
-            .RenderDescription(description)
+            .Render(Main)
+            .RenderDescription(Description)
             .Create()

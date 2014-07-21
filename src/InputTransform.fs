@@ -21,7 +21,7 @@ open IntelliFactory.WebSharper.UI.Next
 [<JavaScript>]
 module InputTransform =
 
-    let Main =
+    let Main () =
 
         // Create a reactive variable and view.
         // Reactive *variables* are data *sources*.
@@ -118,7 +118,7 @@ module InputTransform =
             tbl
         ]
 
-    let description =
+    let Description () =
         el "div" [
             Doc.TextNode "Transforming the data provided by a single data source."
         ]
@@ -126,9 +126,9 @@ module InputTransform =
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
         Samples.Build()
-            .Id("Input Transformation")
+            .Id("InputTransform")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])
             .Render(Main)
-            .RenderDescription(description)
+            .RenderDescription(Description)
             .Create()

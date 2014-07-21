@@ -12,121 +12,174 @@
 namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.JQuery
-open IntelliFactory.WebSharper.Html
-
 open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Notation
 
-/// Support code for the sample catalog.
+[<AutoOpen>]
+[<JavaScript>]
+module private Util =
+    let el x y = Doc.Element x [] y
+    let elA x y z = Doc.Element x y z
+    let link x y z = Doc.Link x y z
+    let cls x = Attr.Class x
+    let txt x = Doc.TextNode x
+    let ( ==> ) k v = Attr.Create k v
+
+/// A little framework for displaying samples on the site.
 [<JavaScript>]
 module Samples =
+
+    type Meta =
+        {
+            FileName : string
+            Keywords : list<string>
+            Title : string
+            Uri : string
+        }
+
+    // First, define the samples type, which specifies metadata and a rendering
+    // function for each of the samples.
     // A Sample consists of a file name, identifier, list of keywords,
     // rendering function, and title.
     type Sample =
         private {
-            FileName : string
-            Id : string
-            Keywords : list<string>
-            Render : Dom.Element -> unit
-            Title : string
+            mutable Body : Doc
+            mutable Description : Doc
+            Meta : Meta
+            mutable Site : Site<Sample>
+            mutable SiteId : SiteId
         }
 
-    // ++ :: (a opt) -> a -> a
-    // Takes two values. If the first is Some, then that's returned.
-    // If not, then the second (default) argument is, instead.
-    let private ( ++ ) a b =
-        match a with
-        | Some _ -> a
-        | None -> b
-
-    let private req name f =
-        match f with
-        | None -> failwith ("Required property not set: " + name)
-        | Some r -> r
-
-    type Builder =
-        private {
-            mutable BFileName : option<string>
-            mutable BId : option<string>
-            mutable BKeywords : list<string>
-            mutable BRender : option<Dom.Element -> unit>
-            mutable BTitle : option<string>
+    type Visuals<'T> =
+        {
+            Desc : 'T -> Doc
+            Main : 'T -> Doc
         }
 
-        member b.Create() =
-            let id = req "Id" (b.BId ++ b.BTitle)
-            let title = defaultArg (b.BTitle ++ b.BId) "Sample"
+    let CreateRouted router init vis meta =
+        let sample =
             {
-                FileName = req "FileName" b.BFileName
-                Id = id
-                Keywords = b.BKeywords
-                Render = req "Render" b.BRender
-                Title = title
+                Body = Doc.Empty
+                Description = Doc.Empty
+                Meta = meta
+                Site = Unchecked.defaultof<_>
+                SiteId = Unchecked.defaultof<_>
+            }
+        let site =
+            Site.Define router init (fun id cur ->
+                sample.SiteId <- id
+                sample.Body <- vis.Main cur
+                sample.Description <- vis.Desc cur
+                sample)
+            |> Site.Prefix meta.Uri
+        sample.Site <- site
+        sample
+
+    let CreateSimple vis meta =
+        let unitRouter = Router.Create (fun () -> Route.Create []) (fun _ -> ())
+        let sample =
+            {
+                Body = vis.Main ()
+                Description = vis.Desc ()
+                Meta = meta
+                Site = Unchecked.defaultof<_>
+                SiteId = Unchecked.defaultof<_>
+            }
+        sample.Site <-
+            Site.Define unitRouter () (fun id cur ->
+                sample.SiteId <- id
+                sample)
+            |> Site.Prefix meta.Uri
+        sample
+
+    let Show samples =
+        let mainSite = Site.Merge [ for sample in samples -> sample.Site ]
+        let current = Site.Install (fun samp -> samp.SiteId) mainSite
+        let main =
+            current.View
+            |> View.Map (fun info -> info.Body)
+            |> Doc.EmbedView
+        let navs =
+            // Renders a link, based on the model and the link
+            let renderLink samp =
+                let isActive x = x.SiteId = samp.SiteId
+                // Attribute list: add the "active" class if selected
+                let liAttr = Attr.DynamicClass "active" current.View isActive
+                // Finally, put it all together to render the link
+                elA "li" [liAttr] [
+                    link samp.Meta.Title [] (fun () -> current.Value <- samp)
+                ]
+            elA "ul" [cls "nav"; cls "nav-pills"] [
+                for s in samples -> renderLink s
+            ]
+        let url s =
+            "http://github.com/intellifactory/websharper.ui.next\
+                /blob/master/src/" + s.FileName
+        /// Sidesbar content, displaying a description of the current example
+        let side =
+            let btnAttrs sample =
+                [
+                    cls "btn"
+                    cls "btn-primary"
+                    cls "btn-lg"
+                    "href" ==> url sample
+                ]
+            el "div" [
+                current.View
+                |> View.Map (fun s ->
+                    Doc.Concat [
+                        el "p" [ s.Description ]
+                        elA "a" (btnAttrs s.Meta) [ txt "Source" ]
+                    ])
+                |> Doc.EmbedView
+            ]
+        Doc.RunById "sample-navs" navs
+        Doc.RunById "sample-main" main
+        Doc.RunById "sample-side" side
+
+    [<Sealed>]
+    type Builder<'T>(create: Visuals<'T> -> Meta -> Sample) =
+
+        let mutable meta =
+            {
+                FileName = "Unknown.fs"
+                Keywords = []
+                Title = "Unknown"
+                Uri = "unknown"
             }
 
-        member b.FileName(x) = b.BFileName <- Some x; b
-        member b.Id(x) = b.BId <- Some x; b
-        member b.Keywords(x) = b.BKeywords <- x; b
-        member b.Render(x) = b.BRender <- Some x; b
-        member b.Title(x) = b.BTitle <- Some x; b
+        let mutable vis =
+            {
+                Desc = fun _ -> Doc.Empty
+                Main = fun _ -> Doc.Empty
+            }
+
+        member b.Create () =
+            create vis meta
+
+        member b.FileName x =
+            meta <- { meta with FileName = x }; b
+
+        member b.Id x =
+            meta <- { meta with Title = x; Uri = x }; b
+
+        member b.Keywords x =
+            meta <- { meta with Keywords = x }; b
+
+        member b.Render f =
+            vis <- { vis with Main = f }; b
+
+        member b.RenderDescription x =
+            vis <- { vis with Desc = x }; b
+
+        member b.Title x =
+            meta <- { meta with Title = x }; b
+
+        member b.Uri x =
+            meta <- { meta with Uri = x }; b
 
     let Build () =
-        {
-            BId = None
-            BFileName = None
-            BKeywords = []
-            BRender = None
-            BTitle = None
-        }
+        Builder CreateSimple
 
-    let private Clear (el: Dom.Element) =
-        while el.HasChildNodes() do
-            el.RemoveChild(el.FirstChild) |> ignore
-
-    type Sample with
-
-        member s.Show() =
-            let sMain = Dom.Document.Current.GetElementById("sample-main")
-            let sSide = Dom.Document.Current.GetElementById("sample-side")
-            Clear sMain
-            Clear sSide
-            s.Render(sMain)
-            let url = "http://github.com/intellifactory/websharper.ui.next/blob/master/src/" + s.FileName
-            let side =
-                Div [
-                    Div []
-                    |>! OnAfterRender (fun self ->
-                        match Dom.Document.Current.GetElementById(s.Id) with
-                        | null -> ()
-                        | el ->
-                            let copy = el.CloneNode(true)
-                            copy.Attributes.RemoveNamedItem("id") |> ignore
-                            self.Append(copy))
-                    A [Attr.Class "btn btn-primary btn-lg"; HRef url] -< [Text "Source"]
-                ]
-            side.AppendTo("sample-side")
-
-    type Set =
-        private
-        | Set of list<Sample>
-
-        static member Create(ss) = Set [for (Set xs) in ss do yield! xs]
-        static member Singleton(s) = Set [s]
-
-        member s.Show() =
-            JQuery.JQuery.Of(fun () ->
-                let (Set samples) = s
-                let doc = Dom.Document.Current
-                let select (s: Sample) (dom: Dom.Element) =
-                    let j = JQuery.Of("#sample-navs ul").Children("li").RemoveClass("active")
-                    JQuery.Of(dom).AddClass("active").Ignore
-                    s.Show()
-                let rec navs =
-                    UL [Attr.Class "nav nav-pills"] -< (
-                        samples
-                        |> List.mapi (fun i s ->
-                            LI [A [HRef "#"] -< [Text s.Title]]
-                            |>! OnAfterRender (fun self -> if i = 0 then select s self.Dom)
-                            |>! OnClick (fun self _ -> select s self.Dom))
-                    )
-                navs.AppendTo("sample-navs"))
+    let Routed (router: Router<'T>, init: 'T)=
+        Builder (CreateRouted router init)

@@ -36,7 +36,7 @@ module CheckBoxTest =
             Person.Create "Andy" 51
         ]
 
-    let Main =
+    let Main () =
 
         // We make a variable containing the initial list of selected people.
         let selPeople = Var.Create []
@@ -56,7 +56,7 @@ module CheckBoxTest =
         // Create a document fragment and run!
         Doc.Concat [chkBox; label]
 
-    let description =
+    let Description () =
         el "div" [
             Doc.TextNode "An application which shows the selected values."
         ]
@@ -64,9 +64,9 @@ module CheckBoxTest =
     // Boilerplate for the sample viewer...
     let Sample =
         Samples.Build()
-            .Id("Check Boxes")
+            .Id("CheckBoxesTest")
             .FileName(__SOURCE_FILE__)
             .Keywords(["todo"])
             .Render(Main)
-            .RenderDescription(description)
+            .RenderDescription(Description)
             .Create()

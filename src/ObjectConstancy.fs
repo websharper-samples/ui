@@ -184,6 +184,7 @@ module ObjectConstancy =
             .Id("ObjectConstancy")
             .FileName(__SOURCE_FILE__)
             .Keywords(["animation"])
-            .Render(Main ())
-            .RenderDescription(Description ())
+            .Render(Main)
+            .RenderDescription(Description)
             .Create()
+

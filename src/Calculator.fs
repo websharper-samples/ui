@@ -102,11 +102,11 @@ module Calculator =
         ]
 
     // Run it!
-    let Main =
+    let Main () =
         // Create a reactive variable and view.
         Var.Create initCalc |> calcView
 
-    let description =
+    let Description () =
         el "div" [
             Doc.TextNode "A calculator application"
         ]
@@ -118,5 +118,5 @@ module Calculator =
             .FileName(__SOURCE_FILE__)
             .Keywords(["calculator"])
             .Render(Main)
-            .RenderDescription(description)
+            .RenderDescription(Description)
             .Create()
