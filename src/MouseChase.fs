@@ -20,7 +20,7 @@ open IntelliFactory.WebSharper.UI.Next
 [<JavaScript>]
 module MouseChase =
 
-    let Main =
+    let Main () =
 
         // RVars / views for X and Y co-ords of mouse
         let rvX = Var.Create 0
@@ -60,7 +60,7 @@ module MouseChase =
 
         mouseDiv
 
-    let description =
+    let Description () =
         el "div" [
             Doc.TextNode "A box which follows the mouse, containing the co-ordinates."
         ]
@@ -71,5 +71,5 @@ module MouseChase =
             .FileName(__SOURCE_FILE__)
             .Keywords(["todo"])
             .Render(Main)
-            .RenderDescription(description)
+            .RenderDescription(Description)
             .Create()

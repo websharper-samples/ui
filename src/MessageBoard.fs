@@ -1,7 +1,6 @@
 ﻿namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next.MiniSitelet
 
 // Common types, used by both the client and server
 [<JavaScript ; AutoOpen>]
@@ -471,32 +470,33 @@ module MessageBoard =
         let actVar = Var.Create ThreadList
         let auth = Auth.Create ()
         // let threadModel = InitialThreads ()
-        MiniSitelet.Create actVar (fun go ->
-            let st = { Go = go; Auth = auth; Threads = Var.Create [] } //Threads = threadModel }
-            let navbar = NavBar auth actVar st
-            let layout x =
-                Doc.Concat [
-                    navbar
-                    auth.LoginForm
-                    x
-                ]
-            let routeFn act =
-                auth.HideForm ()
-                match act with
-                | NewThread -> NewThreadPage st
-                | ThreadList -> ThreadListPage st
-                | ShowThread t -> ShowThreadPage st t
-            routeFn >> layout)
+        let st = {Go = Var.Set actVar; Auth = auth ; Threads = Var.Create []}
+        let navbar = NavBar auth actVar st
+        let layout x =
+            Doc.Concat [
+                navbar
+                auth.LoginForm
+                x
+            ]
 
-    let description =
+        View.FromVar actVar
+        |> View.Map (fun act ->
+            auth.HideForm ()
+            match act with
+            | NewThread -> NewThreadPage st
+            | ThreadList -> ThreadListPage st
+            | ShowThread t -> ShowThreadPage st t
+            |> layout) |> Doc.EmbedView
+
+    let Description () =
         el "div" [ Doc.TextNode "A message board application built using MiniSitelets."]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
         Samples.Build()
-            .Id("Message Board")
+            .Id("MessageBoard")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])
-            .Render(Main())
-            .RenderDescription(description)
+            .Render(Main)
+            .RenderDescription(Description)
             .Create()

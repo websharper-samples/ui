@@ -26,8 +26,10 @@ module Client =
             MouseChase.Sample
             Calculator.Sample
             ContactFlow.Sample
-            MiniSiteletTest.Sample
+            BobsleighSite.Sample
             MessageBoard.Sample
+            ObjectConstancy.Sample
+            Messy.Sample
         ]
 
     let Main =

@@ -137,19 +137,19 @@ module TodoList =
         ]
 
     // ...and run it.
-    let Main =
+    let Main () =
         TodoExample ()
 
-    let description =
+    let Description () =
         el "div" [
             Doc.TextNode "A to-do list application."
         ]
 
     let Sample =
         Samples.Build()
-            .Id("To-do List")
+            .Id("TodoList")
             .FileName(__SOURCE_FILE__)
             .Keywords(["todo"])
             .Render(Main)
-            .RenderDescription(description)
+            .RenderDescription(Description)
             .Create()

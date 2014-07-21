@@ -99,7 +99,7 @@ module PhoneExample =
             ]
         ]
 
-    let Main =
+    let Main () =
         // Here, we make a couple of phones, and declare a phonesWidget, then run the example.
         let defPhone name snip age =
             {
@@ -118,7 +118,7 @@ module PhoneExample =
         Doc.Element "a" [(Attr.Create "href" href)] [Doc.TextNode txt]
 
     // Todo: I don't like this. There's got to be a nicer way of embedding links.
-    let description =
+    let Description () =
         el "div" [
             Doc.TextNode "Taken from the "
             link "AngularJS Tutorial" "https://docs.angularjs.org/tutorial/"
@@ -128,9 +128,9 @@ module PhoneExample =
     // Boilerplate..
     let Sample =
         Samples.Build()
-            .Id("List Filtering and Sorting")
+            .Id("PhoneExample")
             .FileName(__SOURCE_FILE__)
             .Keywords(["todo"])
             .Render(Main)
-            .RenderDescription(description)
+            .RenderDescription(Description)
             .Create()

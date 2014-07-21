@@ -36,3 +36,6 @@ module internal Utilities =
 
     /// Link with click callback
     let link cap attr act = Doc.Link cap attr act
+
+    /// Link with click callback
+    let href text url = elA "a" ["href" ==> url] [txt text]

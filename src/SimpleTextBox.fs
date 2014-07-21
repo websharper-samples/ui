@@ -21,7 +21,7 @@ open IntelliFactory.WebSharper.UI.Next
 [<JavaScript>]
 module SimpleTextBox =
 
-    let Main =
+    let Main () =
 
         // Create a reactive variable and view.
         // Reactive *variables* are data *sources*.
@@ -49,7 +49,7 @@ module SimpleTextBox =
             ]
         ]
 
-    let description =
+    let Description () =
         el "div" [
             Doc.TextNode "A label which copies the contents of a text box."
         ]
@@ -57,9 +57,9 @@ module SimpleTextBox =
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
         Samples.Build()
-            .Id("Simple Text Box")
+            .Id("SimpleTextBox")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])
             .Render(Main)
-            .RenderDescription(description)
+            .RenderDescription(Description)
             .Create()
