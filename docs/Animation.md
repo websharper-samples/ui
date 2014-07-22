@@ -51,3 +51,29 @@ let f t = 3. * (t ** 2.) - 2. * t ** 3.
 <a name="Easing.Create" href="#Easing.Create">#</a> Easing.**Create** `(NormalizedTime -> NormalizedTime) -> Easing`
 
 Creates a custom easing.
+
+## Interpolation
+
+Interpolation allows computing intermediate values for a given type.
+This is essential for automatic smooth in-between animation.
+
+```fsharp
+type Interpolation<'T> =
+    abstract Interpolate : NormalizedTime -> 'T -> 'T -> 'T
+
+type Interpolation =
+    static member Double : Interpolation<double>
+```
+
+<a name="Interpolation" href="#Interpolation">#</a> **Interpolation** `type Interpolation<'T>`
+
+Represents a way to interpolate between two values of a given type.
+
+<a name="Interpolate" href="#Interpolate">#</a> interpolation.**Interpolate** `NormalizedTime -> 'T -> 'T -> 'T`
+
+Computes an in-between value based on normalized time, starting and ending values.
+
+<a name="Interpolation.Double" href="#Interpolation.Double">#</a> Interpolation.**Double** `Interpolation<double>`
+
+Linear interpolation on doubles.
+
