@@ -1,9 +1,27 @@
 # Animation
 > [Documentation](../README.md) ▸ [API Reference](API.md) ▸ **Animation**
 
+## Time
 
-## Easing <a id="Easing"></a>
+<a name="Time" href="#Time">#</a> Time
 
+Time is a measure of a time interval in milliseconds.
+
+```fsharp
+type Time = double
+```
+
+<a name="NormalizedTime" href="#NormalizedTime">#</a> NormalizedTime
+
+Normalized time typically ranges from 0.0 to 1.0, though can
+temporarily take values outside of this range.  It is used heavily
+in animation:
+
+```fsharp
+type NormalizedTime = double
+```
+
+## Easing
 
 ```fsharp
 type Easing =
