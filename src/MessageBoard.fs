@@ -1,45 +1,18 @@
 ﻿namespace IntelliFactory.WebSharper.UI.Next
 
+open System
 open IntelliFactory.WebSharper
-
+open IntelliFactory.WebSharper.UI.Next.Notation
 // Common types, used by both the client and server
 [<JavaScript ; AutoOpen>]
 module Common =
     // Helpers ----------------------------------------------------------------
     module Fresh =
-
+        let mutable i = 0
         let Int =
-            let tid = ref 0
             fun () ->
-                incr tid
-                !tid
-
-    type ViewModel<'T> =
-        {
-            Projection : 'T -> int
-            Items : Model<seq<'T>,ResizeArray<'T>>
-        }
-
-    module ViewModel =
-        /// Adds an item to the collection.
-        let Add m item =
-            m.Items
-            |> Model.Update (fun all -> all.Add(item))
-
-        let Create proj =
-            let items =
-                ResizeArray()
-                |> Model.Create (fun arr -> arr.ToArray() :> seq<_>)
-            { Items = items ; Projection = proj }
-
-        /// Removes an item from the collection.
-        let Remove m item =
-            m.Items
-            |> Model.Update (fun all ->
-                seq { 0 .. all.Count - 1 }
-                |> Seq.filter (fun i -> m.Projection all.[i] = m.Projection item)
-                |> Seq.toArray
-                |> Array.iter (fun i -> all.RemoveAt(i)))
+                i <- i + 1
+                i
 
     type User =
         {
@@ -62,7 +35,21 @@ module Common =
             Title : string
             ThreadAuthorName : string
             Posts : Var<Post list>
-//            Posts : ViewModel<Post>
+        }
+
+    let CreateThread author title =
+        {
+            ThreadId = Fresh.Int ()
+            ThreadAuthorName = author
+            Title = title
+            Posts = Var.Create []
+        }
+
+    let CreatePost user content =
+        {
+            PostId =  Fresh.Int ()
+            PostAuthorName = user.Name
+            Content = content
         }
 
 // A "server" component. Since this is a static site as opposed to a 'real'
@@ -84,6 +71,7 @@ module Server =
         }
 
     let mutable threads = []
+
     let mutable (posts: Map<int, Post list>) = Map.empty
 
     let GetThreads () =
@@ -116,6 +104,7 @@ module Server =
                 posts <- Map.add thread.ThreadId [post] posts
                 return ()
         }
+   
 
 [<JavaScript>]
 module MessageBoard =
@@ -142,18 +131,7 @@ module MessageBoard =
                     elA "p" [cls "bg-danger"] [
                         View.Map (fun msg ->
                             Doc.TextNode msg
-                        ) (View.FromVar rvMsg) |> Doc.EmbedView
-                        (*
-                        (rvUser.View, rvPass.View)
-                        ||> View.Map2 (fun u p ->
-                            match u, p with
-                            | "", "" -> Doc.Empty
-                            | u, p ->
-                                match CheckLogin u p with
-                                | None -> Doc.TextNode "Invalid credentials"
-                                | _ -> Doc.Empty)
-                        |> Doc.EmbedView
-                        *)
+                        ) !* rvMsg |> Doc.EmbedView
                     ]
                 ]
             // Row of the login form
@@ -265,30 +243,6 @@ module MessageBoard =
             Go : Action -> unit
         }
 
-    let CreateThread author title =
-        {
-            ThreadId = Fresh.Int ()
-            ThreadAuthorName = author
-            Title = title
-            Posts = Var.Create [] //ViewModel.Create (fun p -> p.PostId)
-        }
-
-    let InitialThreads () =
-        let thread = CreateThread "SimonJF" "Hello, World! This is a topic."
-        let threadModel = ViewModel.Create (fun t -> t.ThreadId)
-        ViewModel.Add threadModel thread
-        threadModel
-
-    let CreatePost user content =
-        {
-            PostId = Fresh.Int ()
-            PostAuthorName = user.Name
-            Content = content
-        }
-
-    let AddPost thread post =
-        Var.Update thread.Posts (fun xs -> xs @ [post])
-
     /// Navigation bar, different for logged in / not logged in
     let NavBar (auth: Auth.Component) var st =
         let actions = [ThreadList; NewThread]
@@ -323,8 +277,7 @@ module MessageBoard =
                     do! Server.AddThread newThread
                     do! Server.AddPost newThread post
                 } |> Async.Start
-                //ViewModel.Add newThread.Posts post
-                //ViewModel.Add st.Threads newThread
+
                 ShowThread newThread |> st.Go
             elA "div" [cls "panel" ; cls "panel-default"] [
                 elA "div" [cls "panel-heading"] [
@@ -365,7 +318,7 @@ module MessageBoard =
         |> Doc.EmbedView
 
     let ThreadListPage st =
-        let renderThread thread = //(m : ViewModel<Thread>) thread =
+        let renderThread thread =
             el "tr" [
                 el "td" [Doc.TextNode thread.ThreadAuthorName]
                 el "td" [
@@ -395,7 +348,7 @@ module MessageBoard =
                 let! postList = Server.GetPosts thread
                 Var.Set rvPosts postList
             } |> Async.Start
-        // let user = getUser st.LoggedIn
+
         let renderPost (post : Post) =
             el "tr" [
                 el "td" [Doc.TextNode post.PostAuthorName]
@@ -430,7 +383,6 @@ module MessageBoard =
                     do! Server.AddPost thread post
                     getPosts ()
                 } |> Async.Start
-                //|> ViewModel.Add thread.Posts
             elA "div" [cls "panel" ; cls "panel-default"] [
                 elA "div" [cls "panel-heading"] [
                     elA "h3" [cls "panel-title"] [
@@ -466,10 +418,19 @@ module MessageBoard =
             |> Doc.EmbedView
         ]
 
+
+    let Initialise () =
+        let thread = CreateThread "SimonJF" "Hello, World! This is a topic."
+        let post = CreatePost { Name = "SimonJF" ; Password = "" } "Hello, world! This is a post."
+        async {
+            do! Server.AddThread thread 
+            do! Server.AddPost thread post
+        } |> Async.Start
+
     let Main () =
+        Initialise () 
         let actVar = Var.Create ThreadList
         let auth = Auth.Create ()
-        // let threadModel = InitialThreads ()
         let st = {Go = Var.Set actVar; Auth = auth ; Threads = Var.Create []}
         let navbar = NavBar auth actVar st
         let layout x =
