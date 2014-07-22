@@ -2,8 +2,12 @@
 > [Documentation](../README.md) ▸ [API Reference](API.md) ▸ **View**
 
 `View<'T>` represents a node in the [Dataflow](Dataflow.md) layer.
-Intuitively, it a time-varying value computed from your model.
+Intuitively, it is a time-varying value computed from your model.
 At any point in time the view has a certain `'T`.
+
+Below, `[[x]]` notation is used to denote value of `x` view at every
+point in time, so that `[[x]] = [[y]]` means that the two views are
+observationally equivalent.
 
 
 ```fsharp
@@ -47,7 +51,11 @@ A time-varying read-only value of a given type.
 <a name="Const" href="#Const">#</a> View.**Const** `'T -> View<'T>`
 
 Lifts a constant value to a View.  Constants are a boring
-special case of time-varying values.
+special case of time-varying values:
+
+```fsharp
+[[View.Const x]] = x
+```
 
 <a name="FromVar" href="#FromVar">#</a> View.**FromVar** `Var<'T> -> View<'T>`
 
@@ -73,19 +81,27 @@ processes that never get collected because they await a Var that is never going 
 <a name="Map" href="#Map">#</a> View.**Map** `('A -> 'B) -> View<'A> -> View<'B>`
 
 Lifts a function to the View layer, such that the value `[[]]` relation holds:
-`[[View.Map f x]] = f [[x]]`.  This is the simplest and perhaps most useful combinator.
+
+```fsharp
+[[View.Map f x]] = f [[x]]
+```
+
+This is the simplest and perhaps the most useful combinator.
 
 <a name="Map2" href="#Map2">#</a> View.**Map2** `('A -> 'B -> 'C) -> View<'A> -> View<'B> -> View<'C>`
 
-Pairing combinator generalizing `View.Map` to allow constructing views that depend on more than one view.
-`[[View.Map2 f x y]] = f [[x]] [[y]]`.
+Pairing combinator generalizing `View.Map` to allow constructing views that depend on more than one view:
+
+```fsharp
+[[View.Map2 f x y]] = f [[x]] [[y]]
+```
 
 <a name="Apply" href="#Apply">#</a> View.**Apply** `View<'A -> 'B> -> View<'A> -> View<'B>`
 
 Another pairing combinator derived from `View.Map2`. Defining equation is:
 
 ```fsharp
-View.Apply f x = View.Map2 (fun f x -> f x) f x`
+View.Apply f x = View.Map2 (fun f x -> f x) f x
 ```
 
 Together with `View.Const`, this permits a code pattern for lifting functions of arbitrary arity:
@@ -95,3 +111,4 @@ let ( <*> ) f x = View.Apply f x
 
 View.Const (fun x y z -> (x, y, z)) <*> x <*> y <*> z
 ```
+
