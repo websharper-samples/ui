@@ -10,12 +10,7 @@ type Easing =
     {
         TransformTime : NormalizedTime -> NormalizedTime
     }
-
-    /// Most commonly used easing.
-    /// let f t = 3. * (t ** 2.) - 2. * t ** 3.
     static member CubicInOut : Easing
-
-    /// Creates a custom easing.
     static member Custom : (NormalizedTime -> NormalizedTime) -> Easing
 ```
 
