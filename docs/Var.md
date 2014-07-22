@@ -15,25 +15,25 @@ A reactive variable.
 
 Creates a fresh variable with the given initial value.
 
-<a name="Var.Get" href="#">#</a> Var.**Get** `Var<'T> -> 'T`
+<a name="Get" href="#Get">#</a> Var.**Get** `Var<'T> -> 'T`
 
 Obtains the current value.  Also available as `var.Value`.
 
-<a name="Var.Set" href="#">#</a> Var.**Set** `Var<'T> -> 'T -> unit`
+<a name="Set" href="#Set">#</a> Var.**Set** `Var<'T> -> 'T -> unit`
 
 Sets the current value.  Also available as `var.Value <- v`
 
-<a name="Var.SetFinal" href="#">#</a> Var.**SetFinal** `Var<'T> -> 'T -> unit`
+<a name="SetFinal" href="#SetFinal">#</a> Var.**SetFinal** `Var<'T> -> 'T -> unit`
 
 Sets the final value (after this, Set/Update are invalid).
 This is rarely needed, but can help solve memory leaks when
 mutliple views are scheduled to wait on a variable that is never
 going to change again.
 
-<a name="Var.Update" href="#">#</a> Var.**Update** `Var<'T> -> ('T -> 'T) -> unit`
+<a name="Update" href="#Update">#</a> Var.**Update** `Var<'T> -> ('T -> 'T) -> unit`
 
 Updates the current value.  This is equivalent to `var.Value <- f var.Value`.
 
-<a name="var.View" href="#">#</a> var.**View** `View<'T>`
+<a name="View" href="#View">#</a> var.**View** `View<'T>`
 
 Lifts the variable to a [View](View.md) so that it can participate in dataflow.
