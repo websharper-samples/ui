@@ -65,7 +65,7 @@ module BobsleighSite =
             el "div" [
                 el "h1" [txt "Welcome!"]
                 el "p" [
-                    txt "Welcome to the IntelliFactory Bobsleigh MiniSitelet!"
+                    txt "Welcome to the IntelliFactory Bobsleigh MiniSite!"
                 ]
                 el "p" [
                     txt "Here you can find out about the "
@@ -162,8 +162,7 @@ module BobsleighSite =
 
     let description () =
         div [
-            txt
-                "A small website about bobsleighs, demonstrating how MiniSitelets \
+            txt "A small website about bobsleighs, demonstrating how UI.Next \
                  may be used to structure single-page applications."
         ]
 

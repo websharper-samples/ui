@@ -15,7 +15,7 @@ module RoutedBobsleighSite =
                 | S.BobsleighGovernance -> Route.Create [RouteFrag.Create "governance"]
                 | S.BobsleighTeam -> Route.Create [RouteFrag.Create "team"])
             (fun route ->
-                match List.map RouteFrag.Text (Seq.toList (Route.Frags route)) with
+                match Route.ToStringList route with
                 | [] -> S.BobsleighHome
                 | ["history"] -> S.BobsleighHistory
                 | ["governance"] -> S.BobsleighGovernance
@@ -45,7 +45,7 @@ module RoutedBobsleighSite =
     let description v =
         div [
             txt
-                "A small website about bobsleighs, demonstrating how MiniSitelets \
+                "A small website about bobsleighs, demonstrating how UI.Next \
                  may be used to structure single-page applications. Routed using \
                  the URL."
         ]
