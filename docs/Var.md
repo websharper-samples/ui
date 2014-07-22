@@ -6,6 +6,20 @@ They can be created and manipulated just like regular `ref` cells.
 Unlike `ref` cells, variables can be lifted to the [View](View.md) type to
 participate in the dataflow graph.
 
+```fsharp
+namespace IntelliFactory.WebSharper.UI.Next
+
+type Var<'T> =
+    member View : View<'T>
+    member Value : 'T with get, set
+
+type Var =
+    static member Create : 'T -> Var<'T>
+    static member Get : Var<'T> -> 'T
+    static member Set : Var<'T> -> 'T -> unit
+    static member SetFinal : Var<'T> -> 'T -> unit
+    static member Update : Var<'T> -> ('T -> 'T) -> unit
+```
 
 <a name="Var" href="#Var">#</a> **Var** `type Var<'T>`
 
