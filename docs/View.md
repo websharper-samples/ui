@@ -112,3 +112,19 @@ let ( <*> ) f x = View.Apply f x
 View.Const (fun x y z -> (x, y, z)) <*> x <*> y <*> z
 ```
 
+<a name="MapAsync" href="#MapAsync">#</a> View.**MapAsync** `('A -> Async<'B>) -> View<'A> -> View<'B>`
+
+Allows lifting an asynchronous function to the View layer.  A nice
+property here is that this combinator allows saving work by abandoning
+requests.  That is, if the input view changes faster than we can
+asynchronously convert it, the output view will not propagate change
+until it obtains a valid latest value.  In such a system, intermediate
+results are thus discarded.
+
+**TODO**: this combinator is being discussed for potential
+imrpovements and the signature is subject to change.
+
+
+
+
+
