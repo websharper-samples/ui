@@ -5,6 +5,8 @@
 into animation collections that can be played together.
 
 ```fsharp
+namespace IntelliFactory.WebSharper.UI.Next
+
 type Anim<'T> =
     {
         Compute : NormalizedTime -> 'T
