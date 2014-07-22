@@ -29,11 +29,11 @@ type Anim =
 Represents an animation of a given value, defined by duration and a time-function `Compute`
 and an explicit `Duration`.
 
-<a name="Map" href="Map">#</a> Anim.**Map** `('A -> 'B) -> Anim<'A> -> Anim<'B>
+<a name="Map" href="#Map">#</a> Anim.**Map** `('A -> 'B) -> Anim<'A> -> Anim<'B>`
 
 Lifts a function to change the type of an animation.
 
-<a name="Simple" href="Simple">#</a> Anim.**Simple**
+<a name="Simple" href="#Simple">#</a> Anim.**Simple**
 
 ```fsharp
 Anim.Simple :
