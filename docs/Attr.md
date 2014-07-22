@@ -39,7 +39,7 @@ Creates an attribute with a value that can change over time. See [View](View.md)
 
 Animated attributes generalize dynamic ones by interpolating between changing states.
 When a DOM tree is updated, elements that have animated attributes may be added, removed or
-have the attributes update the value.  [Trans](Trans) value describes which animation should
+have the attributes update the value.  [Trans](Trans.md) value describes which animation should
 be played in each of those situations.
 
 <a href="Handler" id="#Handler">#</a> Attr.**Handler** `string -> (DomEvent -> unit) -> Attr`
