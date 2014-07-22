@@ -77,3 +77,44 @@ Computes an in-between value based on normalized time, starting and ending value
 
 Linear interpolation on doubles.
 
+## Animation
+
+`Anim` types allow to declaretively describe time-dependent values, and combine them
+into animation collectoins that can be played together.
+
+```fsharp
+type Anim<'T> =
+    {
+        Compute : NormalizedTime -> 'T
+        Duration : Time
+    }
+
+type Anim =
+    static member Simple : Interpolation<'T> -> Easing -> dur: Time -> startValue: 'T -> endValue: 'T -> Anim<'T>
+    static member Map : ('A -> 'B) -> Anim<'A> -> Anim<'B>
+    static member Play : Anim -> Async<unit>
+    static member Pack : Anim<unit> -> Anim
+    static member WhenDone : (unit -> unit) -> Anim -> Anim
+    static member Append : Anim -> Anim -> Anim
+    static member Concat : seq<Anim> -> Anim
+    static member Empty : Anim
+```
+
+<a name="AnimT" href="AnimT">#</a> **Anim** `type Anim<'T>`
+
+Represents an animation of a given value, defined by duration and a time-function `Compute`
+and an explicit `Duration`:
+
+```fsharp
+type Anim<'T> =
+    {
+        Compute : NormalizedTime -> 'T
+        Duration : Time
+    }
+```
+
+
+
+
+
+
