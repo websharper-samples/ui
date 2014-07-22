@@ -54,19 +54,19 @@ Specifies a class attribute. Classes are additive, so:
 
     Attr.Append (Attr.Class "a") (Attr.Class "b") = Attr.Create "class" "a b"
     
-<a href="DynamicClass" id="#DynamicClass">#</a> Attr.**Dynamic** `string -> View<'T> -> ('T -> bool) -> Attr`
+<a href="#DynamicClass" name="DynamicClass">#</a> Attr.**Dynamic** `string -> View<'T> -> ('T -> bool) -> Attr`
 
 Specifies a class that is added or removed depending on a particular time-varying flag.
 
-<a href="Style" id="#Style">#</a> Attr.**Style** `string -> string -> Attr`
+<a href="#Style" name="Style">#</a> Attr.**Style** `string -> string -> Attr`
 
 Specifies a CSS style property, such as `Attr.Style "background-color" "black"`.
 
-<a href="DynamicStyle" id="#DynamicStyle">#</a> Attr.**DynamicStyle** `string -> View<string> -> Attr`
+<a href="#DynamicStyle" name="DynamicStyle">#</a> Attr.**DynamicStyle** `string -> View<string> -> Attr`
 
 Generalizes CSS style properties to depend on time-varying values.
 
-<a href="AnimatedStyle" id="#AnimatedStyle">#</a> Attr.**AnimatedStyle** `string -> Trans<'T> -> View<'T> -> ('T -> string) -> Attr`
+<a href="#AnimatedStyle" name="AnimatedStyle">#</a> Attr.**AnimatedStyle** `string -> Trans<'T> -> View<'T> -> ('T -> string) -> Attr`
 
 A variant of <a href="#Animated">Attr.Animated</a> for style properties.
 
