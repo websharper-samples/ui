@@ -6,7 +6,7 @@
   * [View](View.md) - computed reactive nodes
 * DOM
   * [Attr](Attr.md) - attributes
-  * [Doc](Attr.md) - document fragments
+  * [Doc](Doc.md) - document fragments
 * [Animation](Animation.md) - support for animation
   * [Anim](Anim.md) - abstract animation types
   * [Easing](Easing.md) - easing functions
@@ -15,7 +15,7 @@
   * [Trans](Trans.md) - support for animating change, enter and exit transitions
   * [Time](Time.md) - type alias for duration in milliseconds
 * Structure
-  * [Flow](Flow.md)
-  * [Router](Router.md) including Route, RouteFrag, Site, SiteId
+  * TODO [Flow](Flow.md)
+  * TODO [Router](Router.md) including Route, RouteFrag, Site, SiteId
 * Misc
-  * [Notation](Notation.md)
+  * TODO [Notation](Notation.md)
