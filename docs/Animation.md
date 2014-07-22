@@ -16,4 +16,4 @@ API in detail:
 * [NormalizedTime](NormalizedTime.md) - type alias for the `[0, 1]` range
 * [Trans](Trans.md) - support for animating change, enter and exit transitions
 * [Time](Time.md) - type alias for duration in milliseconds
-* 
+ 
