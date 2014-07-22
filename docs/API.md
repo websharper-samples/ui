@@ -7,7 +7,7 @@
 * DOM
   * [Attr](Attr.md) - attributes
   * [Doc](Attr.md) - document fragments
-* Animation
+* [Animation](Animation.md) - support for animation
   * [Anim](Anim.md) - abstract animation types
   * [Easing](Easing.md) - easing functions
   * [Interpolation](Interpolation.md) - interpolation between two values
