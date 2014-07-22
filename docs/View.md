@@ -124,6 +124,41 @@ results are thus discarded.
 **TODO**: this combinator is being discussed for potential
 imrpovements and the signature is subject to change.
 
+<a name="Join" href="#Join">#</a> View.**Join** `View<View<'T>> -> View<'T>`
+
+Flattens a higher-order View, using this defining equation:
+
+```fsharp
+[[Join x]] = [[ [[x]] ]]
+```
+
+Introducing this combinator makes the View layer very flexible, but also generally
+complicates the implementation.  It is rarely used directly, but is a building
+block for other combinators.
+
+<a name="Bind" href="#Bind">#</a> View.**Bind** `('A -> View<'B>) -> View<'A> -> View<'B>`
+
+Bind is a useful combinator for expressing value-dependent views:
+
+```fsharp
+View.Bind f x = View.Join (View.Map f x)
+```
+
+The helper `ViewBuilder` type is provided to give F# programmers the familiar computation
+expression interface to `View.Const` and `View.Bind`:
+
+```fsharp
+View.Do {
+  let! x = xView
+  let! y = getYiew x
+  return! combine x y
+}
+```
+
+Dynamic composition via `View.Bind` and `View.Join` should be used with some care.
+Whenever static composition (such as `View.Map2`) can do the trick, it should be preferable.
+One concern here is efficiency, and another is state, identity and sharing (see [Sharing](Sharing.md)
+for a discussion).
 
 
 
