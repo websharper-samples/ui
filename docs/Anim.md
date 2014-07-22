@@ -49,6 +49,29 @@ Anim.Simple :
 
 Uses an interpolation, easing, duration, start and end values to construct an animation.
 
+## Collected Animations
 
+<a name="Play" href="#Play">#</a> Anim.**Play** `Anim -> Async<unit>`
 
+Schedules and plays a collection of animations, waiting for all to complete.
 
+<a name="Pack" href="#Pack">#</a> Anim.**Pack** `Anim<unit> -> Anim`
+
+Lifts a typed animation into a singleton animation collection.
+
+<a name="WhenDone" href="#WhenDone">#</a> Anim.**WhenDone** `(unit -> unit) -> Anim -> Anim`
+
+Creates an animation that behaves like the given one, but also
+schedules an action to run when the animation completes.
+
+<a name="Append" href="#Append">#</a> Anim.**Append** `Anim -> Anim -> Anim`
+
+Appends two collections of animations.
+
+<a name="Concat" href="#Concat">#</a> Anim.**Concat** `seq<Anim> -> Anim`
+
+Concatenates several collections of animations into one.
+
+<a name="Empty" href="#Empty">#</a> Anim.**Empty** `Anim`
+
+An empty collection of animations.
