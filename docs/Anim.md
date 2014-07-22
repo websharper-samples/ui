@@ -1,4 +1,4 @@
-# Animation
+# Anim
 > [Documentation](../README.md) ▸ [API Reference](API.md) ▸ [Animation](Animation.md) ▸ **Anim**
 
 `Anim<'T>` type describes time-dependent values for animation, and `Anim` combines them
