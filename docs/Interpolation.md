@@ -5,6 +5,8 @@ Interpolation allows computing intermediate values for a given type.
 This is essential for automatic smooth in-between animation.
 
 ```fsharp
+namespace IntelliFactory.WebSharper.UI.Next
+
 type Interpolation<'T> =
     abstract Interpolate : NormalizedTime -> 'T -> 'T -> 'T
 
