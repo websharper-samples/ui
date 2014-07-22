@@ -112,18 +112,6 @@ let ( <*> ) f x = View.Apply f x
 View.Const (fun x y z -> (x, y, z)) <*> x <*> y <*> z
 ```
 
-<a name="MapAsync" href="#MapAsync">#</a> View.**MapAsync** `('A -> Async<'B>) -> View<'A> -> View<'B>`
-
-Allows lifting an asynchronous function to the View layer.  A nice
-property here is that this combinator allows saving work by abandoning
-requests.  That is, if the input view changes faster than we can
-asynchronously convert it, the output view will not propagate change
-until it obtains a valid latest value.  In such a system, intermediate
-results are thus discarded.
-
-**TODO**: this combinator is being discussed for potential
-imrpovements and the signature is subject to change.
-
 <a name="Join" href="#Join">#</a> View.**Join** `View<View<'T>> -> View<'T>`
 
 Flattens a higher-order View, using this defining equation:
@@ -159,6 +147,49 @@ Dynamic composition via `View.Bind` and `View.Join` should be used with some car
 Whenever static composition (such as `View.Map2`) can do the trick, it should be preferable.
 One concern here is efficiency, and another is state, identity and sharing (see [Sharing](Sharing.md)
 for a discussion).
+
+## Advanced
+
+<a name="MapAsync" href="#MapAsync">#</a> View.**MapAsync** `('A -> Async<'B>) -> View<'A> -> View<'B>`
+
+Lifts an asynchronous function to the View layer.  A nice
+property here is that this combinator allows saving work by abandoning
+requests.  That is, if the input view changes faster than we can
+asynchronously convert it, the output view will not propagate change
+until it obtains a valid latest value.  In such a system, intermediate
+results are thus discarded.
+
+**TODO**: this combinator is being discussed for potential
+imrpovements and the signature is subject to change.
+
+<a name="ConvertSeqBy" href="#ConvertSeqBy">#</a> View.**ConvertSeqBy**
+
+```fsharp
+View.ConvertSeqBy<'A,'B,'K when 'K : equality> :
+  key: ('A -> 'K) ->
+  conv: (View<'A> -> 'B) ->
+  view: View<seq<'A>> ->
+  View<seq<'B>>
+```
+
+Observes changes in a collection of items to compute a diff and
+efficiently transform it to a collection of a different type.
+Uses a notion of identity defined by the given `key` function.
+
+When `'A` items are added, `conv` function is called
+to produce fresh `'B` objects.  When they are changed, no new `'B`
+object is created; rather, the change in `A` is propagated via the `View`
+given to the `conv` function.
+
+This combinator is stateful, calling it creates a cache object.
+Memory use is proportional to the longest sequence taken by the View.
+
+See the [ObjectConstancy](http://intellifactory.github.io/websharper.ui.next/#ObjectConstancy)
+sample for an example of how to use this combinator.
+
+
+
+
 
 
 
