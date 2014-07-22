@@ -31,7 +31,6 @@ module RoutedBobsleighSite =
         // Here, we create the sitelet. We supply the Create function
         // with the variable we created, and we get a continuation function,
         // go, which we can use to change the page.
-       // MiniSitelet.Create m (fun go ->
         let ctx = {S.Go = Var.Set current}
         View.FromVar current
         |> View.Map (fun pg ->
