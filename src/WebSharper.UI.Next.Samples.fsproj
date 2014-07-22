@@ -116,10 +116,10 @@
     <Compile Include="ContactFlow.fs" />
     <Compile Include="SimpleTextBox.fs" />
     <Compile Include="MessageBoard.fs" />
-    <Compile Include="Messy.fs" />
     <Compile Include="ObjectConstancy.fs" />
     <None Include="ObjectConstancy.csv" />
     <Compile Include="BobsleighSite.fs" />
+    <Compile Include="RoutedBobsleighSite.fs" />
     <Compile Include="Client.fs" />
   </ItemGroup>
   <ItemGroup>

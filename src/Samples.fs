@@ -15,16 +15,6 @@ open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
 open IntelliFactory.WebSharper.UI.Next.Notation
 
-[<AutoOpen>]
-[<JavaScript>]
-module private Util =
-    let el x y = Doc.Element x [] y
-    let elA x y z = Doc.Element x y z
-    let link x y z = Doc.Link x y z
-    let cls x = Attr.Class x
-    let txt x = Doc.TextNode x
-    let ( ==> ) k v = Attr.Create k v
-
 /// A little framework for displaying samples on the site.
 [<JavaScript>]
 module Samples =

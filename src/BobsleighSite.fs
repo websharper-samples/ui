@@ -65,7 +65,10 @@ module BobsleighSite =
             el "div" [
                 el "h1" [txt "Welcome!"]
                 el "p" [
-                    txt "Welcome to the IntelliFactory Bobsleigh MiniSitelet! Here you can find out about the "
+                    txt "Welcome to the IntelliFactory Bobsleigh MiniSitelet!"
+                ]
+                el "p" [
+                    txt "Here you can find out about the "
                     link "history" [] (fun () -> ctx.Go BobsleighHistory)
                     txt " of bobsleighs, the "
                     link "International Bobsleigh and Skeleton Federation" [] (fun () -> ctx.Go BobsleighGovernance)
@@ -122,6 +125,8 @@ module BobsleighSite =
                 el "p" [
                     txt "The world-famous IntelliFactory Bobsleigh Team was founded \
                          in 2004, and currently consists of:"
+                ]
+                el "p" [
                     el "ul" [
                         teamMembers
                         |> List.map (fun (name, handle) ->
@@ -165,7 +170,7 @@ module BobsleighSite =
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
         Samples.Build()
-            .Id("Bobsleigh MiniSite")
+            .Id("BobsleighMiniSite")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])
             .Render(Main)
