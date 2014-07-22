@@ -26,35 +26,35 @@ type Attr =
 
 ## Basic Attributes
 
-<a href="Create" id="#Create">#</a> Attr.**Create** `string -> string -> Attr`
+<a href="#Create" name="Create">#</a> Attr.**Create** `string -> string -> Attr`
 
 Given a name and a value, creates a simple HTML attribute.
 For example, `Attr.Create "href" "http://foo.com"`.
 
-<a href="Dynamic" id="#Dynamic">#</a> Attr.**Dynamic** `string -> View<string> -> Attr`
+<a href="#Dynamic" name="Dynamic">#</a> Attr.**Dynamic** `string -> View<string> -> Attr`
 
 Creates an attribute with a value that can change over time. See [View](View.md).
 
-<a href="Animated" id="#Animated">#</a> Attr.**Animated** `string -> Trans<'T> -> View<'T> -> ('T -> string) -> Attr`
+<a href="#Animated" name="Animated">#</a> Attr.**Animated** `string -> Trans<'T> -> View<'T> -> ('T -> string) -> Attr`
 
 Animated attributes generalize dynamic ones by interpolating between changing states.
 When a DOM tree is updated, elements that have animated attributes may be added, removed or
 have the attributes update the value.  [Trans](Trans.md) value describes which animation should
 be played in each of those situations.
 
-<a href="Handler" id="#Handler">#</a> Attr.**Handler** `string -> (DomEvent -> unit) -> Attr`
+<a href="#Handler" name="Handler">#</a> Attr.**Handler** `string -> (DomEvent -> unit) -> Attr`
 
 Specifies a handler for a DOM event, such as click event for a button.
 
 ## CSS Attributes
 
-<a href="Class" id="#Class">#</a> Attr.**Class** `string -> Attr`
+<a href="#Class" name="Class">#</a> Attr.**Class** `string -> Attr`
 
 Specifies a class attribute. Classes are additive, so:
 
     Attr.Append (Attr.Class "a") (Attr.Class "b") = Attr.Create "class" "a b"
     
-<a href="#DynamicClass" name="DynamicClass">#</a> Attr.**Dynamic** `string -> View<'T> -> ('T -> bool) -> Attr`
+<a href="#DynamicClass" name="DynamicClass">#</a> Attr.**DynamicClass** `string -> View<'T> -> ('T -> bool) -> Attr`
 
 Specifies a class that is added or removed depending on a particular time-varying flag.
 
