@@ -42,11 +42,11 @@ type View =
     static member Do : ViewBuilder
 ```
 
+## Constructing
+
 <a name="View" href="#View">#</a> **View** `type View<'T>`
 
 A time-varying read-only value of a given type.
-
-## Constructing
 
 <a name="Const" href="#Const">#</a> View.**Const** `'T -> View<'T>`
 
