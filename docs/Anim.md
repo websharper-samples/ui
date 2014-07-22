@@ -1,8 +1,8 @@
 # Animation
 > [Documentation](../README.md) ▸ [API Reference](API.md) ▸ [Animation](Animation.md) ▸ **Anim**
 
-`Anim` types describe time-dependent values for animation, and combine them
-into animation collectoins that can be played together.
+`Anim<'T>` type describes time-dependent values for animation, and `Anim` combines them
+into animation collections that can be played together.
 
 ```fsharp
 type Anim<'T> =
