@@ -74,8 +74,10 @@ module TodoList =
 
     /// Renders a collection of items.
     let RenderItem m todo =
+        let f = fresh ()
         el "tr" [
             el "td" [
+                Doc.TextNode (string f)
                 // Here is a tree fragment that depends on the Done status of the item.
                 View.FromVar todo.Done
                 // Let us render the item differently depending on whether it's done.
@@ -124,7 +126,7 @@ module TodoList =
 
     // Embed a time-varying collection of items.
     let TodoList m =
-        Doc.EmbedBagBy Key (RenderItem m) m.Items.View
+        Doc.ConvertBy Key (RenderItem m) m.Items.View
 
     // Finally, we put it all together...
     let TodoExample () =
