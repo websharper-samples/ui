@@ -1,7 +1,7 @@
 ## API Reference
 > [Documentation](../README.md) ▸ **API Reference**
 
-* Dataflow
+* [Dataflow](Dataflow.md) - dataflow support
   * [Var](Var.md) - reactive variables
   * [View](View.md) - computed reactive nodes
 * DOM
