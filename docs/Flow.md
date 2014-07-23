@@ -1,23 +1,33 @@
 # Flow
 > [Documentation](../README.md) ▸ [API Reference](API.md) ▸ **Flow**
 
-The `Flow` type is a representation of Flowlets, which are a way of structuring applications with a linear control flow. Each stage of a flowlet may depend on information retrieved at a previous stage. Flows work through the use of a monadic interface, and can be constructed using a computation expression.
+`Flow` is a way of structuring applications with a linear control flow.
+Each stage of a Flow may depend on information retrieved at a previous stage.
+Flows work through the use of a monadic interface, and can be constructed using
+a computation expression.
 
 ```fsharp
 namespace IntelliFactory.WebSharper.UI.Next
+
 type Flow<'T>
 
-module Flow =
-    val Map : ('A -> 'B) -> Flow<'A> -> Flow<'B>
-    val Bind : Flow<'A> -> ('A -> Flow<'B>) -> Flow<'B>
-    val Return : 'A -> Flow<'A>
-    val Embed : Flow<'A> -> Doc
-    val Define : (('A -> unit) -> Doc) -> Flow<'A>
-    val Static : Doc -> Flow<unit>
-    val Do : FlowBuilder
+type Flow =
+    static member Map : ('A -> 'B) -> Flow<'A> -> Flow<'B>
+    static member Bind : Flow<'A> -> ('A -> Flow<'B>) -> Flow<'B>
+    static member Return : 'A -> Flow<'A>
+    static member Embed : Flow<'A> -> Doc
+    static member Define : (('A -> unit) -> Doc) -> Flow<'A>
+    static member Static : Doc -> Flow<unit>
+    static member Do : FlowBuilder
+
+type FlowBuilder =
+    member Bind : Flow<'A> * ('A -> Flow<'B>) -> Flow<'B>
+    member Return : 'A -> Flow<'A>
+    member ReturnFrom : Flow<'A> -> Flow<'A>
 ```
 
 ## Defining Flows
+
 <a name="Define" href="#TextView">#</a> Flow.**Define** `(('A -> unit) -> Doc) -> Flow<'A>`
 
 Creates a new `Flow`. Requires a function which takes a callback `('A -> unit)`, which is used to progress through stages of the flow, and produces a `Doc`, which is the rendering of that stage of the flow. To return a value from the flow, the value should be specified as an argument to the callback.
@@ -47,6 +57,6 @@ Maps a function `('A -> 'B)` onto a flow of type `'A` to create a flow of type `
 
 ## Embedding Flows
 
-<a name="Embed" href="#Embed">#</a> Flow.**Map** `Flow<'A> -> Doc`
+<a name="Embed" href="#Embed">#</a> Flow.**Embed** `Flow<'A> -> Doc`
 
 Embeds a flow into a document. The resulting `Doc` will represent the rendering of the `Flow`, and will update whenever the rendering of the flow changes (for example, when displaying a new page).
