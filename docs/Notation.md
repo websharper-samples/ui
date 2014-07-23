@@ -1,7 +1,8 @@
-dds a value to the value of a `Var`. The # Notation
+# Notation
 > [Documentation](../README.md) ▸ [API Reference](API.md) ▸ **Notation**
 
-The Notation file provides infix operators to make UI.Next code more concise.
+The Notation module provides infix operators to make UI.Next code more concise.
+To use, you need to `open IntelliFactory.WebSharper.UI.Next.Notation`.
 
 ```fsharp
 namespace IntelliFactory.WebSharper.UI.Next
