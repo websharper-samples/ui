@@ -1,5 +1,5 @@
 # View
-> [Documentation](../README.md) ▸ [API Reference](API.md) ▸ **View**
+> [Documentation](../README.md) ▸ [API Reference](API.md) ▸ [Dataflow](Dataflow.md) ▸ **View**
 
 `View<'T>` represents a node in the [Dataflow](Dataflow.md) layer.
 Intuitively, it is a time-varying value computed from your model.
