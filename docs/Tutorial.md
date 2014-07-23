@@ -1,37 +1,82 @@
 Introduction
 ============
 
-WebSharper.UI.Next is a new experimental library for developing Single-Page Applications using a Reactive DOM representation. The main idea behind the library is that you should be able to specify a model, views of this model, and components which automatically change whenever the model changes.
+In this tutorial, we'll have a look at the basics of WebSharper.UI.Next, taking you through all of the basics and some of the ways of using the library. This will be done entirely by example: you should get introduced to everything you need along the way.
 
-Briefly, WebSharper.UI.Next consists of two layers: a dataflow layer, made up of variables and views, and a reactive DOM layer making use of this, allowing time-varying elements to be embedded in the DOM. In the simplest case, it's possible to create a reactive variable (which can be thought of as a *data source*), a view of this, bind this to a DOM element, and have the DOM element update automatically whenever the data changes. This removes the need to write separate DOM handling code for whenever the data changes: you just specify the view once, and the updates happen automatically. 
+Text Box
+========
 
-The Dataflow Layer: Vars and Views
-==================================
+Probably the very simplest application we could create is one with an input box and a label, where the label mirrors the text from the input box. You can find all examples live [here](http://intellifactory.github.io/websharper.ui.next/) with the source for this example [here](https://github.com/intellifactory/websharper.ui.next/blob/master/src/SimpleTextBox.fs).
 
-The dataflow layer can be thought of as the 'model' part of the system. There are two main primitives here: [`Var`s](https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Var.md), which can be thought of as a value which varies with time, and [`View`s](https://github.com/intellifactory/websharper.ui.next/blob/master/docs/View.md), which can be used to observe a `Var` as it changes. By way of example, think of the mouse position: we can have two variables which represent the position, and views on these variables which allow something to be updated whenever the position changes. 
+What we need to do firstly is specify a reactive variable, which holds the string specified by the input box.
 
-You can read more about the dataflow system and some of the technical design decisions [here](https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Dataflow.md).
-
-
-The DOM Layer
-=============
-
-After laying the groundwork with the dataflow layer, we can begin to think about how this relates to the DOM. In particular, UI.Next works by effectively "embedding" possibly changing DOM fragments into a virtual DOM representation. In particular, to represent a DOM fragment, we use the [`Doc` type](https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Doc.md): this is defined using a [monoidal interface](https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Monoids.md), meaning that it's easy to compose different parts of the tree. 
-
-Once we have a `Doc`, it's easy to use this with a WebSharper application, using the `Doc.Run` and `Doc.RunById` functions, which associate the `Doc` with a given element. We'll get to that a bit later.
-
-The key to this layer is the combinator:
-
-```fsharp
-EmbedView : View<Doc> -> Doc
+```
+let rvText = Var.Create ""
 ```
 
-This combinator takes a view of a `Doc`, that is a DOM fragment as it changes with time, and flattens it out to a `Doc`, such that it may be composed as if it were static. This is incredibly useful, as we'll see later.
+A reactive variable is the basic 'building block' of an application in UI.Next. You can think of this a bit like an F# reference cell, but with one important difference: we can define *views* on this, which allow us to observe it as it changes. We'll get to that in a second.
+
+The next thing to do is to make an input box, tying it to the variable we've just created. This means that the input box synchronises with the variable: whenever a user changes the text in the box, `rvText` gets updated. Conversely, if anything else modifies `rvText`, then the value of the box will be updated to reflect this.
+
+```
+let inputField = Doc.Input [] rvText
+``` 
+
+...and the label which displays the input. Notice that we can get a view of the variable using the ```.View``` member, and could similarly create one using ```View.Create```. Either way, it's the same thing: we now have a ```View<string>``` of ```rvText```.
+
+```
+let label = Doc.TextView rvText.View
+```
+
+Now, ```label``` is of type Doc, yet still refers to a time-changing variable. This means that once it's part of the bigger tree, whenever ```rvText``` changes, so will this node. Finally, we wrap it all up in a couple of Divs, and then run it in a ```div''' called `main'. Note that ```divc''' is a function to create a div with the given class name, and ```el''' is a shortcut function for ```Doc.Element''' without any attributes.
+
+```
+let copyTheInput =
+ divc "panel-default" [
+            divc "panel-body" [
+                // Note how components are composable, meaning we can
+                // embed multiple different components here without issue.
+                el "div" [inputField]
+                el "div" [label]
+            ]
+        ]
+
+
+let Main () =
+    Document.RunById "main" copyTheInput
+```
+
+...and we're done!
+
+Transform-the-Input
+===================
+The label in the previous example copied the input text as-is. What about if we wanted to display this input text in different ways, such as capitalised? Or even the number of different words that were typed?
+
+Luckily, `View`s provide different combinators we can use to do just this. We start by making a `Var` and an input box as before:
+
+```
+let rvText = Var.Create ""
+Doc.Input [] rvText
+```
+
+The difference here comes with the different ways we're viewing the input text. To do this, we create a view, and then we use `Map` to alter the view. You'll notice in one part we create a `View<int>` for the number of words: we can then use this for further views to determine whether or not the number of words is odd or even, for example:
+
+```
+let view = View.FromVar rvText
+let viewCaps = View.Map (fun (s : string) -> s.ToUpper ()) view
+let viewReverse = View.Map (fun (s : string) -> new string ((s.ToCharArray ()) |> Array.rev)) view
+let viewWordCount = View.Map (fun (s : string) -> s.Split([| ' ' |]).Length) view
+let viewWordCountStr = View.Map string viewWordCount
+let viewWordOddEven = View.Map (fun i -> if i % 2 = 0 then "Even" else "Odd") viewWordCount
+```
+
+Finally, we embed these into table rows and hook everything up. This is done exactly as before -- we use the views we've created when creating the `TextView`s. You can find the source (here)[https://github.com/intellifactory/websharper.ui.next/blob/master/src/InputTransform.fs].
+
 
 Making a To-Do List Application
 ===============================
 
-With the basics discussed, let's create a small example. It seems that nowadays the de-facto "Hello World" of reactive frameworks is a To-Do List application, so this is what we'll make in this tutorial. 
+Now we know the basics, we can have a look at a slightly bigger application: the de-facto "Hello World" of reactive frameworks, a to-do list!
 
 Specification and Analysis
 --------------------------
