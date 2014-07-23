@@ -19,7 +19,7 @@ type RouteMap =
     static member Install : RouteMap<'T> -> Var<'T>
 ```
 
-<a href="#RouteMap" name="RouteMap">#</a> RouteMap `type RouteMap<'T>`
+<a href="#RouteMap" name="RouteMap">#</a> **RouteMap** `type RouteMap<'T>`
 
 A bijection between an URL route and a value of the given type.
 
