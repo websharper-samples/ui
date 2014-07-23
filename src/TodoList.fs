@@ -47,7 +47,7 @@ module TodoList =
     let Key item =
         item.TodoKey
 
-    /// Renders a collection of items.
+    /// Renders a TodoItem
     let RenderItem m todo =
         el "tr" [
             el "td" [
@@ -80,8 +80,6 @@ module TodoList =
     let TodoForm m =
         // We make a variable to contain the new to-do item.
         let rvInput = Var.Create ""
-        // ...and a view to inspect it.
-        let rviInput = View.FromVar rvInput
         el "form" [
             divc "form-group" [
                 el "label" [txt "New entry: "]
