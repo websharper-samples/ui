@@ -120,6 +120,7 @@
     <None Include="ObjectConstancy.csv" />
     <Compile Include="BobsleighSite.fs" />
     <Compile Include="RoutedBobsleighSite.fs" />
+    <Compile Include="EditablePersonList.fs" />
     <Compile Include="Client.fs" />
   </ItemGroup>
   <ItemGroup>

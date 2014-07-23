@@ -22,6 +22,7 @@ module Client =
             InputTransform.Sample
             TodoList.Sample
             PhoneExample.Sample
+            EditablePersonList.Sample
             CheckBoxTest.Sample
             MouseChase.Sample
             Calculator.Sample
