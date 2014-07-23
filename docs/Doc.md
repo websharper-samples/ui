@@ -131,6 +131,32 @@ Creates a set of check boxes from the given list. Requires a function to show ea
 
 Creates a selection box from the given list. Requires a function to show each item, and a variable which is updated with the currently-selected item.
 
+## Collections
+
+For convenience, [View](View.md) Convert* functions are specialied for the `Doc` type.
+
+<a name="Convert" href="#Convert">#</a> Doc.**Convert** `('T -> Doc) -> View<seq<'T>> -> Doc`
+
+Variant of `View.Convert`.
+
+<a name="ConvertBy" href="#ConvertBy">#</a> Doc.**ConvertBy** `('T -> 'K) -> ('T -> Doc) -> View<seq<'T>> -> Doc`
+
+Variant of `View.ConvertBy`.
+
+<a name="ConvertSeq" href="#ConvertSeq">#</a> Doc.**ConvertSeq** `(View<'T> -> Doc) -> View<seq<'T>> -> Doc`
+
+Variant of `View.ConvertSeq`.
+
+<a name="ConvertSeqBy" href="#ConvertSeqBy">#</a> Doc.**ConvertSeqBy** `('T -> 'K) -> (View<'T> -> Doc) -> View<seq<'T>> -> Doc`
+
+Variant of `View.ConvertSeqBy`.
+
+
+
+
+
+
+
 
 
 
