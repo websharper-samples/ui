@@ -36,8 +36,8 @@ module Samples =
             mutable Body : Doc
             mutable Description : Doc
             Meta : Meta
-            mutable Site : Site<Sample>
-            mutable SiteId : SiteId
+            mutable Router : Router<Sample>
+            mutable RouteId : RouteId
         }
 
     type Visuals<'T> =
@@ -52,39 +52,39 @@ module Samples =
                 Body = Doc.Empty
                 Description = Doc.Empty
                 Meta = meta
-                Site = Unchecked.defaultof<_>
-                SiteId = Unchecked.defaultof<_>
+                Router = Unchecked.defaultof<_>
+                RouteId = Unchecked.defaultof<_>
             }
-        let site =
-            Site.Define router init (fun id cur ->
-                sample.SiteId <- id
+        let r =
+            Router.Route router init (fun id cur ->
+                sample.RouteId <- id
                 sample.Body <- vis.Main cur
                 sample.Description <- vis.Desc cur
                 sample)
-            |> Site.Prefix meta.Uri
-        sample.Site <- site
+            |> Router.Prefix meta.Uri
+        sample.Router <- r
         sample
 
     let CreateSimple vis meta =
-        let unitRouter = Router.Create (fun () -> Route.Create []) (fun _ -> ())
+        let unitRouter = RouteMap.Create (fun () -> []) (fun _ -> ())
         let sample =
             {
                 Body = vis.Main ()
                 Description = vis.Desc ()
                 Meta = meta
-                Site = Unchecked.defaultof<_>
-                SiteId = Unchecked.defaultof<_>
+                Router = Unchecked.defaultof<_>
+                RouteId = Unchecked.defaultof<_>
             }
-        sample.Site <-
-            Site.Define unitRouter () (fun id cur ->
-                sample.SiteId <- id
+        sample.Router <-
+            Router.Route unitRouter () (fun id cur ->
+                sample.RouteId <- id
                 sample)
-            |> Site.Prefix meta.Uri
+            |> Router.Prefix meta.Uri
         sample
 
     let Show samples =
-        let mainSite = Site.Merge [ for sample in samples -> sample.Site ]
-        let current = Site.Install (fun samp -> samp.SiteId) mainSite
+        let mainSite = Router.Merge [ for sample in samples -> sample.Router ]
+        let current = Router.Install (fun samp -> samp.RouteId) mainSite
         let main =
             current.View
             |> View.Map (fun info -> info.Body)
@@ -92,7 +92,7 @@ module Samples =
         let navs =
             // Renders a link, based on the model and the link
             let renderLink samp =
-                let isActive x = x.SiteId = samp.SiteId
+                let isActive x = x.RouteId = samp.RouteId
                 // Attribute list: add the "active" class if selected
                 let liAttr = Attr.DynamicClass "active" current.View isActive
                 // Finally, put it all together to render the link
@@ -171,5 +171,5 @@ module Samples =
     let Build () =
         Builder CreateSimple
 
-    let Routed (router: Router<'T>, init: 'T)=
+    let Routed (router, init) =
         Builder (CreateRouted router init)
