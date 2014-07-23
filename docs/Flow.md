@@ -57,6 +57,6 @@ Maps a function `('A -> 'B)` onto a flow of type `'A` to create a flow of type `
 
 ## Embedding Flows
 
-<a name="Embed" href="#Embed">#</a> Flow.**Map** `Flow<'A> -> Doc`
+<a name="Embed" href="#Embed">#</a> Flow.**Embed** `Flow<'A> -> Doc`
 
 Embeds a flow into a document. The resulting `Doc` will represent the rendering of the `Flow`, and will update whenever the rendering of the flow changes (for example, when displaying a new page).
