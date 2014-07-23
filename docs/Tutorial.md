@@ -22,13 +22,13 @@ The next thing to do is to make an input box, tying it to the variable we've jus
 let inputField = Doc.Input [] rvText
 ``` 
 
-...and the label which displays the input. Notice that we can get a view of the variable using the ```.View``` member, and could similarly create one using ```View.Create```. Either way, it's the same thing: we now have a ```View<string>``` of ```rvText```.
+...and the label which displays the input. Notice that we can get a view of the variable using the `.View` member, and could similarly create one using `View.Create`. Either way, it's the same thing: we now have a `View<string>` of `rvText`.
 
 ```
 let label = Doc.TextView rvText.View
 ```
 
-Now, ```label``` is of type Doc, yet still refers to a time-changing variable. This means that once it's part of the bigger tree, whenever ```rvText``` changes, so will this node. Finally, we wrap it all up in a couple of Divs, and then run it in a ```div''' called `main'. Note that ```divc''' is a function to create a div with the given class name, and ```el''' is a shortcut function for ```Doc.Element''' without any attributes.
+Now, `label` is of type Doc, yet still refers to a time-changing variable. This means that once it's part of the bigger tree, whenever `rvText` changes, so will this node. Finally, we wrap it all up in a couple of Divs, and then run it in a `div` called `main`. Note that `divc` is a function to create a div with the given class name, and `el` is a shortcut function for `Doc.Element` without any attributes.
 
 ```
 let copyTheInput =
