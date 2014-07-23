@@ -34,6 +34,19 @@ type Doc =
     static member Link : caption: string -> seq<Attr> -> (unit -> unit) -> Doc
     static member CheckBox<'T when 'T : equality> : ('T -> string) -> list<'T> -> Var<list<'T>> -> Doc
     static member Select<'T when 'T : equality> : seq<Attr> -> ('T -> string) -> list<'T> -> Var<'T> -> Doc
+    
+    static member Convert<'T when 'T : equality> :
+        ('T -> Doc) -> View<seq<'T>> -> Doc
+
+    static member ConvertBy<'T,'K when 'K : equality> :
+        ('T -> 'K) -> ('T -> Doc) -> View<seq<'T>> -> Doc
+
+    static member ConvertSeq<'T when 'T : equality> :
+        (View<'T> -> Doc) -> View<seq<'T>> -> Doc
+
+    static member ConvertSeqBy<'T,'K when 'K : equality> :
+        ('T -> 'K) -> (View<'T> -> Doc) -> View<seq<'T>> -> Doc
+
 ```
 
 ## Constructing
