@@ -33,11 +33,17 @@ type View =
     static member Join : View<View<'T>> -> View<'T>
     static member Bind : ('A -> View<'B>) -> View<'A> -> View<'B>
 
+    static member Convert<'A,'B when 'A : equality> :
+        ('A -> 'B) -> View<seq<'A>> -> View<seq<'B>>
+
+    static member ConvertBy<'A,'B,'K when 'K : equality> :
+        ('A -> 'K) -> ('A -> 'B) -> View<seq<'A>> -> View<seq<'B>>
+
+    static member ConvertSeq<'A,'B when 'A : equality> :
+        (View<'A> -> 'B) -> View<seq<'A>> -> View<seq<'B>>
+
     static member ConvertSeqBy<'A,'B,'K when 'K : equality> :
-        key: ('A -> 'K) ->
-        conv: (View<'A> -> 'B) ->
-        view: (View<seq<'A>>) ->
-        View<seq<'B>>
+        ('A -> 'K) -> (View<'A> -> 'B) -> View<seq<'A>> -> View<seq<'B>>
 
     static member Do : ViewBuilder
 ```
