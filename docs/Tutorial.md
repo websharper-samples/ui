@@ -70,7 +70,7 @@ let viewWordCountStr = View.Map string viewWordCount
 let viewWordOddEven = View.Map (fun i -> if i % 2 = 0 then "Even" else "Odd") viewWordCount
 ```
 
-Finally, we embed these into table rows and hook everything up. This is done exactly as before -- we use the views we've created when creating the `TextView`s. You can find the source (here)[https://github.com/intellifactory/websharper.ui.next/blob/master/src/InputTransform.fs].
+Finally, we embed these into table rows and hook everything up. This is done exactly as before -- we use the views we've created when creating the `TextView`s. You can find the source [here](https://github.com/intellifactory/websharper.ui.next/blob/master/src/InputTransform.fs).
 
 
 Making a To-Do List Application
