@@ -1,5 +1,5 @@
 # Model
-> [Documentation](../README.md) ▸ [API Reference](API.md) ▸ [Dataflow](Datafow.md) ▸ **Model**
+> [Documentation](../README.md) ▸ [API Reference](API.md) ▸ [Dataflow](Dataflow.md) ▸ **Model**
 
 Helpers for the common situation where we have an imperative model, such as a `ResizeArray`
 or a `Dictionary`, and we want to observe changes to this model (as a [View](View.md)),
