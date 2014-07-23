@@ -19,7 +19,7 @@
   * [Trans](Trans.md) - support for animating change, enter and exit transitions
 * Structure
   * [Flow](Flow.md)
-  * [Router](Router.md), RouteId - support for routing and structuring sites
+  * [Router](Router.md), [RouteId](Router.md#RouteId) - support for routing and structuring sites
   * [RouteMap](RouteMap.md) - bijection between a route and an action type
 * Misc
   * [Notation](Notation.md)
