@@ -15,7 +15,7 @@
   * [Trans](Trans.md) - support for animating change, enter and exit transitions
   * [Time](Time.md) - type alias for duration in milliseconds
 * Structure
-  * TODO [Flow](Flow.md)
+  * [Flow](Flow.md)
   * TODO [Router](Router.md) including Route, RouteFrag, Site, SiteId
 * Misc
   * TODO [Notation](Notation.md)
