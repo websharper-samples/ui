@@ -280,7 +280,7 @@ So, to start off with, we create a new variable `rvInput`, which is the variable
 That's the form sorted!
 
 Putting it all together
-=======================
+-----------------------
 
 Finally, we need a rendering function which ties all of these components together. Remember that all of the different components are of type `Doc`, so they'll compose very easily due to their monoidal structure. This means composing everything is done as so:
 
