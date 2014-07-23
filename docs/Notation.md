@@ -8,7 +8,7 @@ To use, you need to:
 
 Note that `!` and `:=` still work for `ref` as usual, even when overloaded.
 
-* `~x` for [Var.Get](Var.md#Get) - `Var.Get x` 
+* `!x` for [Var.Get](Var.md#Get) - `Var.Get x` 
 * `x := y` for [Var.Set](Var.md#Set) - `Var.Set x y`
 * `x <~ f` for [Var.Update](Var.md#Update) - `Var.Update x f`
 * `x |>> f` for [View.Map](View.md#Map) - `View.Map f x`
