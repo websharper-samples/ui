@@ -1,7 +1,7 @@
 # RouteMap
 > [Documentation](../README.md) ▸ [API Reference](API.md) ▸ **RouteMap**
 
-A RouteMap represesnts a bijection bewteen a URL route and a typed value.
+A RouteMap represents a bijection bewteen a URL route and a typed value.
 It is used by [Router](Router.md), but can also be installed independently
 to tie the browser's current hash (`document.location.href`) to a typed reactive
 variable.
