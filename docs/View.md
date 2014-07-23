@@ -162,30 +162,33 @@ results are thus discarded.
 **TODO**: this combinator is being discussed for potential
 imrpovements and the signature is subject to change.
 
-<a name="ConvertSeqBy" href="#ConvertSeqBy">#</a> View.**ConvertSeqBy**
+<a name="Convert" href="#Convert">#</a> View.**Convert** `('A -> 'B) -> View<seq<'A>> -> View<seq<'B>>`
 
-```fsharp
-View.ConvertSeqBy<'A,'B,'K when 'K : equality> :
-  key: ('A -> 'K) ->
-  conv: (View<'A> -> 'B) ->
-  view: View<seq<'A>> ->
-  View<seq<'B>>
-```
-
-Observes changes in a collection of items to compute a diff and
-efficiently transform it to a collection of a different type.
-Uses a notion of identity defined by the given `key` function.
-
-When `'A` items are added, `conv` function is called
-to produce fresh `'B` objects.  When they are changed, no new `'B`
-object is created; rather, the change in `A` is propagated via the `View`
-given to the `conv` function.
-
-This combinator is stateful, calling it creates a cache object.
+Starts a process doing stateful conversion with "shallow" memoization.
+The process remembers inputs from the previous step, and re-uses outputs
+from the previous step when possible instead of calling the converter function.
 Memory use is proportional to the longest sequence taken by the View.
+Since only one step of history is retained, there is no memory leak.
 
-See the [ObjectConstancy](http://intellifactory.github.io/websharper.ui.next/#ObjectConstancy)
-sample for an example of how to use this combinator.
+Needs equality on `'A`.
+
+<a name="ConvertBy" href="#ConvertBy">#</a> View.**ConvertBy** `('A -> 'K) -> ('A -> 'B) -> View<seq<'A>> -> View<seq<'B>>`
+
+A variant of `Convert` with a custom key function, needing an equality on `'K`.
+
+<a name="ConvertSeq" href="#ConvertSeq">#</a> View.**ConvertSeq** `(View<'A> -> 'B) -> View<seq<'A>> -> View<seq<'B>>`
+
+An extended form of `Convert` where the conversion function accepts a
+reactive view.  At every step, changes to inputs identified as being
+the same object are propagated via that view.
+
+Needs equality on `'A`.
+
+<a name="ConvertSeqBy" href="#ConvertSeqBy">#</a> View.**ConvertSeqBy** `('A -> 'K) -> (View<'A> -> 'B) -> View<seq<'A>> -> View<seq<'B>>`
+
+A variant of `ConvertSeq` with a custom key function, needing an equality on `'K`.
+
+
 
 
 
