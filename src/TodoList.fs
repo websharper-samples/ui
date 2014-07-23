@@ -13,9 +13,9 @@ namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Notation
 
-// A to-do list application, showcasing time-varying collections of tim-varying
-// elements.
+// A to-do list application, showcasing time-varying collections of elements.
 // See this live at http://intellifactory.github.io/websharper.ui.next/#TodoList.fs !
 
 [<JavaScript>]
@@ -26,33 +26,30 @@ module TodoList =
         let input x = Doc.Input ["class" ==> "form-control"] x
         let button name handler = Doc.Button name ["class" ==> "btn btn-default"] handler
 
-        let fresh =
-            let c = ref 0
-            fun () ->
-                incr c
-                !c
-
     // Our Todo items consist of a textual description,
     // and a bool flag showing if it has been done or not.
     type TodoItem =
         {
             Done : Var<bool>
-            TodoKey : int
+            Key : Key
             TodoText : string
         }
 
         static member Create s =
-            { TodoKey = fresh (); TodoText = s; Done = Var.Create false }
+            { Key = Key.Fresh (); TodoText = s; Done = Var.Create false }
 
-    let Key item =
-        item.TodoKey
+    type Model =
+        {
+            Items : ListModel<Key,TodoItem>
+        }
+
+    let CreateModel () =
+        { Items = ListModel.Create (fun item -> item.Key) [] }
 
     /// Renders a TodoItem
     let RenderItem m todo =
-        let f = fresh ()
         el "tr" [
             el "td" [
-                Doc.TextNode (string f)
                 // Here is a tree fragment that depends on the Done status of the item.
                 View.FromVar todo.Done
                 // Let us render the item differently depending on whether it's done.
@@ -74,7 +71,7 @@ module TodoList =
             el "td" [
                 // This button removes the item from the collection. By removing the item,
                 // the collection will automatically be updated.
-                button "Remove" (fun _ -> ReactiveCollection.Remove m todo)
+                button "Remove" (fun _ -> m.Items.Remove todo)
             ]
         ]
 
@@ -94,16 +91,17 @@ module TodoList =
                 let todo = TodoItem.Create (Var.Get rvInput)
                 // This is then added to the collection, which automatically
                 // updates the presentation.
-                ReactiveCollection.Add m todo)
+                m.Items.Add todo)
         ]
 
     // Embed a time-varying collection of items.
     let TodoList m =
-        Doc.ConvertBy Key (RenderItem m) (ReactiveCollection.View m)
+        ListModel.View m.Items
+        |> Doc.ConvertBy (fun m -> m.Key) (RenderItem m)
 
     // Finally, we put it all together...
     let TodoExample () =
-        let m = ReactiveCollection.Create (fun i1 i2 -> i1.TodoKey = i2.TodoKey)
+        let m = CreateModel ()
         elA "table" ["class" ==> "table table-hover"] [
             el "tbody" [
                 TodoList m
