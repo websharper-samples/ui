@@ -16,6 +16,7 @@
   * [Time](Time.md) - type alias for duration in milliseconds
 * Structure
   * [Flow](Flow.md)
-  * TODO [Router](Router.md) including Route, RouteFrag, Site, SiteId
+  * [Router](Router.md), RouteId - support for routing and structuring sites
+  * [RouteMap](RouteMap.md) - bijection between a route and an action type
 * Misc
   * [Notation](Notation.md)
