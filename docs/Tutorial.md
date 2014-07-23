@@ -1,10 +1,10 @@
-Introduction
-============
+WebSharper.UI.Next Tutorial
+===========================
 
 In this tutorial, we'll have a look at the basics of WebSharper.UI.Next, taking you through all of the basics and some of the ways of using the library. This will be done entirely by example: you should get introduced to everything you need along the way.
 
 Text Box
-========
+--------
 
 Probably the very simplest application we could create is one with an input box and a label, where the label mirrors the text from the input box. You can find all examples live [here](http://intellifactory.github.io/websharper.ui.next/) with the source for this example [here](https://github.com/intellifactory/websharper.ui.next/blob/master/src/SimpleTextBox.fs).
 
@@ -49,7 +49,7 @@ let Main () =
 ...and we're done!
 
 Transform-the-Input
-===================
+-------------------
 The label in the previous example copied the input text as-is. What about if we wanted to display this input text in different ways, such as capitalised? Or even the number of different words that were typed?
 
 Luckily, `View`s provide different combinators we can use to do just this. We start by making a `Var` and an input box as before:
@@ -74,12 +74,11 @@ Finally, we embed these into table rows and hook everything up. This is done exa
 
 
 Making a To-Do List Application
-===============================
+--------------------------------
 
 Now we know the basics, we can have a look at a slightly bigger application: the de-facto "Hello World" of reactive frameworks, a to-do list!
 
-Specification and Analysis
---------------------------
+### Specification and Analysis
 
 Firstly, let's lay out exactly what we want:
 
@@ -91,8 +90,7 @@ Firstly, let's lay out exactly what we want:
 
 Now, in UI.Next terms, let's think of how this will fit into our model. Since we are able to mark a to-do item as done, this means that a *to-do item can vary with time*, and therefore some parts of the model of the item will have to be a `Var`. Secondly, since we can add and remove items from the to-do list, the *list itself will vary with time*. To encode this, we'll use a ReactiveCollection, which provides some helper functions for just this purpose.
 
-Creating the Model
-------------------
+### Creating the Model
 
 Now we've laid out and thought about exactly what we want, it's time to create our model. To start off with, we want a to-do item, consisting of three things: the content, a `Var<bool>` signifying whether the task has been done, and some unique key.
 
@@ -126,11 +124,11 @@ The last thing we need to do before doing some application logic is to create a 
 let coll = ReactiveCollection.Create (fun i1 i2 -> i1.TodoKey = i2.TodoKey)
 ```
 
-Rendering the Model
--------------------
+### Rendering the Model
+
 So far, we have a model of each to-do item, a way of creating them, and a time-varying collection which compares items by their unique `TodoKey`. The next thing to do is create the components which manipulate and display the list of items. 
 
-### Displaying the items
+#### Displaying the items
 As in our specification, each item should be displayed differently if it has been marked as completed -- in this case, we'll display the item text with a strikethrough if it has been done. Additionally, we'll display each item as a row in a table, and have buttons to either mark the item as being done, or to remove it from the list completely.
 
 In order to specify a view, we'll make use of the `Doc` module. As we discussed earlier, this module provides multiple helpers to create reactive DOM elements. In particular, we'll use `Doc.Element` to create an element, and `Doc.Button` to create a button. 
@@ -150,7 +148,7 @@ let input x = Doc.Input ["class" ==> "form-control"] x
 /// Button with a given caption and handler
 let button name handler = Doc.Button name ["class" ==> "btn btn-default"] handler
 ```
-#### Rendering an Item
+##### Rendering an Item
 Here's an outline of our `RenderItem` function, which takes a `TodoItem` and produces a `Doc`:
 ```fsharp
     /// Renders an item.
@@ -235,7 +233,7 @@ let RenderItem m todo =
     ]
 ```
 
-#### Rendering the Collection
+##### Rendering the Collection
 Now we have a function to render each item, we need to embed the collection itself. This means that whenever either an item in the collection changes, or the collection itself changes, the changes should be reflected in the DOM. This is simply done using the `EmbedBagBy` function:
 
 ```fsharp
@@ -252,7 +250,7 @@ let TodoList m =
 
 This gives us a `Doc`, which we can embed as normal. That's it -- we've now got the code in place to show the reactive collection. 
 
-### Creating the Add Item form
+#### Creating the Add Item form
 Creating a form to add an item is pretty straightforward. What we'll need here is a variable to contain the current value of the input box containing the new item to add, and a button to use this to create a new item and add it to the collection. This boils down to this function:
 
 ```fsharp
@@ -279,8 +277,8 @@ So, to start off with, we create a new variable `rvInput`, which is the variable
 
 That's the form sorted!
 
-Putting it all together
------------------------
+### Putting it all together
+
 
 Finally, we need a rendering function which ties all of these components together. Remember that all of the different components are of type `Doc`, so they'll compose very easily due to their monoidal structure. This means composing everything is done as so:
 
