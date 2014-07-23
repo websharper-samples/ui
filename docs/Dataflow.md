@@ -1,8 +1,16 @@
 # Dataflow
 > [Documentation](../README.md) ▸ [API Reference](API.md) ▸ **Dataflow**
 
-[View](View.md) and [Var](Var.md) types support expressing
-time-varying values organized into a dataflow graph.
+Dataflow functionality supports expressing
+time-varying values organized into a self-modifying graph.
+
+Types involved:
+
+  * [Var](Var.md) - reactive variables
+  * [View](View.md) - computed reactive nodes
+  * [Key](Key.md) - helper type for generating unique identifiers 
+  * [Model](Model.md) - helpers for imperative models
+  * [ListModel](ListModel.md) - `ResizeArray`-like reactive model helpers
 
 A simple graph might look like this:
 
