@@ -3,7 +3,7 @@
 
 * [Dataflow](Dataflow.md) - dataflow support
   * [Var](Var.md) - reactive variables
-  * [View](View.md) - computed reactive nodes
+  * [View](View.md), ViewBuilder - computed reactive nodes
   * [Key](Key.md) - helper type for generating unique identifiers 
   * [Model](Model.md) - helpers for imperative models
   * [ListModel](ListModel.md) - `ResizeArray`-like reactive model helpers
