@@ -14,6 +14,6 @@ API in detail:
 * [Easing](Easing.md) - easing functions
 * [Interpolation](Interpolation.md) - interpolation between two values
 * [NormalizedTime](NormalizedTime.md) - type alias for the `[0, 1]` range
-* [Trans](Trans.md) - support for animating change, enter and exit transitions
 * [Time](Time.md) - type alias for duration in milliseconds
+* [Trans](Trans.md) - support for animating change, enter and exit transitions
  
