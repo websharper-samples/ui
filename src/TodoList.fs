@@ -47,32 +47,7 @@ module TodoList =
     let Key item =
         item.TodoKey
 
-    type ViewModel =
-        {
-            Items : Model<seq<TodoItem>,ResizeArray<TodoItem>>
-        }
-
-    let Create () =
-        let items =
-            ResizeArray()
-            |> Model.Create (fun arr -> arr.ToArray() :> seq<_>)
-        { Items = items }
-
-    /// Adds an item to the collection.
-    let Add m item =
-        m.Items
-        |> Model.Update (fun all -> all.Add(item))
-
-    /// Removes an item from the collection.
-    let Remove m (item: TodoItem) =
-        m.Items
-        |> Model.Update (fun all ->
-            seq { 0 .. all.Count - 1 }
-            |> Seq.filter (fun i -> all.[i].TodoKey = item.TodoKey)
-            |> Seq.toArray
-            |> Array.iter (fun i -> all.RemoveAt(i)))
-
-    /// Renders a collection of items.
+    /// Renders a TodoItem
     let RenderItem m todo =
         let f = fresh ()
         el "tr" [
@@ -99,7 +74,7 @@ module TodoList =
             el "td" [
                 // This button removes the item from the collection. By removing the item,
                 // the collection will automatically be updated.
-                button "Remove" (fun _ -> Remove m todo)
+                button "Remove" (fun _ -> ReactiveCollection.Remove m todo)
             ]
         ]
 
@@ -107,8 +82,6 @@ module TodoList =
     let TodoForm m =
         // We make a variable to contain the new to-do item.
         let rvInput = Var.Create ""
-        // ...and a view to inspect it.
-        let rviInput = View.FromVar rvInput
         el "form" [
             divc "form-group" [
                 el "label" [txt "New entry: "]
@@ -121,16 +94,16 @@ module TodoList =
                 let todo = TodoItem.Create (Var.Get rvInput)
                 // This is then added to the collection, which automatically
                 // updates the presentation.
-                Add m todo)
+                ReactiveCollection.Add m todo)
         ]
 
     // Embed a time-varying collection of items.
     let TodoList m =
-        Doc.ConvertBy Key (RenderItem m) m.Items.View
+        Doc.ConvertBy Key (RenderItem m) (ReactiveCollection.View m)
 
     // Finally, we put it all together...
     let TodoExample () =
-        let m = Create ()
+        let m = ReactiveCollection.Create (fun i1 i2 -> i1.TodoKey = i2.TodoKey)
         elA "table" ["class" ==> "table table-hover"] [
             el "tbody" [
                 TodoList m
