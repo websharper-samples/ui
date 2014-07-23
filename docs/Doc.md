@@ -88,11 +88,35 @@ to locate the parent placeholder element with `document.getElementById`.
 
 ## Forms
 
-TODO..
+<a name="Input" href="#Input">#</a> Doc.**Input** `seq<Attr> -> Var<string> -> Doc`
+
+Creates an input box with the given attributes. Synchronises with the given reactive variable: changing the text in the input box will update the variable, and changing the variable contents will update the text in the box.
 
 
+<a name="InputArea" href="#InputArea">#</a> Doc.**InputArea** `seq<Attr> -> Var<string> -> Doc`
+
+As above, but creates an HTML `textarea` instead of an input box.
 
 
+<a name="PasswordBox" href="#PasswordBox">#</a> Doc.**PasswordBox** `seq<Attr> -> Var<string> -> Doc`
+
+As above, but creates an HTML password box.
+
+<a name="Button" href="#Button">#</a> Doc.**Button** `caption: string -> seq<Attr> -> (unit -> unit) -> Doc`
+
+Creates a button with the given caption and attributes. Takes a callback which is executed whenever the button is clicked.
+
+<a name="Link" href="#Link">#</a> Doc.**Link** `caption: string -> seq<Attr> -> (unit -> unit) -> Doc`
+
+Creates a link with the given caption and attributes which does not change the page, but instead executes the given callback.
+
+<a name="CheckBox" href="#CheckBox">#</a> Doc.**CheckBox** `('T -> string) -> list<'T> -> Var<list<'T>> -> Doc`
+
+Creates a set of check boxes from the given list. Requires a function to show each item, and a list variable which is updated with the currently-selected items.
+
+<a name="Select" href="#Select">#</a> Doc.**Select** `seq<Attr> -> ('T -> string) -> list<'T> -> Var<'T> -> Doc`
+
+Creates a selection box from the given list. Requires a function to show each item, and a variable which is updated with the currently-selected item.
 
 
 
