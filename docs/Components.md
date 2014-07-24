@@ -14,7 +14,7 @@ Basic guidelines are:
 
 * Accept and expose [Doc](Doc.md) values for UI that can be embedded into a document tree
 
-* Make components higher order, so clients can create as many instances as need
+* Make components higher order, so clients can create as many instances as needed
 
 The strategy is fairly similar to creating reusable
 components in F# or JavaScript.  One advantage is having new vocabulary
