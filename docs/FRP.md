@@ -31,8 +31,8 @@ context, where we want to integrate easily with existing libraries
 such as DOM API, and be compatible with a simple ML type system.
 
 However, for now we decided to avoid implementing FRP.  Instead, we
-focus on a subset of functionality, defining time-varying values
-similar to Behaviors, but without support for real-time sampling.
+focus on a subset of functionality, defining time-varying [View](View.md)
+values similar to Behaviors, but without support for real-time sampling.
 [Event streams](EventStreams.md) are left for the user to tackle using
 callbacks or third-party libraries.  This is a vast simplification
 over FRP and is much easier to implement efficiently.
