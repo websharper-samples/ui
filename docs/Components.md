@@ -1,16 +1,24 @@
 # Components
+> [Documentation](../README.md) ▸ **Components**
 
-What are the design considerations for structuring user interfaces?
-As with all design, we want to compose an application from components
-that can be individually described, understood, implemented and
-tested.
+Basic guidelines are:
 
-Vars and Views provide a simple way to split UI into components.  A
-component defines a model as a combination of Vars, state transitions
-as functions that mutate the model, and several Views computed from
-the Vars, including a `Doc` value defining how to render the
-component.
+* Describe state using several [Var](Var.md) cells
 
-Just like CML channels and first-class composable events, View<'T> is
-thus an excellent type for describing component boundaries and then
-gluing components together.
+* Hide your state, so that your component can locally enforce invariants on it
+
+* Just as in normal F# and JavaScript, expose methods and callbacks for
+  clients to send and receive event notifications for your component
+
+* Accept and expose [View](View.md) values to express time-varying quantities 
+
+* Expose [Doc](Doc.md) values for UI that can be embedded into a document tree
+
+* Make components higher order, so clients can create as many instances as need
+
+The strategy is fairly similar to creating reusable
+components in F# or JavaScript.  One advantage is having new vocabulary
+for [Var](Var.md), [View](View.md) and [Doc](Doc.md).  Making a distinction
+between time-varying quantities and event occurences makes your code easier
+to understand and easier to get right.
+
