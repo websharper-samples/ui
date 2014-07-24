@@ -7,20 +7,18 @@ module S = BobsleighSite
 [<JavaScript>]
 module RoutedBobsleighSite =
 
-    let TheRouter =
-        Router.Create
+    let TheRouteMap =
+        RouteMap.Create
             (function
-                | S.BobsleighHome -> Route.Create []
-                | S.BobsleighHistory -> Route.Create [RouteFrag.Create "history"]
-                | S.BobsleighGovernance -> Route.Create [RouteFrag.Create "governance"]
-                | S.BobsleighTeam -> Route.Create [RouteFrag.Create "team"])
-            (fun route ->
-                match Route.ToStringList route with
-                | [] -> S.BobsleighHome
+                | S.BobsleighHome -> []
+                | S.BobsleighHistory -> ["history"]
+                | S.BobsleighGovernance -> ["governance"]
+                | S.BobsleighTeam -> ["team"])
+            (function
                 | ["history"] -> S.BobsleighHistory
                 | ["governance"] -> S.BobsleighGovernance
                 | ["team"] -> S.BobsleighTeam
-                | xs -> S.BobsleighHome)
+                | _ -> S.BobsleighHome)
 
     let Main (current: Var<S.Page>) =
 
@@ -51,7 +49,7 @@ module RoutedBobsleighSite =
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
-        Samples.Routed(TheRouter, S.BobsleighHome)
+        Samples.Routed(TheRouteMap, S.BobsleighHome)
             .Id("RoutedBobsleighMiniSite")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])

@@ -1,31 +1,56 @@
-### Dataflow
+# Dataflow
+> [Documentation](../README.md) ▸ [API Reference](API.md) ▸ **Dataflow**
 
-UI.Next View and Var types support expressing time-varying values
-organized into a data-flow graph.  It is important to remember that
-with this abstraction only the latest value matters.  View is
-deliberately not suitable for modeling event streams.  Let us
-elaborate a bit.
+Dataflow functionality supports expressing
+time-varying values organized into a self-modifying graph.
 
-Consider these pairs of time-series:
+Types involved:
 
-1. your income last year and your net worth
+  * [Var](Var.md) - reactive variables
+  * [View](View.md), ViewBuilder - computed reactive nodes
+  * [Key](Key.md) - helper type for generating unique identifiers 
+  * [Model](Model.md) - helpers for imperative models
+  * [ListModel](ListModel.md) - `ResizeArray`-like reactive model helpers
 
-2. daily rainfall and cumulative rainfall since Jan 1
+A simple graph might look like this:
 
-3. button clicks and current mouse position
+```fsharp
 
-4. spreadsheet update cycles and values in spreadsheet cells
+open IntelliFactory.WebSharper
+open IntelliFactory.WebSharper.UI.Next
 
-The critical difference is what you are interested in.  In case of
-button clicks, there are occurences at discrete times, and every
-occurence matters; in case of mouse position, there is a value at
-every point in time, but what often matters most is the latest value.
+let Main () =
 
-View is appropriate to model mouse position, but not button clicks.
-Note that this specification admits efficient implementations that
-skip update steps, when possible, to align with the latest value.
+  let x = Var.Create 0
+  let y = x.View |> View.Map (fun x -> x + 1)
+  let z = View.Map2 ( + ) x.View y
 
-Typically this is solved directly by callbacks.  While callbacks are
-adequate for describing discrete events, using them for synchronizing
-time-varying values is sub-optimal.  It is both unreadable and
-inefficient, as it over-specifies the update process.
+  let update () =
+    x.Value <- x.Value + 1
+  
+  let observe v =
+    JavaScript.Log(v)
+
+  View.Sink observe z
+```
+
+Besides Sink, Views are typically observed with the [Doc](Doc.md) layer
+that implements reactive DOM.
+
+Vars are similar to `ref` cells and hold some state that can change.
+Views are expressed as computations from `Vars`.  The mental model is
+that of a spreadsheet.  Application entry point observes a `View`
+imperatively for some effect.
+
+It is important to understand that only the latest value matters. 
+The number of times `View.Sink` will be called has no relation to the
+number of times the underlying Vars change.  The only thing that matters,
+is that the system will synchronize.
+
+There are no glitches.  In examples like above, you always observe
+consistent states, such that `z = 2 * x + 1`.
+
+The datafow layer is designed to avoid space leaks in the majority of
+common cases.  Generelly, constructing new Views is safe and they do not
+need to be imperatively "removed", as they get collected by GC when not in
+use (see [Leaks](Leaks.md) for gory details).

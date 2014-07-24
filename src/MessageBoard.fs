@@ -129,9 +129,7 @@ module MessageBoard =
             let message =
                 Div [] [
                     P [cls "bg-danger"] [
-                        View.FromVar rvMsg
-                        |> View.Map Doc.TextNode
-                        |> Doc.EmbedView
+                        Doc.TextView rvMsg.View
                     ]
                 ]
             // Row of the login form
