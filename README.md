@@ -20,23 +20,18 @@ as standalone JavaScript with TypeScript bindings.
 
 These articles cover various design choices and aspects of the system:
 
-* [Dataflow](docs/Dataflow.md)
-
-* [Explicit sharing](docs/Sharing.md)
-
-* [DOM monoids](docs/Monoids.md)
-
-* [Lack of event streams combinators](docs/EventStreams.md)
-
-* [Comparison with FRP](docs/FRP.md)
-
-* [Component design](docs/Components.md)
-
-* [A case for Concurrent ML](docs/CML.md)
+* [Dataflow](docs/Dataflow.md) - explains the dataflow system
+* [Leaks](docs/Leaks.md) - explains how most memory leaks are avoided
+* [Sharing](docs/Sharing.md) - helps understanding sharing and identity
+* [Monoids](docs/Monoids.md) - explains use of monoids in the API
+* [EventStreams](docs/EventStreams.md) - provides a rationale for omitting event stream combinators
+* [FRP](docs/FRP.md) - discusses connections to Functional Reactive Programming
+* [Components](docs/Components.md) - gives simple component design guidelines
+* [CML](docs/CML.md) - discusses integrating Concurrent ML as a future direction 
 
 ## Talks
 
-* [Video: Tackle UI with Reactive DOM in F# and WebSharper](https://www.youtube.com/watch?v=wEkS09s3KBc) - in this Community for FSharp event, t0yv0 presents the basics of the library and the motivations for the dataflow design 
+* [Video: Tackle UI with Reactive DOM in F# and WebSharper](https://www.youtube.com/watch?v=wEkS09s3KBc) - in this Community for FSharp event, Anton Tayanovskyy presents the basics of the library and the motivations for the dataflow design 
 
 ## Acknowledgements
 
