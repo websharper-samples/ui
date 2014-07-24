@@ -10,6 +10,7 @@
 * DOM
   * [Attr](Attr.md) - attributes
   * [Doc](Doc.md) - document fragments
+  * [Html](Html.md) - HTML Helper Functions
 * [Animation](Animation.md) - support for animation
   * [Anim](Anim.md) - abstract animation types
   * [Easing](Easing.md) - easing functions
