@@ -12,7 +12,7 @@ Basic guidelines are:
 
 * Accept and expose [View](View.md) values to express time-varying quantities 
 
-* Expose [Doc](Doc.md) values for UI that can be embedded into a document tree
+* Accept and expose [Doc](Doc.md) values for UI that can be embedded into a document tree
 
 * Make components higher order, so clients can create as many instances as need
 
