@@ -2,6 +2,7 @@
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Html
 
 [<JavaScript>]
 module EditablePersonList =
@@ -31,7 +32,7 @@ module EditablePersonList =
     let memberList =
         // This renders each entry in the list.
         let renderItem person =
-            el "li" [
+            LI [] [
                 // Map2 takes 2 views, which allow us to look at a value as
                 // it changes. Here, we want to look at first and last names.
                 View.Map2 (fun f l ->
@@ -43,8 +44,8 @@ module EditablePersonList =
                 |> Doc.EmbedView
             ]
 
-        el "div" [
-            el "ul" [
+        Div [] [
+            UL [] [
                 // This maps over our list of people, creating a list of Docs.
                 // Since a Doc has a monoidal interface, we can then just use
                 // Doc.Concat to flatten this out to a single Doc.
@@ -59,34 +60,34 @@ module EditablePersonList =
         // input components which will manipulate the first and last name
         // fields.
         let renderPersonInput person =
-            el "li" [
+            LI [] [
                 Doc.Input [] person.FirstName
                 Doc.Input [] person.LastName
             ]
 
         // We use the same trick as before: create a list of Docs from a list
         // of Person records, and flatten it using Doc.Concat
-        el "div" [
-            el "ul" [
+        Div [] [
+            UL [] [
                 List.map renderPersonInput peopleList |> Doc.Concat
             ]
         ]
 
     // Finally, we put it all together.
     let Main () =
-        el "div" [
-            el "div" [
-                el "h1" [txt "Member List"]
+        Div [] [
+            Div [] [
+                H1 [] [txt "Member List"]
                 memberList
             ]
-            el "div" [
-                el "h1" [txt "Change Member Details"]
+            Div [] [
+                H1 [] [txt "Change Member Details"]
                 peopleBoxes
             ]
         ]
 
     let Description () =
-        el "div" [
+        Div [] [
             txt "An example inspired by a "
             href "SAP OpenUI sample" "http://jsbin.com/openui5-HTML-templates/1/edit"
             txt "."

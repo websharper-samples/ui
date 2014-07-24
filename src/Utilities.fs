@@ -8,10 +8,10 @@ open IntelliFactory.WebSharper
 module internal Utilities =
 
     /// Element without attributes
-    let el name c = Doc.Element name [] c
+    //let el name c = Doc.Element name [] c
 
     /// Element with attributes
-    let elA n a c = Doc.Element n a c
+    //let elA n a c = Doc.Element n a c
 
     /// Class attribute
     let cls n = Attr.Class n
@@ -38,4 +38,4 @@ module internal Utilities =
     let link cap attr act = Doc.Link cap attr act
 
     /// Link with click callback
-    let href text url = elA "a" ["href" ==> url] [txt text]
+    let href text url = Doc.Element "a" ["href" ==> url] [txt text]

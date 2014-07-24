@@ -13,6 +13,7 @@ namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Html
 
 // An example which takes some input from a text box, and outputs
 // it with different functions applied to it, making use of View.Map.
@@ -34,21 +35,21 @@ module InputTransform =
         // parameter. Whenever the input field is updated, the new value is
         // automatically placed into the variable.
         let inputField =
-            elA "div" [cls "panel" ; cls "panel-default"] [
-                elA "div" [cls "panel-heading"] [
-                    elA "h3" [cls "panel-title"] [
+            Div [cls "panel" ; cls "panel-default"] [
+                Div [cls "panel-heading"] [
+                    H3 [cls "panel-title"] [
                         Doc.TextNode "Input"
                     ]
                 ]
 
-                elA "div" [cls "panel-body"] [
-                    elA "form-horizontal" ["role" ==> "form"] [
-                        elA "div" [cls "form-group"] [
-                            elA "label" [cls "col-sm-2" ; cls "control-label" ; "for" ==> "inputBox"] [
+                Div [cls "panel-body"] [
+                    Form [cls "form-horizontal" ; "role" ==> "form"] [
+                        Div [cls "form-group"] [
+                            Label [cls "col-sm-2" ; cls "control-label" ; "for" ==> "inputBox"] [
                                 Doc.TextNode "Write something: "
                             ]
 
-                            elA "div" [cls "col-sm-10"] [
+                            Div [cls "col-sm-10"] [
                                 Doc.Input ["class" ==> "form-control" ; "id" ==> "inputBox"] rvText
                             ]
                         ]
@@ -84,26 +85,26 @@ module InputTransform =
             ]
 
         let tableRow (lbl, view) =
-            el "tr" [
-                el "td" [
+            TR [] [
+                TD [] [
                     Doc.TextNode lbl
                 ]
-                el "td" [
+                TD [] [
                     Doc.TextView view
                 ]
             ]
 
         let tbl =
-            elA "div" [cls "panel" ; cls "panel-default"] [
-                elA "div" [cls "panel-heading"] [
-                    elA "h3" [cls "panel-title"] [
+            Div [cls "panel" ; cls "panel-default"] [
+                Div [cls "panel-heading"] [
+                    H3 [cls "panel-title"] [
                         Doc.TextNode "Output"
                     ]
                 ]
 
-                elA "div" [cls "panel-body"] [
-                    elA "table" [cls "table"] [
-                        el "tbody" [
+                Div [cls "panel-body"] [
+                    Table [cls "table"] [
+                        TBody [] [
                             // We map the tableRow function onto the different
                             // views of the source, and concatenate the resulting
                             // documents.
@@ -113,13 +114,13 @@ module InputTransform =
                 ]
             ]
 
-        el "div" [
+        Div [] [
             inputField
             tbl
         ]
 
     let Description () =
-        el "div" [
+        Div [] [
             Doc.TextNode "Transforming the data provided by a single data source."
         ]
 

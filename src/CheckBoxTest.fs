@@ -13,6 +13,7 @@ namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Html
 
 // An example making use of the checkbox controls within RDOM.
 // See this live at http://intellifactory.github.io/websharper.ui.next/#CheckBoxTest.fs !
@@ -57,7 +58,7 @@ module CheckBoxTest =
         Doc.Concat [chkBox; label]
 
     let Description () =
-        el "div" [
+        Div [] [
             Doc.TextNode "An application which shows the selected values."
         ]
 

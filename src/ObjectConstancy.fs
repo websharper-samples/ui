@@ -14,6 +14,7 @@ namespace IntelliFactory.WebSharper.UI.Next
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.JQuery
 open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Html
 
 /// Attempt to reconstruct this D3 example in UI.Next:
 /// http://bost.ocks.org/mike/constancy/
@@ -121,10 +122,10 @@ module ObjectConstancy =
         let x st = Width * st.Value / st.MaxValue
         let y st = Height * double st.Position / double st.Total
         let h st = Height / double st.Total - 2.
-        let txt f attr = elA "text" attr [state |> View.Map f |> Doc.TextView]
+        let txt f attr = SVG.Text attr [state |> View.Map f |> Doc.TextView]
         Doc.Concat [
-            elA "g" [Attr.Style "fill" "steelblue"] [
-                elA "rect" [
+            SVG.G [Attr.Style "fill" "steelblue"] [
+                SVG.Rect [
                     "x" ==> "0"
                     anim "y" InOutTransition y
                     anim "width" SimpleTransition x
@@ -149,29 +150,28 @@ module ObjectConstancy =
 
     let Main () =
         let (dataSet, bracket, shownData) = SetupDataModel ()
-        let link text href = elA "a" ["href" ==> href] [txt text]
-        el "div" [
-            el "h2" [txt "Top States by Age Bracket, 2008"]
+        Div [] [
+            H2 [] [txt "Top States by Age Bracket, 2008"]
             dataSet
             |> View.Map (fun dS ->
                 Doc.Select [cls "form-control"] (fun (AgeBracket b) -> b)
                     (List.ofArray dS.Brackets.[1..]) bracket)
             |> Doc.EmbedView
-            elA "div" [cls "skip"] []
-            elA "svg" ["width" ==> string Width; "height" ==> string Height] [
+            Div [cls "skip"] []
+            SVG.Svg ["width" ==> string Width; "height" ==> string Height] [
                 shownData
                 |> View.ConvertSeqBy (fun s -> s.State) Render
                 |> View.Map Doc.Concat
                 |> Doc.EmbedView
             ]
-            el "p" [
+            P [] [
                 txt "Source: "
-                link "Census Bureau" "http://www.census.gov/popest/data\
+                href "Census Bureau" "http://www.census.gov/popest/data\
                     /historical/2000s/vintage_2008/"
             ]
-            el "p" [
+            P [] [
                 txt "Original Sample by Mike Bostock: "
-                link "Object Constancy" "http://bost.ocks.org/mike/constancy/"
+                href "Object Constancy" "http://bost.ocks.org/mike/constancy/"
             ]
         ]
 
@@ -187,4 +187,3 @@ module ObjectConstancy =
             .Render(Main)
             .RenderDescription(Description)
             .Create()
-

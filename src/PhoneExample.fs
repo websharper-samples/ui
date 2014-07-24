@@ -13,6 +13,7 @@ namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Html
 
 // This example is a translation of the basics from the AngularJS tutorial,
 // found here: https://docs.angularjs.org/tutorial/.
@@ -69,18 +70,18 @@ module PhoneExample =
 
         // A simple function for displaying the details of a phone:
         let showPhone ph =
-            el "li" [
-                el "span" [ txt ph.Name ]
-                el "p" [ txt ph.Snippet ]
+            LI [] [
+                Span [] [ txt ph.Name ]
+                P [] [ txt ph.Snippet ]
             ]
 
         let showPhones phones =
             Doc.Concat (List.map showPhone phones)
 
         // The main body.
-        divc "row" [
+        Div [cls "row"] [
 
-            divc "col-sm-6" [
+            Div [cls "col-sm-6"] [
 
                 // We specify a label, and an input box linked to our query RVar.
                 txt "Search: "
@@ -94,8 +95,8 @@ module PhoneExample =
 
             // Finally, we render the list of phones using RD.ForEach.
             // When the list changes, the DOM will be updated to reflect this.
-            divc "col-sm-6" [
-                el "ul" [ Doc.EmbedView (View.Map showPhones visiblePhones) ]
+            Div [cls "col-sm-6"] [
+                UL [] [ Doc.EmbedView (View.Map showPhones visiblePhones) ]
             ]
         ]
 
@@ -114,14 +115,11 @@ module PhoneExample =
             defPhone "Samsung Galaxy" "The Ultimate Phone" 4
         ]
 
-    let link txt href =
-        Doc.Element "a" [(Attr.Create "href" href)] [Doc.TextNode txt]
-
     // Todo: I don't like this. There's got to be a nicer way of embedding links.
     let Description () =
-        el "div" [
+        Div [] [
             Doc.TextNode "Taken from the "
-            link "AngularJS Tutorial" "https://docs.angularjs.org/tutorial/"
+            href "AngularJS Tutorial" "https://docs.angularjs.org/tutorial/"
             Doc.TextNode ", a list filtering and sorting application for phones."
         ]
 

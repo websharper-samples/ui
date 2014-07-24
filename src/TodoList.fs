@@ -13,6 +13,7 @@ namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Html
 
 // A to-do list application, showcasing time-varying collections of tim-varying
 // elements.
@@ -49,27 +50,27 @@ module TodoList =
 
     /// Renders a TodoItem
     let RenderItem m todo =
-        el "tr" [
-            el "td" [
+        TR [] [
+            TD [] [
                 // Here is a tree fragment that depends on the Done status of the item.
                 View.FromVar todo.Done
                 // Let us render the item differently depending on whether it's done.
                 |> View.Map (fun isDone ->
                     if isDone
-                        then el "del" [ txt todo.TodoText ]
+                        then Del [] [ txt todo.TodoText ]
                         else txt todo.TodoText)
                 // Finally, we embed this possibly-changing fragment into the tree.
                 // Whenever the input changes, the parts of the tree change automatically.
                 |> Doc.EmbedView
             ]
 
-            el "td" [
+            TD [] [
                 // Here's a button which specifies that the item has been done,
                 // flipping the "Done" flag to true using a callback.
                 button "Done" (fun () -> Var.Set todo.Done true)
             ]
 
-            el "td" [
+            TD [] [
                 // This button removes the item from the collection. By removing the item,
                 // the collection will automatically be updated.
                 button "Remove" (fun _ -> ReactiveCollection.Remove m todo)
@@ -80,9 +81,9 @@ module TodoList =
     let TodoForm m =
         // We make a variable to contain the new to-do item.
         let rvInput = Var.Create ""
-        el "form" [
+        Form [] [
             divc "form-group" [
-                el "label" [txt "New entry: "]
+                Label [] [txt "New entry: "]
                 // Here, we make the Input box, backing it by the reactive variable.
                 input rvInput
             ]
@@ -102,8 +103,8 @@ module TodoList =
     // Finally, we put it all together...
     let TodoExample () =
         let m = ReactiveCollection.Create (fun i1 i2 -> i1.TodoKey = i2.TodoKey)
-        elA "table" ["class" ==> "table table-hover"] [
-            el "tbody" [
+        Table ["class" ==> "table table-hover"] [
+            TBody [] [
                 TodoList m
                 TodoForm m
             ]
@@ -114,7 +115,7 @@ module TodoList =
         TodoExample ()
 
     let Description () =
-        el "div" [
+        Div [] [
             Doc.TextNode "A to-do list application."
         ]
 

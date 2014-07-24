@@ -1,6 +1,7 @@
 ﻿namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
+open IntelliFactory.WebSharper.UI.Next.Html
 open IntelliFactory.WebSharper.UI.Next.Notation
 
 // A small example of a single-page mini-sitelet.
@@ -46,12 +47,12 @@ module BobsleighSite =
             let renderLink action =
                 let attr = if action = active then cls "active" else Attr.Empty
 
-                elA "li" [attr] [
+                LI [attr] [
                     link (showAct action) [] (fun _ -> GlobalGo var action)
                 ]
 
-            elA "nav" [cls "navbar" ; cls "navbar-default" ; Attr.Create "role" "navigation"] [
-                elA "ul" [cls "nav" ; cls "navbar-nav"] [
+            Nav [cls "navbar" ; cls "navbar-default" ; Attr.Create "role" "navigation"] [
+                UL [cls "nav" ; cls "navbar-nav"] [
                     List.map renderLink pages |> Doc.Concat
                 ]
             ])
@@ -62,12 +63,12 @@ module BobsleighSite =
     // To change the page, we call this function with the action we want to perform.
     let HomePage ctx =
         Doc.Concat [
-            el "div" [
-                el "h1" [txt "Welcome!"]
-                el "p" [
+            Div [] [
+                H1 [] [txt "Welcome!"]
+                P [] [
                     txt "Welcome to the IntelliFactory Bobsleigh MiniSite!"
                 ]
-                el "p" [
+                P [] [
                     txt "Here you can find out about the "
                     link "history" [] (fun () -> ctx.Go BobsleighHistory)
                     txt " of bobsleighs, the "
@@ -80,9 +81,9 @@ module BobsleighSite =
 
     let History ctx =
         Doc.Concat [
-            el "div" [
-                el "h1" [txt "History"]
-                el "p" [
+            Div [] [
+                H1 [] [txt "History"]
+                P [] [
                     txt "According to "
                     href "Wikipedia" "http://en.wikipedia.org/wiki/Bobsleigh"
                     txt ", the beginnings of bobsleigh came about due to a hotelier \
@@ -91,7 +92,7 @@ module BobsleighSite =
                          a few people interested, and the Swiss town of St Moritz became \
                          the home of the first bobsleigh races."
                 ]
-                el "p" [
+                P [] [
                     txt "Bobsleigh races have been a regular event at the Winter Olympics \
                          since the very first competition in 1924."
                 ]
@@ -100,9 +101,9 @@ module BobsleighSite =
 
     let Governance ctx =
         Doc.Concat [
-            el "div" [
-                el "h1" [txt "Governance"]
-                el "p" [
+            Div [] [
+                H1 [] [txt "Governance"]
+                P [] [
                     txt "The sport is overseen by the "
                     href "International Bobsleigh and Skeleton Federation" "http://www.fibt.com/"
                     txt ", an organisation founded in 1923. \
@@ -120,17 +121,17 @@ module BobsleighSite =
              ("Simon", "Simon_JF")]
 
         Doc.Concat [
-            el "div" [
-                el "h1" [txt "The IntelliFactory Bobsleigh Team"]
-                el "p" [
+            Div [] [
+                H1 [] [txt "The IntelliFactory Bobsleigh Team"]
+                P [] [
                     txt "The world-famous IntelliFactory Bobsleigh Team was founded \
                          in 2004, and currently consists of:"
                 ]
-                el "p" [
-                    el "ul" [
+                P [] [
+                    UL [] [
                         teamMembers
                         |> List.map (fun (name, handle) ->
-                            el "li" [href name ("http://www.twitter.com/" + handle)])
+                            LI [] [href name ("http://www.twitter.com/" + handle)])
                         |> Doc.Concat
                     ]
                 ]
