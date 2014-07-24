@@ -1,5 +1,5 @@
 # Monoids
-> [Documentation](../README.md) ▸ [API Reference](API.md) ▸ **Monoids**
+> [Documentation](../README.md) ▸ **Monoids**
 
 It is a deliberate choice to model [Doc](Doc.md), [Attr](Attr.md) and other types
 as monoids when appropriate.  To recap, a monoid is a simple algebraic
