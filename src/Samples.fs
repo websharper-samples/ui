@@ -13,6 +13,7 @@ namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Html
 open IntelliFactory.WebSharper.UI.Next.Notation
 
 /// A little framework for displaying samples on the site.
@@ -96,10 +97,10 @@ module Samples =
                 // Attribute list: add the "active" class if selected
                 let liAttr = Attr.DynamicClass "active" current.View isActive
                 // Finally, put it all together to render the link
-                elA "li" [liAttr] [
+                LI [liAttr] [
                     link samp.Meta.Title [] (fun () -> current.Value <- samp)
                 ]
-            elA "ul" [cls "nav"; cls "nav-pills"] [
+            UL [cls "nav"; cls "nav-pills"] [
                 for s in samples -> renderLink s
             ]
         let url s =
@@ -114,12 +115,12 @@ module Samples =
                     cls "btn-lg"
                     "href" ==> url sample
                 ]
-            el "div" [
+            Div [] [
                 current.View
                 |> View.Map (fun s ->
                     Doc.Concat [
-                        el "p" [ s.Description ]
-                        elA "a" (btnAttrs s.Meta) [ txt "Source" ]
+                        P [] [ s.Description ]
+                        A (btnAttrs s.Meta) [ txt "Source" ]
                     ])
                 |> Doc.EmbedView
             ]

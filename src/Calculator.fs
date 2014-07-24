@@ -13,6 +13,7 @@ namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Html
 open IntelliFactory.WebSharper.UI.Next.Notation
 
 // A calculator application, showing model-view separation.
@@ -23,7 +24,7 @@ module Calculator =
 
     // ============== MODEL ============== //
 
-    type Op = Add | Sub | Mul | Div
+    type Op = Add | Sub | Mul | Div_
 
     // Model of our calculator
     type Calculator =
@@ -49,14 +50,14 @@ module Calculator =
         | Add -> (+)
         | Sub -> (-)
         | Mul -> (*)
-        | Div -> (/)
+        | Div_ -> (/)
 
     let showOp op =
         match op with
         | Add -> "+"
         | Sub -> "-"
         | Mul -> "*"
-        | Div -> "/"
+        | Div_ -> "/"
 
     // Calculates the answer using the selected operation, and writes the new
     // answer to the operand section. Sets memory to 0.
@@ -78,9 +79,6 @@ module Calculator =
     let cBtn rvCalc = Doc.Button "C" [] (fun _ -> Var.Set rvCalc initCalc)
     let eqBtn rvCalc = Doc.Button "=" [] (fun _ -> calculate rvCalc)
 
-    // The rendering itself
-    let div = el "div"
-
     let calcView rvCalc =
         let rviCalc = View.FromVar rvCalc
         let btn i = calcBtn i rvCalc
@@ -93,12 +91,12 @@ module Calculator =
         //           4 5 6 -
         //           7 8 9 *
         //           0 C = /
-        div [
+        Div [] [
             Doc.TextView <| displayCalc rvCalc
-            div [btn 1 ; btn 2 ; btn 3 ; obtn Add]
-            div [btn 4 ; btn 5 ; btn 6 ; obtn Sub]
-            div [btn 7 ; btn 8 ; btn 9 ; obtn Mul]
-            div [btn 0 ; cbtn  ; eqbtn ; obtn Div]
+            Div []  [btn 1 ; btn 2 ; btn 3 ; obtn Add]
+            Div [] [btn 4 ; btn 5 ; btn 6 ; obtn Sub]
+            Div [] [btn 7 ; btn 8 ; btn 9 ; obtn Mul]
+            Div [] [btn 0 ; cbtn  ; eqbtn ; obtn Div_]
         ]
 
     // Run it!
@@ -107,7 +105,7 @@ module Calculator =
         Var.Create initCalc |> calcView
 
     let Description () =
-        el "div" [
+        Div [] [
             Doc.TextNode "A calculator application"
         ]
 

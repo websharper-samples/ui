@@ -13,6 +13,7 @@ namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Html
 
 // A simple example consisting of a label which mirrors the content of a text
 // box.
@@ -44,13 +45,13 @@ module SimpleTextBox =
             divc "panel-body" [
                 // Note how components are composable, meaning we can
                 // embed multiple different components here without issue.
-                el "div" [inputField]
-                el "div" [label]
+                Div [] [inputField]
+                Div [] [label]
             ]
         ]
 
     let Description () =
-        el "div" [
+        Div [] [
             Doc.TextNode "A label which copies the contents of a text box."
         ]
 
