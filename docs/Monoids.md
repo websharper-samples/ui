@@ -7,7 +7,7 @@ structure defined by an operation `+` and a unit element `0` such that:
 
     a + (b + c) = (a + b) + c
     a + 0 = a
-    0 + a = 0
+    0 + a = a
 
 In this library, if a type `T` follows the monoid pattern, it will have
 the following methods, corresponding to `+` and `0`:
