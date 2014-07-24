@@ -1,9 +1,14 @@
 # Html
 > [Documentation](../README.md) ▸ [API Reference](API.md) ▸ **Html**
 
-The `Html` module contains functions for constructing HTML elements. All of these functions are simply a convenience wrapper around `Doc.Element`: so for example
+The `Html` module contains functions for constructing HTML elements.
+All of these functions are simply a convenience wrapper around `Doc.Element`: so for example
 
 ```fsharp
+
+open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Html
+
 Div [] [
     Doc.TextNode "Hello!"
 ]
@@ -12,6 +17,8 @@ Div [] [
 would be equivalent to
 
 ```fsharp
+open IntelliFactory.WebSharper.UI.Next
+
 Doc.Element "Div" [] [
     Doc.TextNode "Hello!"
 ]
