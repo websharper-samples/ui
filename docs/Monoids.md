@@ -1,24 +1,40 @@
 # Monoids
+> [Documentation](../README.md) ▸ [API Reference](API.md) ▸ **Monoids**
 
-It is a deliberate choice to model `Doc` and `Attr` as monoids.
-Specifically:
+It is a deliberate choice to model [Doc](Doc.md), [Attr](Attr.md) and other types
+as monoids when appropriate.  To recap, a monoid is a simple algebraic
+structure defined by an operation `+` and a unit element `0` such that:
+
+    a + (b + c) = (a + b) + c
+    a + 0 = a
+    0 + a = 0
+
+In this library, if a type `T` follows the monoid pattern, it will have
+the following methods, corresponding to `+` and `0`:
+
+    T.Append : T -> T -> T
+    T.Empty : T
+    
+It will also have a derived helper method `Concat`:
+
+    T.Concat : seq<T> -> T
+
+For example, on [Doc](Doc.md) and [Attr](Attr.md):
 
 ```fsharp
 val Doc.Concat : seq<Doc> -> Doc
 val Attr.Concat : seq<Attr> -> Doc
 ```
 
-And also `Doc.Empty`, `Doc.Append`, `Attr.Empty`, `Attr.Append`.
-
 Having a single `Concat` operation lets users write code naturally,
 without worrying components such as `x`, `y`, and `z` are nodes or
 node-lists, attributes or attribute lists:
 
 ```fsharp
-ul [x; y; z]
+UL [x; y; z]
 ```
 
-This decision has grown out of frustration with previous HTML
+In the context of DOM, this decision has grown out of frustration with previous HTML
 combinators in WebSharper, which made a distinction between nodes and
 node-lists in types, and often required `yield` and `yield!`
 annotations in code.
