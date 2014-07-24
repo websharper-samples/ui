@@ -1,4 +1,5 @@
 # FRP
+> [Documentation](../README.md) ▸ **FRP**
 
 [Functional Reactive
 Programming](http://en.wikipedia.org/wiki/Functional_reactive_programming)
@@ -27,8 +28,7 @@ of the user to avoid leaks, since the type system is too weak to help.
 
 The dataflow graph approach is perhaps the most helpful in our
 context, where we want to integrate easily with existing libraries
-such as DOM API, be compatible with a simple ML type system, avoid
-relying on weak pointers.
+such as DOM API, and be compatible with a simple ML type system.
 
 However, for now we decided to avoid implementing FRP.  Instead, we
 focus on a subset of functionality, defining time-varying values
@@ -37,8 +37,11 @@ similar to Behaviors, but without support for real-time sampling.
 callbacks or third-party libraries.  This is a vast simplification
 over FRP and is much easier to implement efficiently.
 
-We intend to provide [Concurrent ML](CML.md) combinators in the future
-to better support dealing with event streams and improve composition
+As weak pointers become available in JavaScirpt, this decision might
+be revised, especially in light of [OCaml React][react] success. 
+
+In the more immediate future, we intend to provide [Concurrent ML](CML.md)
+combinators to better support dealing with event streams and improve composition
 of [Components](Components.md).
 
 [elm]: http://elm-lang.org/
