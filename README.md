@@ -6,6 +6,7 @@ simple to construct animated UI in the browser.
 
 * [Examples](http://intellifactory.github.io/websharper.ui.next/)
 * [API Reference](docs/API.md)
+* [Tutorial](docs/Tutorial.md)
 
 ## Availability
 
