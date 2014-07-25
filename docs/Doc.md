@@ -15,6 +15,7 @@ namespace IntelliFactory.WebSharper.UI.Next
 
 type Doc =
     static member Element : name: string -> seq<Attr> -> seq<Doc> -> Doc
+    static member SvgElement : name: string -> seq<Attr> -> seq<Doc> -> Doc
     static member EmbedView : View<Doc> -> Doc
     static member Static : Element -> Doc
     static member TextView : View<string> -> Doc
@@ -58,6 +59,10 @@ Represents a time-varying collection of nodes.
 <a name="Element" href="#Element">#</a> Doc.**Element** `string -> seq<Attr> -> seq<Doc> -> Doc`
 
 Constructs an element node with a given name, attributes and children.
+
+<a name="SvgElement" href="#SvgElement">#</a> Doc.**SvgElement** `string -> seq<Attr> -> seq<Doc> -> Doc`
+
+Same as `Element`, but uses the SVG namespace.
 
 <a name="Static" href="#Static">#</a> Doc.**Static** `Element -> Doc`
 
