@@ -150,8 +150,8 @@ module ObjectConstancy =
 
     let Main () =
         let (dataSet, bracket, shownData) = SetupDataModel ()
-        Div [] [
-            H2 [] [txt "Top States by Age Bracket, 2008"]
+        Div0 [
+            H20 [txt "Top States by Age Bracket, 2008"]
             dataSet
             |> View.Map (fun dS ->
                 Doc.Select [cls "form-control"] (fun (AgeBracket b) -> b)
@@ -164,19 +164,19 @@ module ObjectConstancy =
                 |> View.Map Doc.Concat
                 |> Doc.EmbedView
             ]
-            P [] [
+            P0 [
                 txt "Source: "
                 href "Census Bureau" "http://www.census.gov/popest/data\
                     /historical/2000s/vintage_2008/"
             ]
-            P [] [
+            P0 [
                 txt "Original Sample by Mike Bostock: "
                 href "Object Constancy" "http://bost.ocks.org/mike/constancy/"
             ]
         ]
 
     let Description () =
-        div [txt "This sample show-cases declarative animation and interpolation (tweening)"]
+        Div0 [txt "This sample show-cases declarative animation and interpolation (tweening)"]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =

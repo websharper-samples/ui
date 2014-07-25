@@ -85,11 +85,11 @@ module InputTransform =
             ]
 
         let tableRow (lbl, view) =
-            TR [] [
-                TD [] [
+            TR0 [
+                TD0 [
                     Doc.TextNode lbl
                 ]
-                TD [] [
+                TD0 [
                     Doc.TextView view
                 ]
             ]
@@ -104,7 +104,7 @@ module InputTransform =
 
                 Div [cls "panel-body"] [
                     Table [cls "table"] [
-                        TBody [] [
+                        TBody0 [
                             // We map the tableRow function onto the different
                             // views of the source, and concatenate the resulting
                             // documents.
@@ -114,13 +114,13 @@ module InputTransform =
                 ]
             ]
 
-        Div [] [
+        Div0 [
             inputField
             tbl
         ]
 
     let Description () =
-        Div [] [
+        Div0 [
             Doc.TextNode "Transforming the data provided by a single data source."
         ]
 

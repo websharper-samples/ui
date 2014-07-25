@@ -7,12 +7,6 @@ open IntelliFactory.WebSharper
 [<JavaScript>]
 module internal Utilities =
 
-    /// Element without attributes
-    //let el name c = Doc.Element name [] c
-
-    /// Element with attributes
-    //let elA n a c = Doc.Element n a c
-
     /// Class attribute
     let cls n = Attr.Class n
 
@@ -21,9 +15,6 @@ module internal Utilities =
 
     /// Static attribute
     let ( ==> ) k v = Attr.Create k v
-
-    /// Div without attributes
-    let div docs = Doc.Element "div" [] docs
 
     /// Div with single class
     let divc c docs = Doc.Element "div" [cls c] docs

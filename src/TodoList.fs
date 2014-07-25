@@ -49,27 +49,27 @@ module TodoList =
 
     /// Renders a TodoItem
     let RenderItem m todo =
-        TR [] [
-            TD [] [
+        TR0 [
+            TD0 [
                 // Here is a tree fragment that depends on the Done status of the item.
                 View.FromVar todo.Done
                 // Let us render the item differently depending on whether it's done.
                 |> View.Map (fun isDone ->
                     if isDone
-                        then Del [] [ txt todo.TodoText ]
+                        then Del0 [ txt todo.TodoText ]
                         else txt todo.TodoText)
                 // Finally, we embed this possibly-changing fragment into the tree.
                 // Whenever the input changes, the parts of the tree change automatically.
                 |> Doc.EmbedView
             ]
 
-            TD [] [
+            TD0 [
                 // Here's a button which specifies that the item has been done,
                 // flipping the "Done" flag to true using a callback.
                 button "Done" (fun () -> Var.Set todo.Done true)
             ]
 
-            TD [] [
+            TD0 [
                 // This button removes the item from the collection. By removing the item,
                 // the collection will automatically be updated.
                 button "Remove" (fun _ -> m.Items.Remove todo)
@@ -80,9 +80,9 @@ module TodoList =
     let TodoForm m =
         // We make a variable to contain the new to-do item.
         let rvInput = Var.Create ""
-        Form [] [
+        Form0 [
             divc "form-group" [
-                Label [] [txt "New entry: "]
+                Label0 [txt "New entry: "]
                 // Here, we make the Input box, backing it by the reactive variable.
                 input rvInput
             ]
@@ -104,7 +104,7 @@ module TodoList =
     let TodoExample () =
         let m = CreateModel ()
         Table ["class" ==> "table table-hover"] [
-            TBody [] [
+            TBody0 [
                 TodoList m
                 TodoForm m
             ]
@@ -115,7 +115,7 @@ module TodoList =
         TodoExample ()
 
     let Description () =
-        Div [] [
+        Div0 [
             Doc.TextNode "A to-do list application."
         ]
 

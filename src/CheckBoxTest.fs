@@ -58,7 +58,7 @@ module CheckBoxTest =
         Doc.Concat [chkBox; label]
 
     let Description () =
-        Div [] [
+        Div0 [
             Doc.TextNode "An application which shows the selected values."
         ]
 

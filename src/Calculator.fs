@@ -91,12 +91,12 @@ module Calculator =
         //           4 5 6 -
         //           7 8 9 *
         //           0 C = /
-        Div [] [
+        Div0 [
             Doc.TextView <| displayCalc rvCalc
-            Div []  [btn 1 ; btn 2 ; btn 3 ; obtn Add]
-            Div [] [btn 4 ; btn 5 ; btn 6 ; obtn Sub]
-            Div [] [btn 7 ; btn 8 ; btn 9 ; obtn Mul]
-            Div [] [btn 0 ; cbtn  ; eqbtn ; obtn Div_]
+            Div0 [btn 1 ; btn 2 ; btn 3 ; obtn Add]
+            Div0 [btn 4 ; btn 5 ; btn 6 ; obtn Sub]
+            Div0 [btn 7 ; btn 8 ; btn 9 ; obtn Mul]
+            Div0 [btn 0 ; cbtn  ; eqbtn ; obtn Div_]
         ]
 
     // Run it!
@@ -105,7 +105,7 @@ module Calculator =
         Var.Create initCalc |> calcView
 
     let Description () =
-        Div [] [
+        Div0 [
             Doc.TextNode "A calculator application"
         ]
 

@@ -79,12 +79,12 @@ module ContactFlow =
         Flow.Define (fun cont ->
             Form [cls "form-horizontal" ; "role" ==> "form"] [
                 Div [cls "form-group"] [
-                    Div [] [
+                    Div0 [
                         Doc.Button "E-Mail Address" [cls "btn" ; cls "btn-default"]
                             (fun () -> cont EmailTy)
                     ]
 
-                    Div [] [
+                    Div0 [
                         Doc.Button "Phone Number" [cls "btn" ; cls "btn-default"]
                             (fun () -> cont PhoneTy)
                     ]
@@ -126,7 +126,7 @@ module ContactFlow =
             | Email s -> "the e-mail address " + s
             | PhoneNumber s -> "the phone number " + s
 
-        Div [] [
+        Div0 [
             Doc.TextNode <| "You said your name was " + person.Name + ", your address was " + person.Address + ", "
             Doc.TextNode <| " and you provided " + detailsStr + "."
         ]
@@ -145,7 +145,7 @@ module ContactFlow =
         |> Flow.Embed
 
     let Description () =
-        Div [] [
+        Div0 [
             Doc.TextNode "A WS.UI.Next flowlet implementation."
         ]
 

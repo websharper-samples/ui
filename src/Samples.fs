@@ -115,11 +115,11 @@ module Samples =
                     cls "btn-lg"
                     "href" ==> url sample
                 ]
-            Div [] [
+            Div0 [
                 current.View
                 |> View.Map (fun s ->
                     Doc.Concat [
-                        P [] [ s.Description ]
+                        P0 [ s.Description ]
                         A (btnAttrs s.Meta) [ txt "Source" ]
                     ])
                 |> Doc.EmbedView

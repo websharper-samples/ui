@@ -1,6 +1,8 @@
 ﻿namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
+open IntelliFactory.WebSharper.UI.Next
+open IntelliFactory.WebSharper.UI.Next.Html
 
 module S = BobsleighSite
 
@@ -40,7 +42,7 @@ module RoutedBobsleighSite =
         |> Doc.EmbedView
 
     let description v =
-        div [
+        Div0 [
             txt
                 "A small website about bobsleighs, demonstrating how UI.Next \
                  may be used to structure single-page applications. Routed using \

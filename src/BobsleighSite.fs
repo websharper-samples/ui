@@ -63,12 +63,12 @@ module BobsleighSite =
     // To change the page, we call this function with the action we want to perform.
     let HomePage ctx =
         Doc.Concat [
-            Div [] [
-                H1 [] [txt "Welcome!"]
-                P [] [
+            Div0 [
+                H10 [txt "Welcome!"]
+                P0 [
                     txt "Welcome to the IntelliFactory Bobsleigh MiniSite!"
                 ]
-                P [] [
+                P0 [
                     txt "Here you can find out about the "
                     link "history" [] (fun () -> ctx.Go BobsleighHistory)
                     txt " of bobsleighs, the "
@@ -81,9 +81,9 @@ module BobsleighSite =
 
     let History ctx =
         Doc.Concat [
-            Div [] [
-                H1 [] [txt "History"]
-                P [] [
+            Div0 [
+                H10 [txt "History"]
+                P0 [
                     txt "According to "
                     href "Wikipedia" "http://en.wikipedia.org/wiki/Bobsleigh"
                     txt ", the beginnings of bobsleigh came about due to a hotelier \
@@ -92,7 +92,7 @@ module BobsleighSite =
                          a few people interested, and the Swiss town of St Moritz became \
                          the home of the first bobsleigh races."
                 ]
-                P [] [
+                P0 [
                     txt "Bobsleigh races have been a regular event at the Winter Olympics \
                          since the very first competition in 1924."
                 ]
@@ -101,9 +101,9 @@ module BobsleighSite =
 
     let Governance ctx =
         Doc.Concat [
-            Div [] [
-                H1 [] [txt "Governance"]
-                P [] [
+            Div0 [
+                H10 [txt "Governance"]
+                P0 [
                     txt "The sport is overseen by the "
                     href "International Bobsleigh and Skeleton Federation" "http://www.fibt.com/"
                     txt ", an organisation founded in 1923. \
@@ -121,19 +121,17 @@ module BobsleighSite =
              ("Simon", "Simon_JF")]
 
         Doc.Concat [
-            Div [] [
-                H1 [] [txt "The IntelliFactory Bobsleigh Team"]
-                P [] [
+            Div0 [
+                H10 [txt "The IntelliFactory Bobsleigh Team"]
+                P0 [
                     txt "The world-famous IntelliFactory Bobsleigh Team was founded \
                          in 2004, and currently consists of:"
                 ]
-                P [] [
-                    UL [] [
-                        teamMembers
-                        |> List.map (fun (name, handle) ->
-                            LI [] [href name ("http://www.twitter.com/" + handle)])
-                        |> Doc.Concat
-                    ]
+                UL0 [
+                    teamMembers
+                    |> List.map (fun (name, handle) ->
+                        LI0 [href name ("http://www.twitter.com/" + handle)])
+                    |> Doc.Concat
                 ]
             ]
         ]
@@ -162,7 +160,7 @@ module BobsleighSite =
         |> Doc.EmbedView
 
     let description () =
-        div [
+        Div0 [
             txt "A small website about bobsleighs, demonstrating how UI.Next \
                  may be used to structure single-page applications."
         ]

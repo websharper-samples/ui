@@ -127,7 +127,7 @@ module MessageBoard =
             let rvPass = Var.Create ""
             let rvMsg = Var.Create ""
             let message =
-                Div [] [
+                Div0 [
                     P [cls "bg-danger"] [
                         Doc.TextView rvMsg.View
                     ]
@@ -152,8 +152,8 @@ module MessageBoard =
                     ]
                 ]
             // Main login page markup
-            Div [] [
-                Div [] [ txt "Hint: TestUser/TestPass" ]
+            Div0 [
+                Div0 [ txt "Hint: TestUser/TestPass" ]
                 message
                 // Login form
                 Form [cls "form-horizontal"; "role" ==> "form"] [
@@ -183,13 +183,13 @@ module MessageBoard =
                 | Some usr ->
                     let t = "Welcome, " + usr.Name + "!"
                     Doc.Concat [
-                        LI [] [link t [] ignore]
-                        LI [] [link "Logout" [] logout]
+                        LI0 [link t [] ignore]
+                        LI0 [link "Logout" [] logout]
                     ]
                 | None ->
                     Doc.Concat [
-                        LI [] [link "You are not logged in." [] ignore]
-                        LI [] [link "Login" [] login]
+                        LI0 [link "You are not logged in." [] ignore]
+                        LI0 [link "Login" [] login]
                     ])
             |> Doc.EmbedView
 
@@ -257,7 +257,7 @@ module MessageBoard =
                     List.map renderLink actions |> Doc.Concat
                 ]
                 UL [cls "nav" ; cls "navbar-nav" ; cls "navbar-right"] [
-                    //LI [] [ auth.StatusWidget ]
+                    //LI0 [ auth.StatusWidget ]
                     auth.StatusWidget
                 ]
             ]
@@ -317,9 +317,9 @@ module MessageBoard =
 
     let ThreadListPage st =
         let renderThread thread =
-            TR [] [
-                TD [] [Doc.TextNode thread.ThreadAuthorName]
-                TD [] [
+            TR0 [
+                TD0 [Doc.TextNode thread.ThreadAuthorName]
+                TD0 [
                     link thread.Title [] (fun _ -> ShowThread thread |> st.Go)
                 ]
             ]
@@ -331,7 +331,7 @@ module MessageBoard =
         } |> Async.Start
 
         Table [cls "table" ; cls "table-hover"] [
-            TBody [] [
+            TBody0 [
                 View.Map (fun threads ->
                     List.map renderThread threads |> Doc.Concat
                 ) (View.FromVar st.Threads) |> Doc.EmbedView
@@ -348,9 +348,9 @@ module MessageBoard =
             } |> Async.Start
 
         let renderPost (post : Post) =
-            TR [] [
-                TD [] [Doc.TextNode post.PostAuthorName]
-                TD [] [Doc.TextNode post.Content]
+            TR0 [
+                TD0 [Doc.TextNode post.PostAuthorName]
+                TD0 [Doc.TextNode post.Content]
             ]
 
         // List of posts
@@ -363,7 +363,7 @@ module MessageBoard =
                 ]
                 Div [cls "panel-body"] [
                     Table [cls "table" ; cls "table-hover" ] [
-                        TBody [] [
+                        TBody0 [
                             View.Map (fun posts ->
                                 List.map renderPost posts |> Doc.Concat
                             ) (View.FromVar rvPosts) |> Doc.EmbedView
@@ -407,7 +407,7 @@ module MessageBoard =
             ]
 
         getPosts ()
-        Div [] [
+        Div0 [
             postList
             st.Auth.LoggedIn
             |> View.Map (function
@@ -447,7 +447,7 @@ module MessageBoard =
             |> layout) |> Doc.EmbedView
 
     let Description () =
-        Div [] [ Doc.TextNode "A message board application built using MiniSitelets."]
+        Div0 [ Doc.TextNode "A message board application built using MiniSitelets."]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =

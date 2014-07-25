@@ -70,9 +70,9 @@ module PhoneExample =
 
         // A simple function for displaying the details of a phone:
         let showPhone ph =
-            LI [] [
-                Span [] [ txt ph.Name ]
-                P [] [ txt ph.Snippet ]
+            LI0 [
+                Span0 [ txt ph.Name ]
+                P0 [ txt ph.Snippet ]
             ]
 
         let showPhones phones =
@@ -96,7 +96,7 @@ module PhoneExample =
             // Finally, we render the list of phones using RD.ForEach.
             // When the list changes, the DOM will be updated to reflect this.
             Div [cls "col-sm-6"] [
-                UL [] [ Doc.EmbedView (View.Map showPhones visiblePhones) ]
+                UL0 [ Doc.EmbedView (View.Map showPhones visiblePhones) ]
             ]
         ]
 
@@ -117,7 +117,7 @@ module PhoneExample =
 
     // Todo: I don't like this. There's got to be a nicer way of embedding links.
     let Description () =
-        Div [] [
+        Div0 [
             Doc.TextNode "Taken from the "
             href "AngularJS Tutorial" "https://docs.angularjs.org/tutorial/"
             Doc.TextNode ", a list filtering and sorting application for phones."

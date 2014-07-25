@@ -45,13 +45,13 @@ module SimpleTextBox =
             divc "panel-body" [
                 // Note how components are composable, meaning we can
                 // embed multiple different components here without issue.
-                Div [] [inputField]
-                Div [] [label]
+                Div0 [inputField]
+                Div0 [label]
             ]
         ]
 
     let Description () =
-        Div [] [
+        Div0 [
             Doc.TextNode "A label which copies the contents of a text box."
         ]
 
