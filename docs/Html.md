@@ -9,7 +9,7 @@ All of these functions are simply a convenience wrapper around `Doc.Element`: so
 open IntelliFactory.WebSharper.UI.Next
 open IntelliFactory.WebSharper.UI.Next.Html
 
-Div [] [
+Div0 [
     Doc.TextNode "Hello!"
 ]
 ```
@@ -27,8 +27,20 @@ Doc.Element "Div" [] [
 Here is the entire current module:
 
 ```fsharp
+// $begin{copyright}
+//
+// This file is confidential and proprietary.
+//
+// Copyright (c) IntelliFactory, 2004-2014.
+//
+// All rights reserved.  Reproduction or use in whole or in part is
+// prohibited without the written consent of the copyright holder.
+//-----------------------------------------------------------------
+// $end{copyright}
 
 namespace IntelliFactory.WebSharper.UI.Next
+
+open IntelliFactory.WebSharper
 
 /// This is an auto-generated module providing HTML5 vocabulary.
 /// See tools/ElemeScraper.fsx for the code-generation logic.
@@ -155,107 +167,135 @@ module Html =
     module SVG =
 
         // <SVG>
-        let A ats ch = Doc.Element "a" ats ch
-        let AltGlyph ats ch = Doc.Element "altglyph" ats ch
-        let AltGlyphDef ats ch = Doc.Element "altglyphdef" ats ch
-        let AltGlyphItem ats ch = Doc.Element "altglyphitem" ats ch
-        let Animate ats ch = Doc.Element "animate" ats ch
-        let AnimateColor ats ch = Doc.Element "animatecolor" ats ch
-        let AnimateMotion ats ch = Doc.Element "animatemotion" ats ch
-        let AnimateTransform ats ch = Doc.Element "animatetransform" ats ch
-        let Circle ats ch = Doc.Element "circle" ats ch
-        let ClipPath ats ch = Doc.Element "clippath" ats ch
-        let ColorProfile ats ch = Doc.Element "color-profile" ats ch
-        let Cursor ats ch = Doc.Element "cursor" ats ch
-        let Defs ats ch = Doc.Element "defs" ats ch
-        let Desc ats ch = Doc.Element "desc" ats ch
-        let Ellipse ats ch = Doc.Element "ellipse" ats ch
-        let FeBlend ats ch = Doc.Element "feblend" ats ch
-        let FeColorMatrix ats ch = Doc.Element "fecolormatrix" ats ch
-        let FeComponentTransfer ats ch = Doc.Element "fecomponenttransfer" ats ch
-        let FeComposite ats ch = Doc.Element "fecomposite" ats ch
-        let FeConvolveMatrix ats ch = Doc.Element "feconvolvematrix" ats ch
-        let FeDiffuseLighting ats ch = Doc.Element "fediffuselighting" ats ch
-        let FeDisplacementMap ats ch = Doc.Element "fedisplacementmap" ats ch
-        let FeDistantLight ats ch = Doc.Element "fedistantlight" ats ch
-        let FeFlood ats ch = Doc.Element "feflood" ats ch
-        let FeFuncA ats ch = Doc.Element "fefunca" ats ch
-        let FeFuncB ats ch = Doc.Element "fefuncb" ats ch
-        let FeFuncG ats ch = Doc.Element "fefuncg" ats ch
-        let FeFuncR ats ch = Doc.Element "fefuncr" ats ch
-        let FeGaussianBlur ats ch = Doc.Element "fegaussianblur" ats ch
-        let FeImage ats ch = Doc.Element "feimage" ats ch
-        let FeMerge ats ch = Doc.Element "femerge" ats ch
-        let FeMergeNode ats ch = Doc.Element "femergenode" ats ch
-        let FeMorphology ats ch = Doc.Element "femorphology" ats ch
-        let FeOffset ats ch = Doc.Element "feoffset" ats ch
-        let FePointLight ats ch = Doc.Element "fepointlight" ats ch
-        let FeSpecularLighting ats ch = Doc.Element "fespecularlighting" ats ch
-        let FeSpotLight ats ch = Doc.Element "fespotlight" ats ch
-        let FeTile ats ch = Doc.Element "fetile" ats ch
-        let FeTurbulence ats ch = Doc.Element "feturbulence" ats ch
-        let Filter ats ch = Doc.Element "filter" ats ch
-        let Font ats ch = Doc.Element "font" ats ch
-        let FontFace ats ch = Doc.Element "font-face" ats ch
-        let FontFaceFormat ats ch = Doc.Element "font-face-format" ats ch
-        let FontFaceName ats ch = Doc.Element "font-face-name" ats ch
-        let FontFaceSrc ats ch = Doc.Element "font-face-src" ats ch
-        let FontFaceUri ats ch = Doc.Element "font-face-uri" ats ch
-        let ForeignObject ats ch = Doc.Element "foreignobject" ats ch
-        let G ats ch = Doc.Element "g" ats ch
-        let Glyph ats ch = Doc.Element "glyph" ats ch
-        let GlyphRef ats ch = Doc.Element "glyphref" ats ch
-        let HKern ats ch = Doc.Element "hkern" ats ch
-        let Image ats ch = Doc.Element "image" ats ch
-        let Line ats ch = Doc.Element "line" ats ch
-        let LinearGradient ats ch = Doc.Element "lineargradient" ats ch
-        let Marker ats ch = Doc.Element "marker" ats ch
-        let Mask ats ch = Doc.Element "mask" ats ch
-        let Metadata ats ch = Doc.Element "metadata" ats ch
-        let MissingGlyph ats ch = Doc.Element "missing-glyph" ats ch
-        let MPath ats ch = Doc.Element "mpath" ats ch
-        let Path ats ch = Doc.Element "path" ats ch
-        let Pattern ats ch = Doc.Element "pattern" ats ch
-        let Polygon ats ch = Doc.Element "polygon" ats ch
-        let Polyline ats ch = Doc.Element "polyline" ats ch
-        let RadialGradient ats ch = Doc.Element "radialgradient" ats ch
-        let Rect ats ch = Doc.Element "rect" ats ch
-        let Script ats ch = Doc.Element "script" ats ch
-        let Set ats ch = Doc.Element "set" ats ch
-        let Stop ats ch = Doc.Element "stop" ats ch
-        let Style ats ch = Doc.Element "style" ats ch
-        let Svg ats ch = Doc.Element "svg" ats ch
-        let Switch ats ch = Doc.Element "switch" ats ch
-        let Symbol ats ch = Doc.Element "symbol" ats ch
-        let Text ats ch = Doc.Element "text" ats ch
-        let TextPath ats ch = Doc.Element "textpath" ats ch
-        let Title ats ch = Doc.Element "title" ats ch
-        let TRef ats ch = Doc.Element "tref" ats ch
-        let TSpan ats ch = Doc.Element "tspan" ats ch
-        let Use ats ch = Doc.Element "use" ats ch
-        let View ats ch = Doc.Element "view" ats ch
-        let VKern ats ch = Doc.Element "vkern" ats ch
+        let A ats ch = Doc.SvgElement "a" ats ch
+        let AltGlyph ats ch = Doc.SvgElement "altglyph" ats ch
+        let AltGlyphDef ats ch = Doc.SvgElement "altglyphdef" ats ch
+        let AltGlyphItem ats ch = Doc.SvgElement "altglyphitem" ats ch
+        let Animate ats ch = Doc.SvgElement "animate" ats ch
+        let AnimateColor ats ch = Doc.SvgElement "animatecolor" ats ch
+        let AnimateMotion ats ch = Doc.SvgElement "animatemotion" ats ch
+        let AnimateTransform ats ch = Doc.SvgElement "animatetransform" ats ch
+        let Circle ats ch = Doc.SvgElement "circle" ats ch
+        let ClipPath ats ch = Doc.SvgElement "clippath" ats ch
+        let ColorProfile ats ch = Doc.SvgElement "color-profile" ats ch
+        let Cursor ats ch = Doc.SvgElement "cursor" ats ch
+        let Defs ats ch = Doc.SvgElement "defs" ats ch
+        let Desc ats ch = Doc.SvgElement "desc" ats ch
+        let Ellipse ats ch = Doc.SvgElement "ellipse" ats ch
+        let FeBlend ats ch = Doc.SvgElement "feblend" ats ch
+        let FeColorMatrix ats ch = Doc.SvgElement "fecolormatrix" ats ch
+        let FeComponentTransfer ats ch = Doc.SvgElement "fecomponenttransfer" ats ch
+        let FeComposite ats ch = Doc.SvgElement "fecomposite" ats ch
+        let FeConvolveMatrix ats ch = Doc.SvgElement "feconvolvematrix" ats ch
+        let FeDiffuseLighting ats ch = Doc.SvgElement "fediffuselighting" ats ch
+        let FeDisplacementMap ats ch = Doc.SvgElement "fedisplacementmap" ats ch
+        let FeDistantLight ats ch = Doc.SvgElement "fedistantlight" ats ch
+        let FeFlood ats ch = Doc.SvgElement "feflood" ats ch
+        let FeFuncA ats ch = Doc.SvgElement "fefunca" ats ch
+        let FeFuncB ats ch = Doc.SvgElement "fefuncb" ats ch
+        let FeFuncG ats ch = Doc.SvgElement "fefuncg" ats ch
+        let FeFuncR ats ch = Doc.SvgElement "fefuncr" ats ch
+        let FeGaussianBlur ats ch = Doc.SvgElement "fegaussianblur" ats ch
+        let FeImage ats ch = Doc.SvgElement "feimage" ats ch
+        let FeMerge ats ch = Doc.SvgElement "femerge" ats ch
+        let FeMergeNode ats ch = Doc.SvgElement "femergenode" ats ch
+        let FeMorphology ats ch = Doc.SvgElement "femorphology" ats ch
+        let FeOffset ats ch = Doc.SvgElement "feoffset" ats ch
+        let FePointLight ats ch = Doc.SvgElement "fepointlight" ats ch
+        let FeSpecularLighting ats ch = Doc.SvgElement "fespecularlighting" ats ch
+        let FeSpotLight ats ch = Doc.SvgElement "fespotlight" ats ch
+        let FeTile ats ch = Doc.SvgElement "fetile" ats ch
+        let FeTurbulence ats ch = Doc.SvgElement "feturbulence" ats ch
+        let Filter ats ch = Doc.SvgElement "filter" ats ch
+        let Font ats ch = Doc.SvgElement "font" ats ch
+        let FontFace ats ch = Doc.SvgElement "font-face" ats ch
+        let FontFaceFormat ats ch = Doc.SvgElement "font-face-format" ats ch
+        let FontFaceName ats ch = Doc.SvgElement "font-face-name" ats ch
+        let FontFaceSrc ats ch = Doc.SvgElement "font-face-src" ats ch
+        let FontFaceUri ats ch = Doc.SvgElement "font-face-uri" ats ch
+        let ForeignObject ats ch = Doc.SvgElement "foreignobject" ats ch
+        let G ats ch = Doc.SvgElement "g" ats ch
+        let Glyph ats ch = Doc.SvgElement "glyph" ats ch
+        let GlyphRef ats ch = Doc.SvgElement "glyphref" ats ch
+        let HKern ats ch = Doc.SvgElement "hkern" ats ch
+        let Image ats ch = Doc.SvgElement "image" ats ch
+        let Line ats ch = Doc.SvgElement "line" ats ch
+        let LinearGradient ats ch = Doc.SvgElement "lineargradient" ats ch
+        let Marker ats ch = Doc.SvgElement "marker" ats ch
+        let Mask ats ch = Doc.SvgElement "mask" ats ch
+        let Metadata ats ch = Doc.SvgElement "metadata" ats ch
+        let MissingGlyph ats ch = Doc.SvgElement "missing-glyph" ats ch
+        let MPath ats ch = Doc.SvgElement "mpath" ats ch
+        let Path ats ch = Doc.SvgElement "path" ats ch
+        let Pattern ats ch = Doc.SvgElement "pattern" ats ch
+        let Polygon ats ch = Doc.SvgElement "polygon" ats ch
+        let Polyline ats ch = Doc.SvgElement "polyline" ats ch
+        let RadialGradient ats ch = Doc.SvgElement "radialgradient" ats ch
+        let Rect ats ch = Doc.SvgElement "rect" ats ch
+        let Script ats ch = Doc.SvgElement "script" ats ch
+        let Set ats ch = Doc.SvgElement "set" ats ch
+        let Stop ats ch = Doc.SvgElement "stop" ats ch
+        let Style ats ch = Doc.SvgElement "style" ats ch
+        let Svg ats ch = Doc.SvgElement "svg" ats ch
+        let Switch ats ch = Doc.SvgElement "switch" ats ch
+        let Symbol ats ch = Doc.SvgElement "symbol" ats ch
+        let Text ats ch = Doc.SvgElement "text" ats ch
+        let TextPath ats ch = Doc.SvgElement "textpath" ats ch
+        let Title ats ch = Doc.SvgElement "title" ats ch
+        let TRef ats ch = Doc.SvgElement "tref" ats ch
+        let TSpan ats ch = Doc.SvgElement "tspan" ats ch
+        let Use ats ch = Doc.SvgElement "use" ats ch
+        let View ats ch = Doc.SvgElement "view" ats ch
+        let VKern ats ch = Doc.SvgElement "vkern" ats ch
         // </SVG>
 
     // Shared vocabulary: currently maintained by hand (white-listing).
     // We don't want to dump Elem.Map etc for people who open this module.
 
-    let A x y = Elem.A x y
-    let Del x y = Elem.Del x y
-    let Div x y = Elem.Div x y
-    let Form x y = Elem.Form x y
-    let H1 x y = Elem.H1 x y
-    let H2 x y = Elem.H2 x y
-    let H3 x y = Elem.H3 x y
-    let LI x y = Elem.LI x y
-    let Label x y = Elem.Label x y
-    let Nav x y = Elem.Nav x y
-    let P x y = Elem.P x y
-    let Span x y = Elem.Span x y
-    let TBody x y = Elem.TBody x y
-    let TD x y = Elem.TD x y
-    let TR x y = Elem.TR x y
-    let Table x y = Elem.Table x y
-    let UL x y = Elem.UL x y
-
+    // <Common>
+    let A atr ch = Elem.A atr ch
+    let A0 ch = Elem.A [] ch
+    let Del atr ch = Elem.Del atr ch
+    let Del0 ch = Elem.Del [] ch
+    let Div atr ch = Elem.Div atr ch
+    let Div0 ch = Elem.Div [] ch
+    let Form atr ch = Elem.Form atr ch
+    let Form0 ch = Elem.Form [] ch
+    let H1 atr ch = Elem.H1 atr ch
+    let H10 ch = Elem.H1 [] ch
+    let H2 atr ch = Elem.H2 atr ch
+    let H20 ch = Elem.H2 [] ch
+    let H3 atr ch = Elem.H3 atr ch
+    let H30 ch = Elem.H3 [] ch
+    let H4 atr ch = Elem.H4 atr ch
+    let H40 ch = Elem.H4 [] ch
+    let H5 atr ch = Elem.H5 atr ch
+    let H50 ch = Elem.H5 [] ch
+    let H6 atr ch = Elem.H6 atr ch
+    let H60 ch = Elem.H6 [] ch
+    let LI atr ch = Elem.LI atr ch
+    let LI0 ch = Elem.LI [] ch
+    let Label atr ch = Elem.Label atr ch
+    let Label0 ch = Elem.Label [] ch
+    let Nav atr ch = Elem.Nav atr ch
+    let Nav0 ch = Elem.Nav [] ch
+    let P atr ch = Elem.P atr ch
+    let P0 ch = Elem.P [] ch
+    let Span atr ch = Elem.Span atr ch
+    let Span0 ch = Elem.Span [] ch
+    let Table atr ch = Elem.Table atr ch
+    let Table0 ch = Elem.Table [] ch
+    let TBody atr ch = Elem.TBody atr ch
+    let TBody0 ch = Elem.TBody [] ch
+    let THead atr ch = Elem.THead atr ch
+    let THead0 ch = Elem.THead [] ch
+    let TR atr ch = Elem.TR atr ch
+    let TR0 ch = Elem.TR [] ch
+    let TD atr ch = Elem.TD atr ch
+    let TD0 ch = Elem.TD [] ch
+    let UL atr ch = Elem.UL atr ch
+    let UL0 ch = Elem.UL [] ch
+    let OL atr ch = Elem.OL atr ch
+    let OL0 ch = Elem.OL [] ch
+    // </Common>
 ```
