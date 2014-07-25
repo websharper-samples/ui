@@ -1,0 +1,40 @@
+﻿body {
+    font-family: Lato, sans-serif;
+    font-size: large;
+}
+
+.skip {
+    height: 1em;
+}
+
+.flowlet-anim {
+    position: relative;
+    -webkit-animation: flowlet-anim 3s; /* Chrome, Safari, Opera */
+    animation: flowlet-anim 3s;
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes flowlet-anim {
+    0% {
+        left: 0px;
+    }
+
+    100% {
+        left: 200px;
+    }
+}
+
+/* Standard syntax */
+@keyframes flowlet-anim {
+    0% {
+        left: 0px;
+        opacity: 1.0;
+        filter: alpha(opacity=100);
+    }
+
+    100% {
+        left: 200px;
+        opacity: 0.0;
+        filter: alpha(opacity=0);
+    }
+}

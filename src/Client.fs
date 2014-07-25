@@ -17,6 +17,8 @@ open IntelliFactory.WebSharper
 module Client =
 
     let Main =
+        Site.Main ()
+    (*
         Samples.Show [
             SimpleTextBox.Sample
             InputTransform.Sample
@@ -32,3 +34,4 @@ module Client =
             RoutedBobsleighSite.Sample
             ObjectConstancy.Sample
         ]
+        *)

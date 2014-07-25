@@ -83,51 +83,6 @@ module Samples =
             |> Router.Prefix meta.Uri
         sample
 
-    let Show samples =
-        let mainSite = Router.Merge [ for sample in samples -> sample.Router ]
-        let current = Router.Install (fun samp -> samp.RouteId) mainSite
-        let main =
-            current.View
-            |> View.Map (fun info -> info.Body)
-            |> Doc.EmbedView
-        let navs =
-            // Renders a link, based on the model and the link
-            let renderLink samp =
-                let isActive x = x.RouteId = samp.RouteId
-                // Attribute list: add the "active" class if selected
-                let liAttr = Attr.DynamicClass "active" current.View isActive
-                // Finally, put it all together to render the link
-                LI [liAttr] [
-                    link samp.Meta.Title [] (fun () -> current.Value <- samp)
-                ]
-            UL [cls "nav"; cls "nav-pills"] [
-                for s in samples -> renderLink s
-            ]
-        let url s =
-            "http://github.com/intellifactory/websharper.ui.next\
-                /blob/master/src/" + s.FileName
-        /// Sidesbar content, displaying a description of the current example
-        let side =
-            let btnAttrs sample =
-                [
-                    cls "btn"
-                    cls "btn-primary"
-                    cls "btn-lg"
-                    "href" ==> url sample
-                ]
-            Div [] [
-                current.View
-                |> View.Map (fun s ->
-                    Doc.Concat [
-                        P [] [ s.Description ]
-                        A (btnAttrs s.Meta) [ txt "Source" ]
-                    ])
-                |> Doc.EmbedView
-            ]
-        Doc.RunById "sample-navs" navs
-        Doc.RunById "sample-main" main
-        Doc.RunById "sample-side" side
-
     [<Sealed>]
     type Builder<'T>(create: Visuals<'T> -> Meta -> Sample) =
 
@@ -174,3 +129,5 @@ module Samples =
 
     let Routed (router, init) =
         Builder (CreateRouted router init)
+
+    let Main () = Doc.Empty
