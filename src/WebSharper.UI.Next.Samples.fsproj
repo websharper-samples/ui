@@ -125,9 +125,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="IntelliFactory.WebSharper.UI.Next">
-      <HintPath>..\packages\WebSharper.UI.Next.0.1.13.14\lib\net40\IntelliFactory.WebSharper.UI.Next.dll</HintPath>
+      <HintPath>..\packages\WebSharper.UI.Next.0.1.14.15\lib\net40\IntelliFactory.WebSharper.UI.Next.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="IntelliFactory.WebSharper.UI.Next" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
