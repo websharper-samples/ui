@@ -104,7 +104,7 @@ module TodoList =
     let TodoExample () =
         let m = CreateModel ()
         Table ["class" ==> "table table-hover"] [
-            TBody [] [
+            Tbody [] [
                 TodoList m
                 TodoForm m
             ]

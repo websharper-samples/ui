@@ -331,7 +331,7 @@ module MessageBoard =
         } |> Async.Start
 
         Table [cls "table" ; cls "table-hover"] [
-            TBody [] [
+            Tbody [] [
                 View.Map (fun threads ->
                     List.map renderThread threads |> Doc.Concat
                 ) (View.FromVar st.Threads) |> Doc.EmbedView
@@ -363,7 +363,7 @@ module MessageBoard =
                 ]
                 Div [cls "panel-body"] [
                     Table [cls "table" ; cls "table-hover" ] [
-                        TBody [] [
+                        Tbody [] [
                             View.Map (fun posts ->
                                 List.map renderPost posts |> Doc.Concat
                             ) (View.FromVar rvPosts) |> Doc.EmbedView

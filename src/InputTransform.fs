@@ -104,7 +104,7 @@ module InputTransform =
 
                 Div [cls "panel-body"] [
                     Table [cls "table"] [
-                        TBody [] [
+                        Tbody [] [
                             // We map the tableRow function onto the different
                             // views of the source, and concatenate the resulting
                             // documents.
