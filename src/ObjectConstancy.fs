@@ -15,6 +15,7 @@ open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.JQuery
 open IntelliFactory.WebSharper.UI.Next
 open IntelliFactory.WebSharper.UI.Next.Html
+module S = IntelliFactory.WebSharper.UI.Next.Html.SvgElements
 
 /// Attempt to reconstruct this D3 example in UI.Next:
 /// http://bost.ocks.org/mike/constancy/
@@ -122,10 +123,10 @@ module ObjectConstancy =
         let x st = Width * st.Value / st.MaxValue
         let y st = Height * double st.Position / double st.Total
         let h st = Height / double st.Total - 2.
-        let txt f attr = SVG.Text attr [state |> View.Map f |> Doc.TextView]
+        let txt f attr = S.Text attr [state |> View.Map f |> Doc.TextView]
         Doc.Concat [
-            SVG.G [Attr.Style "fill" "steelblue"] [
-                SVG.Rect [
+            S.G [Attr.Style "fill" "steelblue"] [
+                S.Rect [
                     "x" ==> "0"
                     anim "y" InOutTransition y
                     anim "width" SimpleTransition x
@@ -158,7 +159,7 @@ module ObjectConstancy =
                     (List.ofArray dS.Brackets.[1..]) bracket)
             |> Doc.EmbedView
             Div [cls "skip"] []
-            SVG.Svg ["width" ==> string Width; "height" ==> string Height] [
+            S.Svg ["width" ==> string Width; "height" ==> string Height] [
                 shownData
                 |> View.ConvertSeqBy (fun s -> s.State) Render
                 |> View.Map Doc.Concat
