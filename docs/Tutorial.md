@@ -64,8 +64,8 @@ let Main () =
   let copyTheInput =
     divc "panel-default" [
       divc "panel-body" [
-        Div [] [inputField]
-        Div [] [label]
+        Div0 [inputField]
+        Div0 [label]
       ]
     ]
   Doc.RunById "main" copyTheInput
@@ -209,9 +209,6 @@ of the parameters, and also because typing the names can be a tad
 repetitive, it is often useful to create some convenience functions.
 
 ```fsharp
-/// Element without attributes
-let el name c = Doc.Element name [] c
-
 /// Text node
 let txt t = Doc.TextNode t
 
@@ -231,15 +228,15 @@ Here is an outline of our `RenderItem` function, which takes a
 
 /// Renders an item.
 let RenderItem coll todo =
-  TR [] [
-    TD [] [
+  TR0 [
+    TD0 [
       // TODO: Render the text of the TodoItem here. If it's already
       // been marked as done, there should be a strikethrough.
     ]
-    TD [] [
+    TD0 [
       // TODO: A button which marks the item as done.
     ]
-    TD [] [
+    TD0 [
       // TODO: A button which deletes the item from the collection
     ]
   ]
@@ -301,8 +298,8 @@ So now our rendering function looks like this:
 
 /// Renders a TodoItem
 let RenderItem (m: Model) (todo: TodoItem) : Doc =
-  TR [] [
-    TD [] [
+  TR0 [
+    TD0 [
       todo.Done.View
       |> View.Map (fun isDone ->
         if isDone
@@ -312,18 +309,17 @@ let RenderItem (m: Model) (todo: TodoItem) : Doc =
       // Whenever the input changes, the parts of the tree change automatically.
       |> Doc.EmbedView
     ]
+    TD0 [
+      // Here's a button which specifies that the item has been done,
+      // flipping the "Done" flag to true using a callback.
+      button "Done" (fun () -> Var.Set todo.Done true)
+    ]
+    TD0 [
+      // This button removes the item from the collection. By removing the item,
+      // the collection will automatically be updated.
+      button "Remove" (fun _ -> ReactiveCollection.Remove m todo)
+    ]
   ]
-  TD [] [
-    // Here's a button which specifies that the item has been done,
-    // flipping the "Done" flag to true using a callback.
-    button "Done" (fun () -> Var.Set todo.Done true)
-  ]
-  TD [] [
-    // This button removes the item from the collection. By removing the item,
-    // the collection will automatically be updated.
-    button "Remove" (fun _ -> ReactiveCollection.Remove m todo)
-  ]
-]
 ```
 
 ##### Rendering the Collection
@@ -360,7 +356,7 @@ function:
 let TodoForm m =
   // We make a variable to contain the new to-do item.
   let rvInput = Var.Create ""
-  Form [] [
+  Form0 [
     divc "form-group" [
       Label [] [txt "New entry: "]
       // Here, we make the Input box, backing it by the reactive variable.
@@ -396,7 +392,7 @@ monoidal structure.  This means composing everything is done as so:
 let TodoExample () : Doc =
   let m = CreateModel ()
   Table ["class" ==> "table table-hover"] [
-    TBody [] [
+    TBody0 [
       TodoList m
       TodoForm m
     ]
