@@ -10,7 +10,7 @@ simple to construct animated UI in the browser.
 
 ## Availability
 
-We plan to make a public NuGet release shortly.
+Available for experimentation on [NuGet](http://www.nuget.org/packages/WebSharper.UI.Next/).
 
 This library will also likely be released as part of
 [WebSharper](http://websharper.com) 3.0, to become the recommended
