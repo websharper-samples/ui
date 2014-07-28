@@ -12,14 +12,16 @@ module Site =
 
     type Page =
         {
-            PageName : string
-            PageRender : Doc
-            PageType : PageTy
+            mutable PageName : string
+            mutable PageRouteId : RouteId
+            mutable PageRender : Doc
+            mutable PageType : PageTy
         }
 
     let mkPage name routeId render ty =
         {
             PageName = name
+            PageRouteId = routeId
             PageRender = render
             PageType = ty
         }
@@ -235,8 +237,21 @@ module Site =
         RouteMap.Create pageToURL urlToPage
 
     let SiteRouter =
-        let page = mkPage
+        let page = mkPage "Home" (Unchecked.defaultof<RouteId>) (Unchecked.defaultof<Doc>) Home
         Router.Route MainRouteMap Home (fun routeId v ->
+            View.FromVar v
+            |> View.Map (fun pgTy ->
+                page.PageRouteId <- routeId
+                page.PageName <- showPgTy pgTy
+                let renderFn = 
+                    match pgTy with
+                    | Home -> HomePage (Var.Set v)
+                    | About -> AboutPage (Var.Set v)
+                page
+            ) |> ignore
+            page)
+        
+        (*
             let go = Var.Set v
             let pg = Var.Get v
             //JavaScript.Alert <| "PG: " + (showPgTy pg)
@@ -244,12 +259,12 @@ module Site =
             | Home -> mkPage "Home" routeId (HomePage go) Home
             | About -> mkPage "About" routeId (AboutPage go) About
             | Samples -> mkPage "Home" routeId (HomePage go) Samples
+            *)
         )
         //Router.Install (fun pg -> )
 
     // Current page, set route id. still requires mutability i guess...
     let Main () =
-        let (pageVar, outerRouter) = SiteRouter
         let router = Router.Install (fun pg -> pg.PageRouteId) outerRouter
         let renderMain v =
             View.FromVar v

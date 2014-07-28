@@ -175,4 +175,5 @@ module Samples =
         ]
 
     let Main () =
-        let samplesRouter = Router.Merge [ for s in samples -> s.Router ]
+        Doc.Empty
+        //let samplesRouter = Router.Merge [ for s in samples -> s.Router ]
