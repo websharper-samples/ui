@@ -122,10 +122,10 @@ module ObjectConstancy =
         let x st = Width * st.Value / st.MaxValue
         let y st = Height * double st.Position / double st.Total
         let h st = Height / double st.Total - 2.
-        let txt f attr = SVG.Text attr [state |> View.Map f |> Doc.TextView]
+        let txt f attr = SvgElements.Text attr [state |> View.Map f |> Doc.TextView]
         Doc.Concat [
-            SVG.G [Attr.Style "fill" "steelblue"] [
-                SVG.Rect [
+            SvgElements.G [Attr.Style "fill" "steelblue"] [
+                SvgElements.Rect [
                     "x" ==> "0"
                     anim "y" InOutTransition y
                     anim "width" SimpleTransition x
@@ -158,7 +158,7 @@ module ObjectConstancy =
                     (List.ofArray dS.Brackets.[1..]) bracket)
             |> Doc.EmbedView
             Div [cls "skip"] []
-            SVG.Svg ["width" ==> string Width; "height" ==> string Height] [
+            SvgElements.Svg ["width" ==> string Width; "height" ==> string Height] [
                 shownData
                 |> View.ConvertSeqBy (fun s -> s.State) Render
                 |> View.Map Doc.Concat

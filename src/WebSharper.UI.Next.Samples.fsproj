@@ -105,7 +105,6 @@
     <Content Include="Web.config" />
     <Compile Include="Utilities.fs" />
     <Compile Include="Samples.fs" />
-    <Compile Include="SamplesOld.fs" />
     <Compile Include="CheckBoxTest.fs" />
     <Compile Include="PhoneExample.fs" />
     <Compile Include="TodoList.fs" />

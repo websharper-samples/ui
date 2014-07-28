@@ -13,22 +13,16 @@ module Site =
     type Page =
         {
             PageName : string
-            PageRouteId : RouteId
             PageRender : Doc
-            PageChange : (PageTy -> unit)
             PageType : PageTy
         }
 
-    let mkPage name routeId render changeFn ty =
+    let mkPage name routeId render ty =
         {
             PageName = name
-            PageRouteId = routeId
             PageRender = render
-            PageChange = changeFn
             PageType = ty
         }
-
-    //| Home | About
 
     type AboutEntry =
         {
@@ -98,7 +92,7 @@ module Site =
 
     let NavPages = [Home ; About]
     let HomePage go =
-        Elem.Section
+        Elements.Section
             [
                 cls "block-huge"
                 cls "teaser-home"
@@ -111,16 +105,16 @@ module Site =
                 Div [cls "container"] [
                     Div [cls "row"] [
                         Div [cls "col-12"] [
-                            Elem.BR [] []
+                            Elements.Br [] []
                             H10 [
-                                txt "WebSharper UI.Next"
+                                txt "WebSharper UI.Next: "
                                 Span [cls "text-muted"] [
                                     txt "A new generation of reactive web applications."
                                 ]
                             ]
                             H30 [
                                 txt "Write powerful, data-backed applications"
-                                Elem.BR [] []
+                                Elements.Br [] []
                                 txt " using F# and WebSharper."
                             ]
                             link "Installation"
@@ -138,11 +132,11 @@ module Site =
     let AboutPage go =
         //JavaScript.Alert "hi from about page"
         let oddEntry lnk desc img =
-            Elem.Section [cls "block-large" ; sty "padding-top" "80px"] [
+            Elements.Section [cls "block-large" ; sty "padding-top" "80px"] [
                 Div [cls "container"] [
                     Div [cls "row"] [
                         Div [cls "col-lg-3"] [
-                            Elem.Img ["src" ==> img ; sty "width" "100%"] []
+                            Elements.Img ["src" ==> img ; sty "width" "100%"] []
                         ]
                         Div [cls "col-lg-1"] []
                         Div [cls "col-lg-8"] [
@@ -158,7 +152,7 @@ module Site =
             ]
 
         let evenEntry lnk desc img =
-            Elem.Section [cls "block-large" ; cls "bg-alt" ; sty "padding-top" "80px"] [
+            Elements.Section [cls "block-large" ; cls "bg-alt" ; sty "padding-top" "80px"] [
                 Div [cls "container"] [
                     Div [cls "row"] [
                         Div [cls "col-lg-8"] [
@@ -171,7 +165,7 @@ module Site =
                         ]
                         Div [cls "col-lg-1"] []
                         Div [cls "col-lg-3"] [
-                            Elem.Img ["src" ==> img ; sty "width" "100%"] []
+                            Elements.Img ["src" ==> img ; sty "width" "100%"] []
                         ]
                     ]
                 ]
@@ -188,9 +182,11 @@ module Site =
             View.FromVar v
             |> View.Map (fun page ->
                 // Attribute list: add the "active" class if selected
-                let liAttr = if page.PageType = pg then Attr.Class "active" else Attr.Empty
+             //   JavaScript.Log <| "Nav pty: " + (showPgTy page.PageType)
+               // JavaScript.Log <| "Pg: " + (showPgTy pg)
+                let liAttr = if page = pg then Attr.Class "active" else Attr.Empty
                 LI [cls "nav-item"] [
-                    link (showPgTy pg) [liAttr] (fun () -> page.PageChange pg)
+                    link (showPgTy pg) [liAttr] (fun () -> Var.Set v pg)
                 ]
             )
             |> Doc.EmbedView
@@ -200,28 +196,28 @@ module Site =
                 href title lnk
             ]
 
-        Elem.Nav [cls "container"] [
+        Elements.Nav [cls "container"] [
             Div [sty "float" "left"] [
                 A ["href" ==> "http://www.websharper.com/home"
                    sty "text-decoration" "none"
                    cls "first"
                   ] [
-                    Elem.Img [
+                    Elements.Img [
                         "src" ==> "files/logo-websharper-icon.png"
                         "alt" ==> "[logo]"
                         sty "margin-top" "0"
                         sty "border-right" "1px"
                         sty "solid" "#eee"
                     ] []
-                    Elem.Img [
-                        "src" ==> "file/logo-websharper-text-dark.png"
+                    Elements.Img [
+                        "src" ==> "files/logo-websharper-text-dark.png"
                         "alt" ==> "WebSharper"
                         sty "height" "32px"
                     ] []
                   ]
             ]
 
-            Elem.Nav [
+            Elements.Nav [
                 cls "nav"
                 cls "nav-collapsible"
                 cls "right"
@@ -239,25 +235,31 @@ module Site =
         RouteMap.Create pageToURL urlToPage
 
     let SiteRouter =
+        let page = mkPage
         Router.Route MainRouteMap Home (fun routeId v ->
-            let pg = Var.Get v
             let go = Var.Set v
+            let pg = Var.Get v
             //JavaScript.Alert <| "PG: " + (showPgTy pg)
             match pg with
-            | Home -> mkPage "Home" routeId (HomePage go) go Home
-            | About -> mkPage "About" routeId (AboutPage go) go About
-            | Samples -> mkPage "Home" routeId (HomePage go) go Samples
+            | Home -> mkPage "Home" routeId (HomePage go) Home
+            | About -> mkPage "About" routeId (AboutPage go) About
+            | Samples -> mkPage "Home" routeId (HomePage go) Samples
         )
         //Router.Install (fun pg -> )
+
+    // Current page, set route id. still requires mutability i guess...
     let Main () =
-        let page = Router.Install (fun pg -> pg.PageRouteId) SiteRouter
+        let (pageVar, outerRouter) = SiteRouter
+        let router = Router.Install (fun pg -> pg.PageRouteId) outerRouter
         let renderMain v =
             View.FromVar v
-            |> View.Map (fun v -> v.PageRender)
+            |> View.Map (fun v ->
+                JavaScript.Log "view fn triggered"
+                v.PageRender)
             |> Doc.EmbedView
 
-        Doc.RunById "main" (renderMain page)
-        Doc.RunById "navigation" (NavBar page)
+        Doc.RunById "main" (renderMain router)
+        Doc.RunById "navigation" (NavBar pageVar)
         //Doc.RunById "navigation" (Nav)
         // Router.Install : ('T -> RouteId) -> Router<'T> -> Var<'T>
         //Router.

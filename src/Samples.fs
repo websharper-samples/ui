@@ -57,12 +57,12 @@ module Samples =
                 RouteId = Unchecked.defaultof<_>
             }
         let r =
-            Router.Route router init (fun id cur ->
+             Router.Route router init (fun id cur ->
                 sample.RouteId <- id
                 sample.Body <- vis.Main cur
                 sample.Description <- vis.Desc cur
                 sample)
-            |> Router.Prefix meta.Uri
+             |> Router.Prefix meta.Uri
         sample.Router <- r
         sample
 
@@ -130,4 +130,49 @@ module Samples =
     let Routed (router, init) =
         Builder (CreateRouted router init)
 
-    let Main () = Doc.Empty
+    let nav = Html.Elements.Nav
+
+    let Sidebar vSample samples =
+        let renderItem sample =
+            let attrView = View.FromVar vSample
+            let pred s = sample.Meta.FileName = s.Meta.FileName
+            let activeAttr = Attr.DynamicClass "active" attrView pred
+            Doc.Link sample.Meta.Title
+                [cls "list-group-item"; activeAttr]
+                (fun () -> Var.Set vSample sample)
+
+        Div [cls "row"] [
+            Div [cls "col-3"] [
+                H40 [txt "Samples"]
+                List.map renderItem samples |> Doc.Concat
+            ]
+        ]
+
+    let RenderContent sampleView =
+        Div [cls "col-9"] [
+            sampleView
+            |> View.Map (fun x ->
+                Div0 [
+                    Div [cls "row"] [
+                        H10 [txt x.Meta.Title]
+                        Div0 [
+                            x.Description
+                        ]
+                    ]
+
+                    Div [cls "row"] [
+                        x.Body
+                    ]
+                ]
+
+            ) |> Doc.EmbedView
+        ]
+
+    let Render vSample samples =
+        Div [cls "container" ; cls "block-small"] [
+            Sidebar vSample samples
+            RenderContent (View.FromVar vSample)
+        ]
+
+    let Main () =
+        let samplesRouter = Router.Merge [ for s in samples -> s.Router ]
