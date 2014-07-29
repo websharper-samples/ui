@@ -59,7 +59,7 @@ module TodoList =
                         then Del0 [ txt todo.TodoText ]
                         else txt todo.TodoText)
                 // Finally, we embed this possibly-changing fragment into the tree.
-                // Whenever the input changes, the parts of the tree change automatically.
+                // Whenever the input changes, the parts of the tree change automatically. 
                 |> Doc.EmbedView
             ]
 
