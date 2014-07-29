@@ -248,7 +248,6 @@ module Site =
 
     let homeRouter samples =
         Router.Route unitRouteMap () (fun id v ->
-            //let mkPage name routeId render ty rv =
             let homePg = pageFor Home samples
             homePg.PageRouteId <- id
             homePg
