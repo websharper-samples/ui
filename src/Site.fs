@@ -4,27 +4,10 @@ open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
 open IntelliFactory.WebSharper.UI.Next.Html
 open IntelliFactory.WebSharper.UI.Next.Notation
+open IntelliFactory.WebSharper.UI.Next.SiteCommon
 
 [<JavaScript>]
 module Site =
-
-    type PageTy = | Home | About | Samples
-
-    type Page =
-        {
-            mutable PageName : string
-            mutable PageRouteId : RouteId
-            mutable PageRender : Doc
-            mutable PageType : PageTy
-        }
-
-    let mkPage name routeId render ty =
-        {
-            PageName = name
-            PageRouteId = routeId
-            PageRender = render
-            PageType = ty
-        }
 
     type AboutEntry =
         {
@@ -34,33 +17,51 @@ module Site =
             Description : string
         }
 
-    let mkEntry name blog desc img =
+    let mkEntry name blog img desc =
         {
             Name = name
             URL = blog
             ImgURL = img
             Description = desc
         }
+
     let Entries =
         [
             mkEntry
                 "WebSharper UI.Next: An Introduction"
                 "http://www.websharper.com/blog-entry/3954"
-                ""
+                "files/uinext-screen.png"
                 "WebSharper UI.Next is a new library for constructing reactive \
                  interfaces, backed by data. This post introduces the basics, \
                  and shows how to construct some simple examples."
             mkEntry
+                "The WebSharper UI.Next Tutorial"
+                "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Tutorial.md"
+                "files/TodoApp.png"
+                "A tutorial to take you through the basics of UI.Next,\
+                 by developing some simple applications."
+            mkEntry
+                "API Reference"
+                "http://www.websharper.com/blog-entry/3964"
+                "files/gear.png"
+                "The definitive UI.Next API Reference."
+            mkEntry
+                "Presentation: Tackle UI with Reactive DOM in F# and WebSharper"
+                "https://www.youtube.com/watch?v=wEkS09s3KBc"
+                "files/anton-pres.png"
+                "In this recorded Community for FSharp event, Anton Tayanovskyy presents the \
+                 basics of the library and the motivations for the dataflow design."
+            mkEntry
                 "WebSharper UI.Next: Declarative Animation"
                 "http://www.websharper.com/blog-entry/3964"
-                ""
+                "files/home-banner.jpg"
                 "Inspired by the success of libraries such as D3, this post \
                  shows how the animation features of UI.Next may be used to \
                  construct data-driven animations in a declarative style."
             mkEntry
                 "Structuring Applications with WebSharper UI.Next"
                 "http://www.websharper.com/blog-entry/3965"
-                ""
+                "files/blog2-screen.png"
                 "One of the big advantages of using F# is that we can take \
                  advantage of its static type system to help us structure applications. \
                  This post explains some of the abstractions available to structure \
@@ -78,63 +79,60 @@ module Site =
         | About -> "About"
         | Samples -> "Samples"
 
-    let pageToURL = function
-        | Home -> []
-        | About -> ["about"]
-        | Samples -> ["samples"]
+    let homePage =
+        mkPage (showPgTy Home) Unchecked.defaultof<_> Home
 
-    let urlToPage url =
-        let list = (List.fold (fun s x -> s + ", " + x) "[" url) + "]"
-        let res =
-            match url with
-            | ["about"] -> About
-            | _ -> Home
-        JavaScript.Log <| "list: " + list + ", list length:" + string(url.Length) + ", res: " + (showPgTy res)
-        res
+    let aboutPage =
+         mkPage (showPgTy About) Unchecked.defaultof<_> About
 
-    let NavPages = [Home ; About]
+    let pageFor pty samples =
+        match pty with
+        | Home -> homePage
+        | About -> aboutPage
+        | Samples -> Samples.InitialSamplePage samples
+
+    let NavPages = [Home ; About; Samples]
+
     let HomePage go =
-        Elements.Section
-            [
-                cls "block-huge"
-                cls "teaser-home"
-                sty "height" "700px"
-                sty "padding-top" "40px"
-                sty "padding-bottom" "30px"
-                sty "margin-bottom" "40px"
-            ]
-            [
-                Div [cls "container"] [
-                    Div [cls "row"] [
-                        Div [cls "col-12"] [
-                            Elements.Br [] []
-                            H10 [
-                                txt "WebSharper UI.Next: "
-                                Span [cls "text-muted"] [
-                                    txt "A new generation of reactive web applications."
+        Div [cls "container"] [
+            Elements.Section
+                [
+                    cls "block-huge"
+                    cls "teaser-home"
+                    sty "height" "700px"
+                    sty "padding-top" "40px"
+                    sty "padding-bottom" "30px"
+                    sty "margin-bottom" "40px"
+                ]
+                [
+                    Div [cls "container"] [
+                        Div [cls "row"] [
+                            Div [cls "col-12"] [
+                                Elements.Br [] []
+                                H10 [
+                                    txt "WebSharper UI.Next: "
+                                    Span [cls "text-muted"] [
+                                        txt "A new generation of reactive web applications."
+                                    ]
+                                ]
+                                H30 [
+                                    txt "Write powerful, data-backed applications"
+                                    Elements.Br [] []
+                                    txt " using F# and WebSharper."
+                                ]
+
+                                P [cls "lead"] [
+                                    txt "Get it free on NuGet today!"
                                 ]
                             ]
-                            H30 [
-                                txt "Write powerful, data-backed applications"
-                                Elements.Br [] []
-                                txt " using F# and WebSharper."
-                            ]
-                            link "Installation"
-                                [cls "btn" ; cls "btn-large" ; cls "btn-default"]
-                                (fun () -> ())
-
-                            link "Learn more"
-                                [cls "btn" ; cls "btn-large" ; cls "btn-default"]
-                                (fun () -> go About)
                         ]
                     ]
                 ]
             ]
 
     let AboutPage go =
-        //JavaScript.Alert "hi from about page"
         let oddEntry lnk desc img =
-            Elements.Section [cls "block-large" ; sty "padding-top" "80px"] [
+            Elements.Section [cls "block-large" ] [
                 Div [cls "container"] [
                     Div [cls "row"] [
                         Div [cls "col-lg-3"] [
@@ -145,16 +143,16 @@ module Site =
                             H10 [
                                 lnk
                             ]
-                        ]
-                        P [cls "lead"] [
-                            txt desc
+                            P [cls "lead"] [
+                                txt desc
+                            ]
                         ]
                     ]
                 ]
             ]
 
         let evenEntry lnk desc img =
-            Elements.Section [cls "block-large" ; cls "bg-alt" ; sty "padding-top" "80px"] [
+            Elements.Section [cls "block-large" ; cls "bg-alt" ] [
                 Div [cls "container"] [
                     Div [cls "row"] [
                         Div [cls "col-lg-8"] [
@@ -173,22 +171,35 @@ module Site =
                 ]
             ]
 
-        List.mapi (fun i entry ->
-            let renderFn = if i % 2 = 0 then oddEntry else evenEntry
-            renderFn (href entry.Name entry.URL) entry.Description entry.ImgURL
-        ) Entries |> Doc.Concat
+        Div [cls "extensions"] [
+            Div [cls "container"] [
+                Elements.Section [cls "block-huge"] [
+                    H10 [
+                        txt "WebSharper UI.Next: "
+                        Span [cls "text-muted"] [
+                            txt "Everything you need to know."
+                        ]
+                    ]
 
-    let NavBar v =
+                    P [cls "lead"] [
+                        txt "A selection of resources about UI.Next."
+                    ]
+                ]
+            ]
 
+            List.mapi (fun i entry ->
+                let renderFn = if i % 2 = 1 then oddEntry else evenEntry
+                renderFn (href entry.Name entry.URL) entry.Description entry.ImgURL
+            ) Entries |> Doc.Concat
+        ]
+
+    let NavBar (v: Var<Page>) samples =
         let renderLink pg =
             View.FromVar v
             |> View.Map (fun page ->
-                // Attribute list: add the "active" class if selected
-             //   JavaScript.Log <| "Nav pty: " + (showPgTy page.PageType)
-               // JavaScript.Log <| "Pg: " + (showPgTy pg)
-                let liAttr = if page = pg then Attr.Class "active" else Attr.Empty
-                LI [cls "nav-item"] [
-                    link (showPgTy pg) [liAttr] (fun () -> Var.Set v pg)
+                let liAttr = if page.PageType = pg then Attr.Class "active" else Attr.Empty
+                LI [cls "nav-item"; liAttr] [
+                    link (showPgTy pg) [] (fun () -> Var.Set v (pageFor pg samples))
                 ]
             )
             |> Doc.EmbedView
@@ -232,50 +243,43 @@ module Site =
             ]
         ]
 
-      //  | ["samples"] -> Samples
-    let MainRouteMap =
-        RouteMap.Create pageToURL urlToPage
+    let unitRouteMap =
+        RouteMap.Create (fun () -> []) (fun _ -> ())
 
-    let SiteRouter =
-        let page = mkPage "Home" (Unchecked.defaultof<RouteId>) (Unchecked.defaultof<Doc>) Home
-        Router.Route MainRouteMap Home (fun routeId v ->
-            View.FromVar v
-            |> View.Map (fun pgTy ->
-                page.PageRouteId <- routeId
-                page.PageName <- showPgTy pgTy
-                let renderFn = 
-                    match pgTy with
-                    | Home -> HomePage (Var.Set v)
-                    | About -> AboutPage (Var.Set v)
-                page
-            ) |> ignore
-            page)
-        
-        (*
-            let go = Var.Set v
-            let pg = Var.Get v
-            //JavaScript.Alert <| "PG: " + (showPgTy pg)
-            match pg with
-            | Home -> mkPage "Home" routeId (HomePage go) Home
-            | About -> mkPage "About" routeId (AboutPage go) About
-            | Samples -> mkPage "Home" routeId (HomePage go) Samples
-            *)
+    let homeRouter samples =
+        Router.Route unitRouteMap () (fun id v ->
+            //let mkPage name routeId render ty rv =
+            let homePg = pageFor Home samples
+            homePg.PageRouteId <- id
+            homePg
         )
-        //Router.Install (fun pg -> )
 
-    // Current page, set route id. still requires mutability i guess...
-    let Main () =
-        let router = Router.Install (fun pg -> pg.PageRouteId) outerRouter
+    let aboutRouter samples =
+        Router.Route unitRouteMap () (fun id v ->
+            let aboutPg = pageFor About samples
+            aboutPg.PageRouteId <- id
+            aboutPg
+        )
+
+    let SiteRouter samples =
+        Router.Merge [
+            Router.Prefix "home" (homeRouter samples)
+            Router.Prefix "about" (aboutRouter samples)
+            Router.Prefix "samples" (Samples.SamplesRouter samples)
+        ]
+
+    let Main samples =
+        let router = Router.Install (fun pg -> pg.PageRouteId) (SiteRouter samples)
         let renderMain v =
             View.FromVar v
-            |> View.Map (fun v ->
+            |> View.Map (fun (pg: Page) ->
                 JavaScript.Log "view fn triggered"
-                v.PageRender)
+                match pg.PageType with
+                | Home -> HomePage (fun ty -> Var.Set v (pageFor ty samples))
+                | About -> AboutPage (fun ty -> Var.Set v (pageFor ty samples))
+                | Samples -> Samples.Render v pg samples
+                )
             |> Doc.EmbedView
 
         Doc.RunById "main" (renderMain router)
-        Doc.RunById "navigation" (NavBar pageVar)
-        //Doc.RunById "navigation" (Nav)
-        // Router.Install : ('T -> RouteId) -> Router<'T> -> Var<'T>
-        //Router.
-        //Router.Install (fun pg -> pg.RouteId) SiteRouter
+        Doc.RunById "navigation" (NavBar router samples)

@@ -15,37 +15,70 @@ open IntelliFactory.WebSharper
 open IntelliFactory.WebSharper.UI.Next
 open IntelliFactory.WebSharper.UI.Next.Html
 open IntelliFactory.WebSharper.UI.Next.Notation
+open IntelliFactory.WebSharper.UI.Next.SiteCommon
 
 /// A little framework for displaying samples on the site.
 [<JavaScript>]
 module Samples =
 
-    type Meta =
-        {
-            FileName : string
-            Keywords : list<string>
-            Title : string
-            Uri : string
-        }
-
     // First, define the samples type, which specifies metadata and a rendering
     // function for each of the samples.
     // A Sample consists of a file name, identifier, list of keywords,
     // rendering function, and title.
-    type Sample =
-        private {
-            mutable Body : Doc
-            mutable Description : Doc
-            Meta : Meta
-            mutable Router : Router<Sample>
-            mutable RouteId : RouteId
-        }
 
     type Visuals<'T> =
         {
             Desc : 'T -> Doc
             Main : 'T -> Doc
         }
+
+    let Sidebar vPage samples =
+        let renderItem sample =
+            let attrView =
+                View.FromVar vPage
+                |> View.Map (fun pg -> pg.PageSample)
+            let pred s = Option.exists (fun smp -> sample.Meta.FileName = smp.Meta.FileName) s
+            let activeAttr = Attr.DynamicClass "active" attrView pred
+            Doc.Link sample.Meta.Title
+                [cls "list-group-item"; activeAttr]
+                (fun () -> Var.Set vPage sample.SamplePage)
+
+        Div [cls "col-3"] [
+            H40 [txt "Samples"]
+            List.map renderItem samples |> Doc.Concat
+        ]
+        
+
+    let RenderContent sample =
+        Div [cls "samples"; cls "col-9"] [
+            Div0 [
+                Div [cls "row"] [
+                    H10 [txt sample.Meta.Title]
+                    Div0 [
+                        sample.Description
+                    ]
+                ]
+
+                Div [cls "row"] [
+                    sample.Body
+                ]
+            ]
+        ]
+
+    let Render vPage pg samples =
+        let sample =
+            match pg.PageSample with
+            | Some s -> s
+            | None -> failwith "Attempted to render non-sample on samples page"
+
+        Elements.Section [cls "block-small"] [
+            Div [cls "container"] [
+                Div [cls "row"] [
+                    Sidebar vPage samples
+                    RenderContent sample
+                ]
+            ]
+        ]
 
     let CreateRouted router init vis meta =
         let sample =
@@ -55,13 +88,19 @@ module Samples =
                 Meta = meta
                 Router = Unchecked.defaultof<_>
                 RouteId = Unchecked.defaultof<_>
+                SamplePage = Unchecked.defaultof<_>
             }
         let r =
              Router.Route router init (fun id cur ->
                 sample.RouteId <- id
                 sample.Body <- vis.Main cur
                 sample.Description <- vis.Desc cur
-                sample)
+                let page = mkPage sample.Meta.Title id Samples
+                page.PageSample <- Some sample
+                page.PageRouteId <- id
+                sample.SamplePage <- page
+                page
+             )
              |> Router.Prefix meta.Uri
         sample.Router <- r
         sample
@@ -75,11 +114,18 @@ module Samples =
                 Meta = meta
                 Router = Unchecked.defaultof<_>
                 RouteId = Unchecked.defaultof<_>
+                SamplePage = Unchecked.defaultof<_>
             }
+
         sample.Router <-
+            // mkPage name routeId ty
             Router.Route unitRouter () (fun id cur ->
+                let page = mkPage sample.Meta.Title id Samples
                 sample.RouteId <- id
-                sample)
+                page.PageSample <- Some sample
+                page.PageRouteId <- id
+                sample.SamplePage <- page
+                page)
             |> Router.Prefix meta.Uri
         sample
 
@@ -132,48 +178,9 @@ module Samples =
 
     let nav = Html.Elements.Nav
 
-    let Sidebar vSample samples =
-        let renderItem sample =
-            let attrView = View.FromVar vSample
-            let pred s = sample.Meta.FileName = s.Meta.FileName
-            let activeAttr = Attr.DynamicClass "active" attrView pred
-            Doc.Link sample.Meta.Title
-                [cls "list-group-item"; activeAttr]
-                (fun () -> Var.Set vSample sample)
+    let InitialSamplePage samples =
+        (List.head samples).SamplePage
 
-        Div [cls "row"] [
-            Div [cls "col-3"] [
-                H40 [txt "Samples"]
-                List.map renderItem samples |> Doc.Concat
-            ]
-        ]
-
-    let RenderContent sampleView =
-        Div [cls "col-9"] [
-            sampleView
-            |> View.Map (fun x ->
-                Div0 [
-                    Div [cls "row"] [
-                        H10 [txt x.Meta.Title]
-                        Div0 [
-                            x.Description
-                        ]
-                    ]
-
-                    Div [cls "row"] [
-                        x.Body
-                    ]
-                ]
-
-            ) |> Doc.EmbedView
-        ]
-
-    let Render vSample samples =
-        Div [cls "container" ; cls "block-small"] [
-            Sidebar vSample samples
-            RenderContent (View.FromVar vSample)
-        ]
-
-    let Main () =
-        Doc.Empty
-        //let samplesRouter = Router.Merge [ for s in samples -> s.Router ]
+    let SamplesRouter samples =
+        Router.Merge [ for s in samples -> s.Router ]
+        |> Router.Prefix "samples"

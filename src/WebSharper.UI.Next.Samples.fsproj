@@ -104,7 +104,9 @@
     <Content Include="index_old.html" />
     <Content Include="Web.config" />
     <Compile Include="Utilities.fs" />
+    <Compile Include="SiteCommon.fs" />
     <Compile Include="Samples.fs" />
+    <Compile Include="Site.fs" />
     <Compile Include="CheckBoxTest.fs" />
     <Compile Include="PhoneExample.fs" />
     <Compile Include="TodoList.fs" />
@@ -120,7 +122,6 @@
     <Compile Include="BobsleighSite.fs" />
     <Compile Include="RoutedBobsleighSite.fs" />
     <Compile Include="EditablePersonList.fs" />
-    <Compile Include="Site.fs" />
     <Compile Include="Client.fs" />
     <None Include="index.html" />
     <None Include="packages.config" />
