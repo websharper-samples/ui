@@ -1,98 +1,84 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
+﻿<html lang="en" class=" js no-touch no-android chrome no-firefox no-iemobile no-ie no-ie10 no-ie11 no-ios">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="IntelliFactory">
     <title>WebSharper.UI.Next</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" type="text/css" href="Content/WebSharper.UI.Next.Samples.css" />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-    <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="Style.css">
-</head>
-<body>
+    <link href="http://www.websharper.com/css/bootstrap.css" rel="stylesheet">
+    <link href="http://www.websharper.com/css/font-awesome.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Noto+Sans|Lato:300" rel="stylesheet" type="text/css">
+    <script type="text/javascript" async="" src="files/ga.js"></script>
+    <script type="text/javascript">
 
-    <div id="mouseChase"></div>
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36238772-1']);
+    _gaq.push(['_trackPageview']);
 
-    <nav class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">WebSharper.UI.Next</a>
-            </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li><a href="https://github.com/intellifactory/websharper.ui.next">Source</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="http://websharper.com">WebSharper</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    (function() {
+     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+     })();
+    </script>
+    <style type="text/css"></style>
+  </head>
 
-    <div style="display:none">
-
-        <div id="Simple Text Box">
-            <p>
-                A label which copies the contents of a text box.
-            </p>
-        </div>
-        <div id="To-do List">
-            <p>
-                A to-do list application.
-            </p>
-        </div>
-        <div id="List Filtering and Sorting">
-            <p>
-                Taken from the <a href="https://docs.angularjs.org/tutorial/">AngularJS Tutorial</a>, a list filtering and sorting application for phones.
-            </p>
-        </div>
-        <div id="Check Boxes">
-            <p>
-                An example making use of check-boxes, showing how form components may feed into reactive variables.
-            </p>
-        </div>
+  <body>
+    <div id="navigation">
     </div>
 
-    <div class="container-fluid" style="position:relative">
-        <div class="row">
-            <div class="col-sm-12">
-                <div id="sample-navs">
-                </div>
-                <div class="skip">
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-9">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <div id="sample-main">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <div class="panel panel-default">
-                    <div class="panel-heading">About</div>
-                    <div class="panel-body">
-                        <div id="sample-side">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+    <div id="main">
     </div>
 
-    <script type="text/javascript" src="Content/WebSharper.UI.Next.Samples.head.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="Content/WebSharper.UI.Next.Samples.js"></script>
-</body>
+    <footer style="padding-bottom: 2em;background-color:#eceef1;">
+      <div class="container">
+          <br>
+          <div class="row">
+              <div class="col-lg-4">
+                  <h4>The future of web apps is here</h4>
+                  <p>
+                      WebSharper is an open source project available under AGPL v3.0,
+                      developed by <a href="http://intellifactory.com/">IntelliFactory</a>
+                      and our community members.
+                  </p>
+                  <ul class="list-social" style="padding-left: 0; margin-top: 1em">
+                      <li><a class="pinterest" href="http://github.com/intellifactory/websharper"><i class="icon-github"></i></a></li>
+                      <li><a class="twitter" href="http://twitter.com/websharper"><i class="icon-twitter"></i></a></li>
+                      <li><a class="facebook" href="http://facebook.com/intellifactory"><i class="icon-facebook"></i></a></li>
+                      <li><a class="google-plus" href="http://fpish.net/"><i class="icon-tags"></i></a></li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </footer>
+
+  <footer style="background-color:#ddd;">
+      <div class="container" style="padding:15px;">
+          <div class="row">
+              <div class="col-lg-12">
+                  <div style="float:left;">
+                  Copyright (c) 2014 IntelliFactory. All rights reserved.
+                  </div>
+                  <div style="float:right;font-size:90%;">
+                      <a href="http://www.websharper.com/downloads">Download</a> |
+                      <a href="http://www.websharper.com/extensions">Extend</a> |
+                      <a href="http://www.websharper.com/docs">Learn</a> |
+                      <a href="http://www.websharper.com/samples">Examples</a> |
+                      <a href="http://www.websharper.com/licensing">Licensing</a> |
+                      <a href="http://www.websharper.com/blog">Blog</a> |
+                      <a href="http://www.websharper.com/contact">Connect</a> |
+                      <a href="http://www.websharper.com/store">Support</a>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </footer>
+  <script type="text/javascript" src="Content/WebSharper.UI.Next.Samples.head.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="Content/WebSharper.UI.Next.Samples.js"></script>
+  </body>
 </html>

@@ -17,7 +17,7 @@ open IntelliFactory.WebSharper
 module Client =
 
     let Main =
-        Samples.Show [
+        Site.Main [
             SimpleTextBox.Sample
             InputTransform.Sample
             TodoList.Sample

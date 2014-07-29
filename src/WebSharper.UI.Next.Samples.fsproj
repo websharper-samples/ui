@@ -101,11 +101,12 @@
     </VisualStudio>
   </ProjectExtensions>
   <ItemGroup>
-    <Content Include="index.html" />
+    <Content Include="index_old.html" />
     <Content Include="Web.config" />
-    <None Include="packages.config" />
     <Compile Include="Utilities.fs" />
+    <Compile Include="SiteCommon.fs" />
     <Compile Include="Samples.fs" />
+    <Compile Include="Site.fs" />
     <Compile Include="CheckBoxTest.fs" />
     <Compile Include="PhoneExample.fs" />
     <Compile Include="TodoList.fs" />
@@ -122,6 +123,8 @@
     <Compile Include="RoutedBobsleighSite.fs" />
     <Compile Include="EditablePersonList.fs" />
     <Compile Include="Client.fs" />
+    <None Include="index.html" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="IntelliFactory.WebSharper.UI.Next">
@@ -134,6 +137,13 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\websharper.ui.next\src\WebSharper.UI.Next\WebSharper.UI.Next.fsproj">
+      <Name>WebSharper.UI.Next</Name>
+      <Project>{085a6f78-50a7-46cf-b040-9853ec580be5}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <!-- <LOCAL> link to locally checked out websharper.ui.next if available. -->
   <PropertyGroup>
@@ -163,11 +173,11 @@
     <Copy SourceFiles="@(SiteContentFiles)" DestinationFolder="..\build\html\Content" SkipUnchangedFiles="true" />
   </Target>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Import Project="..\packages\WebSharper.2.5.119.54\build\WebSharper.targets" Condition="Exists('..\packages\WebSharper.2.5.119.54\build\WebSharper.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\WebSharper.2.5.119.54\build\WebSharper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WebSharper.2.5.119.54\build\WebSharper.targets'))" />
   </Target>
+  <Import Project="..\packages\WebSharper.2.5.119.54\build\WebSharper.targets" Condition="Exists('..\packages\WebSharper.2.5.119.54\build\WebSharper.targets')" />
 </Project>

@@ -27,7 +27,6 @@ module InputTransform =
         // Create a reactive variable and view.
         // Reactive *variables* are data *sources*.
         let rvText = Var.Create ""
-
         // Create the components backed by the variable: in this case, an input
         // field and a label to display the contents of such a field.
 
