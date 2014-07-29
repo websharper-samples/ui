@@ -2,6 +2,7 @@
 rm -r build -errorAction ignore
 $d = mkdir build
 $d = mkdir build/html
+cp -r src/files build/html/
 cp -r src/Content build/html/
 cp -r src/*.jpg build/html/
 cp -r src/*.css build/html/
