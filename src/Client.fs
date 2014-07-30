@@ -24,7 +24,6 @@ module Client =
             PhoneExample.Sample
             EditablePersonList.Sample
             CheckBoxTest.Sample
-            MouseChase.Sample
             Calculator.Sample
             ContactFlow.Sample
             MessageBoard.Sample

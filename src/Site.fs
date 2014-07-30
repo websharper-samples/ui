@@ -12,61 +12,54 @@ module Site =
     type AboutEntry =
         {
             Name : string
-            URL : string
             ImgURL : string
             Description : string
+            URLs : Doc list
         }
 
-    let mkEntry name blog img desc =
+    let mkEntry name desc img urls =
         {
             Name = name
-            URL = blog
-            ImgURL = img
             Description = desc
+            ImgURL = img
+            URLs = urls
         }
 
-    let Entries =
-        [
+    let Entries = 
+        [ 
             mkEntry
-                "WebSharper UI.Next: An Introduction"
-                "http://www.websharper.com/blog-entry/3954"
-                "files/uinext-screen.png"
-                "WebSharper UI.Next is a new library for constructing reactive \
-                 interfaces, backed by data. This post introduces the basics, \
-                 and shows how to construct some simple examples."
-            mkEntry
-                "The WebSharper UI.Next Tutorial"
-                "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Tutorial.md"
-                "files/TodoApp.png"
-                "A tutorial to take you through the basics of UI.Next,\
-                 by developing some simple applications."
-            mkEntry
-                "API Reference"
-                "http://www.websharper.com/blog-entry/3964"
+                "Documentation"
+                "Official documentation on WebSharper UI.Next, including the \
+                 API reference and some discussion about the design decisions \
+                 we made"
                 "files/gear.png"
-                "The definitive UI.Next API Reference."
+                [
+                    href "Tutorial" "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Tutorial.md" 
+                    href "API Reference" "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/API.md"
+                    href "Full Documentation" "https://github.com/intellifactory/websharper.ui.next/blob/master/README.md"
+                ] ;
             mkEntry
-                "Presentation: Tackle UI with Reactive DOM in F# and WebSharper"
-                "https://www.youtube.com/watch?v=wEkS09s3KBc"
+                "Articles"
+                "Articles written about UI.Next, which provide more detailed \
+                 discussions about various aspects of the library."
+                "files/uinext-screen.png"
+                [
+                    href "WebSharper UI.Next: An Introduction" "http://www.websharper.com/blog-entry/3954"
+                    href "WebSharper UI.Next: Declarative Animation" "http://www.websharper.com/blog-entry/3964"
+                    href "Structuring Applications with WebSharper UI.Next" "http://www.websharper.com/blog-entry/3965"
+                ] ;
+             mkEntry
+                "Presentations"
+                "Presentations about UI.Next, providing an overview of the library \
+                 and deeper insights into the thinking behind it."
                 "files/anton-pres.png"
-                "In this recorded Community for FSharp event, Anton Tayanovskyy presents the \
-                 basics of the library and the motivations for the dataflow design."
-            mkEntry
-                "WebSharper UI.Next: Declarative Animation"
-                "http://www.websharper.com/blog-entry/3964"
-                "files/home-banner.jpg"
-                "Inspired by the success of libraries such as D3, this post \
-                 shows how the animation features of UI.Next may be used to \
-                 construct data-driven animations in a declarative style."
-            mkEntry
-                "Structuring Applications with WebSharper UI.Next"
-                "http://www.websharper.com/blog-entry/3965"
-                "files/blog2-screen.png"
-                "One of the big advantages of using F# is that we can take \
-                 advantage of its static type system to help us structure applications. \
-                 This post explains some of the abstractions available to structure \
-                 single-page applications."
-        ]
+                [
+                    href 
+                        "Presentation: Tackle UI with Reactive DOM in F# and WebSharper"
+                        "https://www.youtube.com/watch?v=wEkS09s3KBc"
+                ]
+         ]
+                
 
     let NavExternalLinks =
         [
@@ -92,6 +85,10 @@ module Site =
         | Samples -> Samples.InitialSamplePage samples
 
     let NavPages = [Home ; About; Samples]
+
+    let linkBtn caption href =
+        Elements.A [cls "btn" ; cls "btn-default" ; "href" ==> href]
+            [ txt caption ]
 
     let HomePage go =
         Div [cls "container"] [
@@ -131,45 +128,57 @@ module Site =
             ]
 
     let AboutPage go =
-        let oddEntry lnk desc img =
+
+        let renderBody entry = 
+            [ 
+                H10 [ txt entry.Name ]
+                P [cls "lead"] [
+                    txt entry.Description
+                ]
+                P0 [
+                    UL [cls "list-unstyled"] [
+                        List.map (fun lnk -> 
+                            LI0 [
+                                lnk
+                            ]) entry.URLs |> Doc.Concat
+                    ]
+                ]
+            ] |> Doc.Concat
+
+        let oddEntry entry =
             Elements.Section [cls "block-large" ] [
                 Div [cls "container"] [
                     Div [cls "row"] [
                         Div [cls "col-lg-3"] [
-                            Elements.Img ["src" ==> img ; sty "width" "100%"] []
+                            Elements.Img ["src" ==> entry.ImgURL ; sty "width" "100%"] []
                         ]
                         Div [cls "col-lg-1"] []
                         Div [cls "col-lg-8"] [
-                            H10 [
-                                lnk
-                            ]
-                            P [cls "lead"] [
-                                txt desc
-                            ]
+                            renderBody entry
                         ]
                     ]
                 ]
             ]
 
-        let evenEntry lnk desc img =
+        let evenEntry entry =
             Elements.Section [cls "block-large" ; cls "bg-alt" ] [
                 Div [cls "container"] [
                     Div [cls "row"] [
                         Div [cls "col-lg-8"] [
-                            H10 [
-                                lnk
-                            ]
-                            P [cls "lead"] [
-                                txt desc
-                            ]
+                            renderBody entry
                         ]
                         Div [cls "col-lg-1"] []
                         Div [cls "col-lg-3"] [
-                            Elements.Img ["src" ==> img ; sty "width" "100%"] []
+                            Elements.Img ["src" ==> entry.ImgURL; sty "width" "100%"] []
                         ]
                     ]
                 ]
             ]
+        
+        let ico name = 
+        // font-size:400%;color:#aaa;
+            Span [cls "fa" ; cls name; cls "fa-3x" ; sty "font-size" "400%" ; sty "color" "#aaa"] []
+
 
         Div [cls "extensions"] [
             Div [cls "container"] [
@@ -187,9 +196,43 @@ module Site =
                 ]
             ]
 
+
+            Div [cls "block-large" ; cls "bg-alt"] [
+                Div [cls "container"] [
+                    Div [cls "row" ; cls "text-center"] [
+                        Div [cls "col-lg-4"] [
+                            ico "fa-graduation-cap"
+                            H30 [txt "Get Started"]
+                            P0 [txt "Take the tutorial, and you'll be writing reactive applications in no time!"]
+                            linkBtn "Tutorial" "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Tutorial.md"
+                            // Tutorial
+                        ]
+
+                        Div [cls "col-lg-4"] [
+     //                       Elements.I [cls "fa" ; cls "fa-graduation-cap" ; cls "fa-3x" ] []
+                            ico "fa-book"
+                            H30 [txt "Dive Right In"]
+                            P0 [txt "Comprehensive documentation on the UI.Next API."]
+                            linkBtn "API Reference" "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/API.md"
+                            // Dive right in
+                            // API Reference
+                        ]
+
+                        Div [cls "col-lg-4"] [
+                            ico "fa-send"
+                            H30 [txt "See it in Action"]
+                            P0 [txt "A variety of samples using UI.Next, and their associated source code!"]
+                            Doc.Button "Samples" [cls "btn" ; cls "btn-default" ] (fun () -> go Samples)
+                            // See it in action
+                            // Samples link
+                        ]
+                    ]
+                ]
+
+            ]
             List.mapi (fun i entry ->
-                let renderFn = if i % 2 = 1 then oddEntry else evenEntry
-                renderFn (href entry.Name entry.URL) entry.Description entry.ImgURL
+                let renderFn = if i % 2 = 0 then oddEntry else evenEntry
+                renderFn entry
             ) Entries |> Doc.Concat
         ]
 

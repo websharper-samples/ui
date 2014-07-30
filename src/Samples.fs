@@ -54,12 +54,18 @@ module Samples =
                 Div [cls "row"] [
                     H10 [txt sample.Meta.Title]
                     Div0 [
-                        sample.Description
+                        P0 [ sample.Description ]
+                        P0 [
+                            Elements.A
+                                [ "href" ==> "https://github.com/intellifactory/websharper.ui.next/blob/master/src/" + sample.Meta.Uri
+                                  cls "btn" ; cls "btn-default"]
+                                [txt "View Source"]
+                        ]
                     ]
                 ]
 
                 Div [cls "row"] [
-                    sample.Body
+                    P0 [ sample.Body ]
                 ]
             ]
         ]
