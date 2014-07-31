@@ -25,8 +25,8 @@ module Site =
             URLs = urls
         }
 
-    let Entries = 
-        [ 
+    let Entries =
+        [
             mkEntry
                 "Documentation"
                 "Official documentation on WebSharper UI.Next, including the \
@@ -34,7 +34,7 @@ module Site =
                  we made"
                 "files/gear.png"
                 [
-                    href "Tutorial" "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Tutorial.md" 
+                    href "Tutorial" "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Tutorial.md"
                     href "API Reference" "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/API.md"
                     href "Full Documentation" "https://github.com/intellifactory/websharper.ui.next/blob/master/README.md"
                 ] ;
@@ -54,12 +54,11 @@ module Site =
                  and deeper insights into the thinking behind it."
                 "files/anton-pres.png"
                 [
-                    href 
+                    href
                         "Presentation: Tackle UI with Reactive DOM in F# and WebSharper"
                         "https://www.youtube.com/watch?v=wEkS09s3KBc"
                 ]
          ]
-                
 
     let NavExternalLinks =
         [
@@ -129,15 +128,15 @@ module Site =
 
     let AboutPage go =
 
-        let renderBody entry = 
-            [ 
+        let renderBody entry =
+            [
                 H10 [ txt entry.Name ]
                 P [cls "lead"] [
                     txt entry.Description
                 ]
                 P0 [
                     UL [cls "list-unstyled"] [
-                        List.map (fun lnk -> 
+                        List.map (fun lnk ->
                             LI0 [
                                 lnk
                             ]) entry.URLs |> Doc.Concat
@@ -174,11 +173,10 @@ module Site =
                     ]
                 ]
             ]
-        
-        let ico name = 
+
+        let ico name =
         // font-size:400%;color:#aaa;
             Span [cls "fa" ; cls name; cls "fa-3x" ; sty "font-size" "400%" ; sty "color" "#aaa"] []
-
 
         Div [cls "extensions"] [
             Div [cls "container"] [
@@ -195,7 +193,6 @@ module Site =
                     ]
                 ]
             ]
-
 
             Div [cls "block-large" ; cls "bg-alt"] [
                 Div [cls "container"] [
@@ -309,17 +306,31 @@ module Site =
             Router.Prefix "about" (aboutRouter samples)
             Router.Prefix "samples" (Samples.SamplesRouter samples)
         ]
+    let fadeTime = 300.0
+
+    let Fade =
+        Anim.Simple Interpolation.Double Easing.CubicInOut fadeTime
+
+    let FadeTransition =
+        Trans.Create Fade
+        |> Trans.Enter (fun i -> Fade 0.0 1.0)
+        |> Trans.Exit (fun i -> Fade 1.0 0.0)
+
+    let MakePage pg =
+        Div [Attr.AnimatedStyle "opacity" FadeTransition (View.Const 1.0) string] [
+            pg
+        ]
 
     let Main samples =
         let router = Router.Install (fun pg -> pg.PageRouteId) (SiteRouter samples)
         let renderMain v =
             View.FromVar v
             |> View.Map (fun (pg: Page) ->
-                JavaScript.Log "view fn triggered"
                 match pg.PageType with
                 | Home -> HomePage (fun ty -> Var.Set v (pageFor ty samples))
                 | About -> AboutPage (fun ty -> Var.Set v (pageFor ty samples))
                 | Samples -> Samples.Render v pg samples
+                |> MakePage
                 )
             |> Doc.EmbedView
 

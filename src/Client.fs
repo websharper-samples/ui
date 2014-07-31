@@ -29,5 +29,6 @@ module Client =
             MessageBoard.Sample
             BobsleighSite.Sample
             RoutedBobsleighSite.Sample
+            AnimatedBobsleighSite.Sample
             ObjectConstancy.Sample
         ]
