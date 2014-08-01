@@ -330,7 +330,7 @@ module Site =
                 | Home -> HomePage (fun ty -> Var.Set v (pageFor ty samples))
                 | About -> AboutPage (fun ty -> Var.Set v (pageFor ty samples))
                 | Samples -> Samples.Render v pg samples
-                |> MakePage
+        //        |> MakePage
                 )
             |> Doc.EmbedView
 

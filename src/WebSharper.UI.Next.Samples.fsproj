@@ -115,6 +115,7 @@
     <Compile Include="Calculator.fs" />
     <Compile Include="InputTransform.fs" />
     <Compile Include="ContactFlow.fs" />
+    <Compile Include="AnimatedContactFlow.fs" />
     <Compile Include="SimpleTextBox.fs" />
     <Compile Include="MessageBoard.fs" />
     <Compile Include="ObjectConstancy.fs" />

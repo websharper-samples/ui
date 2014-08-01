@@ -39,8 +39,8 @@ module AnimatedBobsleighSite =
         Go : Page -> unit
     }
 
+    // A fade animation
     let fadeTime = 300.0
-
     let Fade =
         Anim.Simple Interpolation.Double Easing.CubicInOut fadeTime
 
@@ -71,7 +71,7 @@ module AnimatedBobsleighSite =
     let MakePage var pg =
         Doc.Concat [
             NavBar var
-            Div [Attr.AnimatedStyle "opacity" FadeTransition (Var.Create 1.0 |> View.FromVar) string] [
+            Div [Attr.AnimatedStyle "opacity" FadeTransition (View.Const 1.0) string] [
                 pg
             ]
         ]

@@ -26,6 +26,7 @@ module Client =
             CheckBoxTest.Sample
             Calculator.Sample
             ContactFlow.Sample
+            AnimatedContactFlow.Sample
             MessageBoard.Sample
             BobsleighSite.Sample
             RoutedBobsleighSite.Sample
