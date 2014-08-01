@@ -5,7 +5,7 @@ Animation support allows describing animations and transitions as descriptive
 first-class values. The most common way to use animation is to specify animated
 attributes with [Attr](Attr.md) API, but they can also be scheduled imperatively.
 
-The an example of animation use, see the
+For an example of animation, see the
 [ObjectConstancy](http://intellifactory.github.io/websharper.ui.next/#ObjectConstancy) sample.
 
 API in detail:
