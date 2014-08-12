@@ -32,4 +32,6 @@ module Client =
             RoutedBobsleighSite.Sample
             AnimatedBobsleighSite.Sample
             ObjectConstancy.Sample
+            MouseInfo.Sample
+            KeyboardInfo.Sample
         ]

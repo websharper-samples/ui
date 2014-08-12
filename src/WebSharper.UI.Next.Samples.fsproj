@@ -111,7 +111,7 @@
     <Compile Include="PhoneExample.fs" />
     <Compile Include="TodoList.fs" />
     <None Include="Style.css" />
-    <Compile Include="MouseChase.fs" />
+    <Compile Include="MouseInfo.fs" />
     <Compile Include="Calculator.fs" />
     <Compile Include="InputTransform.fs" />
     <Compile Include="ContactFlow.fs" />
@@ -124,35 +124,19 @@
     <Compile Include="AnimatedBobsleighSite.fs" />
     <Compile Include="RoutedBobsleighSite.fs" />
     <Compile Include="EditablePersonList.fs" />
+    <Compile Include="KeyboardInfo.fs" />
     <Compile Include="Client.fs" />
     <None Include="index.html" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="IntelliFactory.WebSharper.UI.Next">
-      <HintPath>..\packages\WebSharper.UI.Next.0.1.16.17\lib\net40\IntelliFactory.WebSharper.UI.Next.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
+    <Reference Include="WebSharper.UI.Next" />
   </ItemGroup>
-  <!-- <LOCAL> link to locally checked out websharper.ui.next if available. -->
-  <PropertyGroup>
-    <LocalLib>..\..\websharper.ui.next\src\WebSharper.UI.Next\bin\Release\WebSharper.UI.Next.dll</LocalLib>
-  </PropertyGroup>
-  <Target Name="LinkLocal" BeforeTargets="ResolveAssemblyReferences" Condition="Exists('$(LocalLib)')">
-    <ItemGroup>
-      <Reference Remove="IntelliFactory.WebSharper.UI.Next" />
-      <Reference Include="IntelliFactory.WebSharper.UI.Next">
-        <HintPath>$(LocalLib)</HintPath>
-        <Private>True</Private>
-      </Reference>
-    </ItemGroup>
-  </Target>
-  <!-- </LOCAL> -->
   <Target Name="DeploySite" AfterTargets="Build">
     <ItemGroup>
       <SiteFiles Include="*.html" />
