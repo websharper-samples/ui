@@ -41,7 +41,7 @@ special support from UI.Next.
 
 ## Elm
 
-[Elm.js](http://elm-lang.org/) provides a [Signal](http://elm-lang.org/learn/What-is-FRP.elm)
+The [Elm](http://elm-lang.org/) programming language provides a [Signal](http://elm-lang.org/learn/What-is-FRP.elm)
 abstraction is a hybrid of Event and Behavior.  The interesting functionality is
 availability of history transformations, such as `count Mouse.clicks`.  This is not available
 in [View](View.md) layer.  The tradeoff is that Elm signals do not allow dynamic composition,
