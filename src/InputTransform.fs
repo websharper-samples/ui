@@ -88,7 +88,7 @@ module InputTransform =
                 TD0 [
                     Doc.TextNode lbl
                 ]
-                TD0 [
+                TD [sty "width" "70%"] [
                     Doc.TextView view
                 ]
             ]

@@ -134,7 +134,7 @@ module AnimatedBobsleighSite =
 
     let Team ctx =
         let teamMembers =
-            [("Adam", "granicz") ; ("András", "AndrasJanko") ; ("Anton", "t0yv0") ;
+            [("Adam", "granicz") ; ("András", "AndrasJanko") ; ("Anton (honourary member for life)", "t0yv0") ;
              ("István", "inchester23") ; ("Loic", "tarmil_") ; ("Sándor", "sandorrakonczai")
              ("Simon", "Simon_JF")]
 

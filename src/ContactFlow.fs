@@ -29,21 +29,26 @@ module ContactFlow =
         }
 
     // Helper function to display an input field within a form prettily.
-    let inputRow rv id lblText =
-        Div [cls "form-group"] [
-            Label [
-                "for" ==> id
-                cls "col-sm-2"
-                cls "control-label"
-            ] [Doc.TextNode lblText]
+    let inputRow rv id lblText isArea =
+        let control = if isArea then Doc.InputArea else Doc.Input
+        Div [cls "row"] [
+            Div [cls "form-group"] [
+                Label [
+                    cls "col-sm-2"
+                    "for" ==> id
+                    cls "control-label"
+                ] [Doc.TextNode lblText]
 
-            Div [cls "col-sm-10"] [
-                Doc.Input
-                    ["type" ==> "text"
-                     cls "form-control"
-                     "id" ==> id
-                     "placeholder" ==> lblText
-                    ] rv
+                Div [cls "col-sm-6"] [
+                    control
+                        ["type" ==> "text"
+                         cls "form-control"
+                         "id" ==> id
+                         "placeholder" ==> lblText
+                        ] rv
+
+                ]
+                Div [cls "col-sm-4"] []
             ]
         ]
 
@@ -55,22 +60,25 @@ module ContactFlow =
 
             Form [cls "form-horizontal" ; "role" ==> "form"] [
                 // Name
-                inputRow rvName "lblName" "Name"
+                inputRow rvName "lblName" "Name" false
                 // Address
-                inputRow rvAddress "lblAddr" "Address"
-                Div [cls "form-group"] [
-                    Div [cls "col-sm-offset-2" ; cls "col-sm-10"] [
-                        Doc.Button "Next" [cls "btn" ; cls "btn-default"] (fun () ->
-                            let name = Var.Get rvName
-                            let addr = Var.Get rvAddress
-                            // We use the continuation function to return the
-                            // data we retrieved from the form.
-                            cont ({Name = name ; Address = addr})
-                        )
+                inputRow rvAddress "lblAddr" "Address" true
+                Div [cls "row"] [
+                    Div [cls "col-sm-2"] []
+                    Div [cls "col-sm-6"] [
+                        Div [cls "form-group"] [
+                            Doc.Button "Next" [cls "btn" ; cls "btn-default"] (fun () ->
+                                let name = Var.Get rvName
+                                let addr = Var.Get rvAddress
+                                // We use the continuation function to return the
+                                // data we retrieved from the form.
+                                cont ({Name = name ; Address = addr})
+                            )
+                        ]
                     ]
+                    Div [cls "col-sm-4"] []
                 ]
             ]
-
         )
 
     // The second page of the flowlet, which asks whether the user wants
@@ -103,7 +111,7 @@ module ContactFlow =
         Flow.Define ( fun cont ->
             let rvContact = Var.Create ""
             Form [cls "form-horizontal" ; "role" ==> "form"] [
-                inputRow rvContact "contact" label
+                inputRow rvContact "contact" label false
                 Div [cls "form-group"] [
                     Div [cls "col-sm-offset-2" ; cls "col-sm-10"] [
                         Doc.Button "Finish" [cls "btn" ; cls "btn-default"]
