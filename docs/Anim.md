@@ -15,6 +15,7 @@ type Anim<'T> =
 
 type Anim =
     static member Simple : Interpolation<'T> -> Easing -> Time -> 'T -> 'T -> Anim<'T>
+    static member Delayed : Interpolation<'T> -> Easing -> Time -> Time -> 'T -> 'T -> Anim<'T>
     static member Map : ('A -> 'B) -> Anim<'A> -> Anim<'B>
     static member Play : Anim -> Async<unit>
     static member Pack : Anim<unit> -> Anim
@@ -48,6 +49,20 @@ Anim.Simple :
 ```
 
 Uses an interpolation, easing, duration, start and end values to construct an animation.
+
+<a name="Delayed" href="#Delayed">#</a> Anim.**Delayed**
+
+```fsharp
+Anim.Simple :
+  Interpolation<'T> ->
+  Easing ->
+  duration: Time ->
+  delay: Time ->
+  startValue: 'T ->
+  endValue: 'T ->
+  Anim<'T>
+```
+As with <a href="#Simple">Simple</a>, but including an initial delay.
 
 ## Collected Animations
 

@@ -22,5 +22,7 @@
   * [Flow](Flow.md), FlowBuilder - multi-stage documents such as wizards
   * [Router](Router.md), [RouteId](Router.md#RouteId) - support for routing and structuring sites
   * [RouteMap](RouteMap.md) - bijection between a route and an action type
+* Input
+  * [Input](Input.md) - Views of the mouse and keyboard
 * Misc
   * [Notation](Notation.md)

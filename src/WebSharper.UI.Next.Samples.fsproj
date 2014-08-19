@@ -137,7 +137,7 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
     <Reference Include="WebSharper.UI.Next">
-      <HintPath>..\packages\WebSharper.UI.Next.0.1.27.28\lib\net40\WebSharper.UI.Next.dll</HintPath>
+      <HintPath>..\sln\packages\WebSharper.UI.Next.0.1.31.32\lib\net40\WebSharper.UI.Next.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

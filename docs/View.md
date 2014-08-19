@@ -32,7 +32,9 @@ type View =
     static member MapAsync : ('A -> Async<'B>) -> View<'A> -> View<'B>
     static member Join : View<View<'T>> -> View<'T>
     static member Bind : ('A -> View<'B>) -> View<'A> -> View<'B>
-
+    static member SnapshotOn : View<'A> -> View<'B> -> View<'B>
+    static member UpdateWhile : View<bool> -> View<'A> -> View<'A>
+    
     static member Convert<'A,'B when 'A : equality> :
         ('A -> 'B) -> View<seq<'A>> -> View<seq<'B>>
 
@@ -153,6 +155,15 @@ Dynamic composition via `View.Bind` and `View.Join` should be used with some car
 Whenever static composition (such as `View.Map2`) can do the trick, it should be preferable.
 One concern here is efficiency, and another is state, identity and sharing (see [Sharing](Sharing.md)
 for a discussion).
+
+<a name="SnapshotOn" href="#SnapshotOn">#</a> View.**SnapshotOn** `'B -> View<'A> -> View<'B> -> View<'B>`
+Given two views `a` and `b`, and a default value, provides a `snapshot' of `b` whenever `a` updates. 
+The value of `a` is unused. The initial value is an initial sample of `b`.
+
+<a name="UpdateWhile" href="#UpdateWhile">#</a> View.**UpdateWhile** `'A -> View<'bool> -> View<'A> -> View<'A>`
+Given a predicate `View<bool>` `a`, a view `b`, and a default value, create a view which reflects the latest value of
+`b` whenever the predicate is true. Updates are not propagated when the predicate is false. 
+
 
 ## Advanced
 

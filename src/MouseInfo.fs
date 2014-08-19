@@ -22,13 +22,17 @@ open IntelliFactory.WebSharper.UI.Next.Html
 [<JavaScript>]
 module MouseInfo =
 
+    [<Direct "$c.charCodeAt(0)">]
+    let ToKey (c: string) = 0
+
     let Main () =
 
         // Mouse.Position is a View<int * int>, which is a tuple of (X, Y) co-ords.
         let xView = View.Map fst Mouse.Position
         let yView = View.Map snd Mouse.Position
-        let lastClickPos = View.SnapshotOn Mouse.LeftPressed Mouse.Position
-        let lastHeldPos = View.UpdateWhile Mouse.LeftPressed Mouse.Position
+        let lastHeldPos = View.UpdateWhile (0,0) Mouse.LeftPressed Mouse.Position
+        let lastClickPos = View.SnapshotOn (0,0) Mouse.LeftPressed Mouse.Position
+        //let lastHeldPosDef = View.UpdateWhileDefault Mouse.LeftPressed (0, 0) Mouse.Position
 
         let mouseDiv =
             Div0 [
@@ -44,7 +48,7 @@ module MouseInfo =
                         Mouse.RightPressed |> Doc.TextView]
                 P0 [View.Map (fun (x, y) -> "Position on last left click: (" + (string x) + "," + (string y) + ")")
                         lastClickPos |> Doc.TextView]
-                P0 [View.Map (fun (x, y) -> "Position of mouse while left button held: (" + (string x) + "," + (string y) + ")")
+                P0 [View.Map (fun (x, y) -> "Position of mouse while left button held (default 0,0): (" + (string x) + "," + (string y) + ")")
                         lastHeldPos |> Doc.TextView]
             ]
 
