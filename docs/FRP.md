@@ -19,7 +19,7 @@ Successful simplifications include:
   transformers instead, which prevents leaks (Arrow FRP)
 
 * Designing a custom type system that rules out
-  complicated-to-implement cases of dynamism as in [Elm.js][elm]
+  complicated-to-implement cases of dynamism as in [Elm][elm]
 
 Successful ML and Scheme libraries that provide full FRP use dynamic
 dataflow graphs to embed FRP in an imperative world ([OCaml
