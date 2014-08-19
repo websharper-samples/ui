@@ -158,7 +158,7 @@ for a discussion).
 
 <a name="SnapshotOn" href="#SnapshotOn">#</a> View.**SnapshotOn** `'B -> View<'A> -> View<'B> -> View<'B>`
 
-Given two views `a` and `b`, and a default value, provides a `snapshot' of `b` whenever `a` updates. 
+Given two views `a` and `b`, and a default value, provides a 'snapshot' of `b` whenever `a` updates. 
 The value of `a` is unused. The initial value is an initial sample of `b`.
 
 <a name="UpdateWhile" href="#UpdateWhile">#</a> View.**UpdateWhile** `'A -> View<'bool> -> View<'A> -> View<'A>`
