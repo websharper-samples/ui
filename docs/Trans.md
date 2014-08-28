@@ -33,7 +33,7 @@ type Trans =
 
 Creates a trivial transition that does not animate anything.
 
-<a name="Create" href="#Create">#</a> Trans.**Create** `'T -> 'T -> Anim<'T>`
+<a name="Create" href="#Create">#</a> Trans.**Create** `('T -> 'T -> Anim<'T>) -> Trans<'T>`
 
 Creates a transition that animates changes by specifying which `Anim` to play
 for every change from a start to an end value.
