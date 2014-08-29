@@ -18,7 +18,8 @@ type Attr =
     static member Handler : name: string -> callback: (DomEvent -> unit) -> Attr
     static member Class : name: string -> Attr
     static member DynamicClass : name: string -> view: View<'T> -> apply: ('T -> bool) -> Attr
-
+    static member DynamicPred : name: string -> predView: View<bool> -> valView: View<string> -> Attr
+    
     static member Append : Attr -> Attr -> Attr
     static member Concat : seq<Attr> -> Attr
     static member Empty : Attr
@@ -65,6 +66,11 @@ Specifies a CSS style property, such as `Attr.Style "background-color" "black"`.
 <a href="#DynamicStyle" name="DynamicStyle">#</a> Attr.**DynamicStyle** `string -> View<string> -> Attr`
 
 Generalizes CSS style properties to depend on time-varying values.
+
+<a href="#DynamicPred" name="DynamicPred">#</a> Attr.**DynamicPred** `name: string -> View<bool> -> View<string> -> Attr`
+
+Adds a given value when a predicate view is true. Can be useful when disabling elements, for example.
+
 
 <a href="#AnimatedStyle" name="AnimatedStyle">#</a> Attr.**AnimatedStyle** `string -> Trans<'T> -> View<'T> -> ('T -> string) -> Attr`
 
