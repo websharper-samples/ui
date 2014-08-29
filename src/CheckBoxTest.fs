@@ -28,6 +28,11 @@ module CheckBoxTest =
         static member Create n a =
             { Name = n; Age = a }
 
+    type Restaurant = | Jelen | Suszterinas | Csiga | Stex
+    let showRestaurant = function
+        | Jelen -> "Jelen" | Suszterinas -> "Suszterinas"
+        | Csiga -> "Csiga" | Stex -> "Stex"
+
     // And some data:
     let People =
         [
@@ -42,8 +47,15 @@ module CheckBoxTest =
         // We make a variable containing the initial list of selected people.
         let selPeople = Var.Create []
 
-        // And a checkbox component, based on the list of options as a list.
-        let chkBox = Doc.CheckBox (fun p -> p.Name) People selPeople
+        // We now need to make check box components for each of the people.
+        let mkCheckBox person =
+            Div0 [
+                Doc.CheckBox [] person selPeople
+                Doc.TextNode person.Name
+            ]
+
+        let checkBoxes =
+            Div0 [ List.map mkCheckBox People |> Doc.Concat ]
 
         // Shows names of a list of people.
         let showNames xs = List.fold (fun acc p -> acc + p.Name + ", ") "" xs
@@ -54,8 +66,28 @@ module CheckBoxTest =
             |> View.Map showNames
             |> Doc.TextView
 
-        // Create a document fragment and run!
-        Doc.Concat [chkBox; label]
+        // Create a document fragment for check boxes
+        let checkBoxSection = Div0 [checkBoxes; label]
+
+        // Now let's do something with radio buttons
+        let radioBoxVar = Var.Create Jelen
+        let restaurants = [Csiga; Suszterinas ; Jelen ; Stex]
+        let mkRadioButton restaurant =
+            Div0 [
+                Doc.Radio [] restaurant radioBoxVar
+                showRestaurant restaurant |> Doc.TextNode
+            ]
+
+        let restaurantsSection =
+            Div0 [
+                List.map mkRadioButton restaurants |> Doc.Concat
+                Doc.TextView (View.Map showRestaurant radioBoxVar.View)
+            ]
+
+        Div0 [
+            checkBoxSection
+            restaurantsSection
+        ]
 
     let Description () =
         Div0 [
