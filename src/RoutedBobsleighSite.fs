@@ -52,7 +52,7 @@ module RoutedBobsleighSite =
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
         Samples.Routed(TheRouteMap, S.BobsleighHome)
-            .Id("RoutedBobsleighMiniSite")
+            .Id("RoutedBobsleighSite")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])
             .Render(Main)

@@ -97,7 +97,7 @@ module CheckBoxTest =
     // Boilerplate for the sample viewer...
     let Sample =
         Samples.Build()
-            .Id("CheckBoxesTest")
+            .Id("CheckBoxTest")
             .FileName(__SOURCE_FILE__)
             .Keywords(["todo"])
             .Render(Main)
