@@ -13,7 +13,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <NuGetPackageImportStamp>71daf611</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>2285b87f</NuGetPackageImportStamp>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\sln\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -137,7 +137,11 @@
     <Reference Include="System.Numerics" />
     <Reference Include="System.Web" />
     <Reference Include="WebSharper.UI.Next">
-      <HintPath>..\packages\WebSharper.UI.Next.0.1.34.35\lib\net40\WebSharper.UI.Next.dll</HintPath>
+      <HintPath>..\packages\WebSharper.UI.Next.3.0.2.59-alpha\lib\net40\WebSharper.UI.Next.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WebSharper.UI.Next.Templating">
+      <HintPath>..\packages\WebSharper.UI.Next.3.0.2.59-alpha\lib\net40\WebSharper.UI.Next.Templating.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -155,11 +159,11 @@
     <Copy SourceFiles="@(SiteContentFiles)" DestinationFolder="..\build\html\Content" SkipUnchangedFiles="true" />
   </Target>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\WebSharper.3.0.3.76-alpha\build\WebSharper.targets" Condition="Exists('..\packages\WebSharper.3.0.3.76-alpha\build\WebSharper.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\WebSharper.2.5.120.55\build\WebSharper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WebSharper.2.5.120.55\build\WebSharper.targets'))" />
+    <Error Condition="!Exists('..\packages\WebSharper.3.0.3.76-alpha\build\WebSharper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WebSharper.3.0.3.76-alpha\build\WebSharper.targets'))" />
   </Target>
-  <Import Project="..\packages\WebSharper.2.5.120.55\build\WebSharper.targets" Condition="Exists('..\packages\WebSharper.2.5.120.55\build\WebSharper.targets')" />
 </Project>
