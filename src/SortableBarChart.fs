@@ -1,6 +1,7 @@
 ﻿namespace IntelliFactory.WebSharper.UI.Next
 
 open IntelliFactory.WebSharper
+open IntelliFactory.WebSharper.JavaScript
 open IntelliFactory.WebSharper.JQuery
 open IntelliFactory.WebSharper.UI.Next.Html
 open IntelliFactory.WebSharper.UI.Next.Notation
