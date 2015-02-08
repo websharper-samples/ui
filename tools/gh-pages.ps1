@@ -3,7 +3,7 @@
 param ([string] $env = "local", [string] $action = "publish")
 
 $msg = 'gh-pages.ps1: build/html -> gh-pages'
-$gitURL = "https://github.com/intellifactory/samples.websharper.ui.next.git"
+$gitURL = "https://github.com/intellifactory/websharper.ui.next.samples.git"
 
 write-host -foregroundColor "green" "=====> $msg"
 
