@@ -4,7 +4,7 @@ WebSharper.UI.Next is a UI library featuring a dataflow layer for expressing
 time-varying values. It integrates with DOM and makes it
 simple to construct animated UI in the browser.
 
-* [Examples](http://intellifactory.github.io/samples.websharper.ui.next/)
+* [Examples](http://intellifactory.github.io/websharper.ui.next.samples/)
 * [API Reference](docs/API.md)
 * [Tutorial](docs/Tutorial.md)
 
