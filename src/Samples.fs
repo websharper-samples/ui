@@ -57,7 +57,7 @@ module Samples =
                         P0 [ sample.Description ]
                         P0 [
                             Elements.A
-                                [ "href" ==> "https://github.com/intellifactory/websharper.ui.next/blob/master/src/" + sample.Meta.Uri + ".fs" ]
+                                [ "href" ==> "https://github.com/intellifactory/websharper.ui.next.samples/blob/master/src/" + sample.Meta.Uri + ".fs" ]
                                 [txt "View Source"]
                         ]
                     ]
