@@ -23991,7 +23991,7 @@ var JSON;JSON||(JSON={}),function(){"use strict";function i(n){return n<10?"0"+n
        },
        RenderContent:function(sample)
        {
-        return Html.Div(List.ofArray([Utilities.cls("samples"),Utilities.cls("col-9")]),List.ofArray([Html.Div0(List.ofArray([Html.Div(List.ofArray([Utilities.cls("row")]),List.ofArray([Html.H10(List.ofArray([Utilities.txt(sample.Meta.Title)])),Html.Div0(List.ofArray([Html.P0(List.ofArray([sample.Description])),Html.P0(List.ofArray([Elements.A(List.ofArray([Utilities.op_EqualsEqualsGreater("href","https://github.com/intellifactory/websharper.ui.next/blob/master/src/"+sample.Meta.Uri+".fs")]),List.ofArray([Utilities.txt("View Source")]))]))]))])),Html.Div(List.ofArray([Utilities.cls("row")]),List.ofArray([Html.P0(List.ofArray([sample.Body]))]))]))]));
+        return Html.Div(List.ofArray([Utilities.cls("samples"),Utilities.cls("col-9")]),List.ofArray([Html.Div0(List.ofArray([Html.Div(List.ofArray([Utilities.cls("row")]),List.ofArray([Html.H10(List.ofArray([Utilities.txt(sample.Meta.Title)])),Html.Div0(List.ofArray([Html.P0(List.ofArray([sample.Description])),Html.P0(List.ofArray([Elements.A(List.ofArray([Utilities.op_EqualsEqualsGreater("href","https://github.com/intellifactory/websharper.ui.next.samples/blob/master/src/"+sample.Meta.Uri+".fs")]),List.ofArray([Utilities.txt("View Source")]))]))]))])),Html.Div(List.ofArray([Utilities.cls("row")]),List.ofArray([Html.P0(List.ofArray([sample.Body]))]))]))]));
        },
        Routed:function(router,init)
        {
