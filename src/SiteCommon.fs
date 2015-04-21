@@ -1,8 +1,8 @@
-﻿namespace IntelliFactory.WebSharper.UI.Next
+﻿namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next
-open IntelliFactory.WebSharper.UI.Next.Html
+open WebSharper
+open WebSharper.UI.Next
+open WebSharper.UI.Next.Html
 
 [<AutoOpen>]
 [<JavaScript>]

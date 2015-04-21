@@ -9,12 +9,12 @@
 //-----------------------------------------------------------------
 // $end{copyright}
 
-namespace IntelliFactory.WebSharper.UI.Next
+namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next
-open IntelliFactory.WebSharper.UI.Next.Html
-open IntelliFactory.WebSharper.UI.Next.Notation
+open WebSharper
+open WebSharper.UI.Next
+open WebSharper.UI.Next.Html
+open WebSharper.UI.Next.Notation
 
 // A calculator application, showing model-view separation.
 // See this live at http://intellifactory.github.io/websharper.ui.next/#Calculator.fs !

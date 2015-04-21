@@ -9,11 +9,11 @@
 //-----------------------------------------------------------------
 // $end{copyright}
 
-namespace IntelliFactory.WebSharper.UI.Next
+namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next
-open IntelliFactory.WebSharper.UI.Next.Html
+open WebSharper
+open WebSharper.UI.Next
+open WebSharper.UI.Next.Html
 
 // This example is a translation of the basics from the AngularJS tutorial,
 // found here: https://docs.angularjs.org/tutorial/.

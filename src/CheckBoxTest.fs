@@ -9,11 +9,11 @@
 //-----------------------------------------------------------------
 // $end{copyright}
 
-namespace IntelliFactory.WebSharper.UI.Next
+namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next
-open IntelliFactory.WebSharper.UI.Next.Html
+open WebSharper
+open WebSharper.UI.Next
+open WebSharper.UI.Next.Html
 
 // An example making use of the checkbox controls within RDOM.
 // See this live at http://intellifactory.github.io/websharper.ui.next/#CheckBoxTest.fs !
@@ -50,7 +50,7 @@ module CheckBoxTest =
         // We now need to make check box components for each of the people.
         let mkCheckBox person =
             Div0 [
-                Doc.CheckBox [] person selPeople
+                Doc.CheckBoxGroup [] person selPeople
                 Doc.TextNode person.Name
             ]
 

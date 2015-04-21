@@ -1,7 +1,7 @@
-﻿namespace IntelliFactory.WebSharper.UI.Next
+﻿namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next.Html
+open WebSharper
+open WebSharper.UI.Next.Html
 
 // An example of a flowlet for getting contact details from a user.
 // See this live at http://intellifactory.github.io/websharper.ui.next/#ContactFlow.fs !

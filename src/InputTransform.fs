@@ -9,11 +9,11 @@
 //-----------------------------------------------------------------
 // $end{copyright}
 
-namespace IntelliFactory.WebSharper.UI.Next
+namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next
-open IntelliFactory.WebSharper.UI.Next.Html
+open WebSharper
+open WebSharper.UI.Next
+open WebSharper.UI.Next.Html
 
 // An example which takes some input from a text box, and outputs
 // it with different functions applied to it, making use of View.Map.

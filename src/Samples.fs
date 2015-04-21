@@ -9,13 +9,13 @@
 //-----------------------------------------------------------------
 // $end{copyright}
 
-namespace IntelliFactory.WebSharper.UI.Next
+namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next
-open IntelliFactory.WebSharper.UI.Next.Html
-open IntelliFactory.WebSharper.UI.Next.Notation
-open IntelliFactory.WebSharper.UI.Next.SiteCommon
+open WebSharper
+open WebSharper.UI.Next
+open WebSharper.UI.Next.Html
+open WebSharper.UI.Next.Notation
+open WebSharper.UI.Next.SiteCommon
 
 /// A little framework for displaying samples on the site.
 [<JavaScript>]
@@ -43,20 +43,20 @@ module Samples =
                 [cls "list-group-item"; activeAttr]
                 (fun () -> Var.Set vPage sample.SamplePage)
 
-        Div [cls "col-3"] [
+        Div [cls "col-md-3"] [
             H40 [txt "Samples"]
             List.map renderItem samples |> Doc.Concat
         ]
 
     let RenderContent sample =
-        Div [cls "samples"; cls "col-9"] [
+        Div [cls "samples"; cls "col-md-9"] [
             Div0 [
                 Div [cls "row"] [
                     H10 [txt sample.Meta.Title]
                     Div0 [
                         P0 [ sample.Description ]
                         P0 [
-                            Elements.A
+                            A
                                 [ "href" ==> "https://github.com/intellifactory/websharper.ui.next.samples/blob/master/src/" + sample.Meta.Uri + ".fs" ]
                                 [txt "View Source"]
                         ]
@@ -75,7 +75,7 @@ module Samples =
             | Some s -> s
             | None -> failwith "Attempted to render non-sample on samples page"
 
-        Elements.Section [cls "block-small"] [
+        Section [cls "block-small"] [
             Div [cls "container"] [
                 Div [cls "row"] [
                     Sidebar vPage samples
@@ -180,7 +180,7 @@ module Samples =
     let Routed (router, init) =
         Builder (CreateRouted router init)
 
-    let nav = Html.Elements.Nav
+    let nav = Nav
 
     let InitialSamplePage samples =
         (List.head samples).SamplePage

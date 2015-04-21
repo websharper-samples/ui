@@ -1,10 +1,10 @@
-﻿namespace IntelliFactory.WebSharper.UI.Next
+﻿namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.JavaScript
-open IntelliFactory.WebSharper.JQuery
-open IntelliFactory.WebSharper.UI.Next.Html
-open IntelliFactory.WebSharper.UI.Next.Notation
+open WebSharper
+open WebSharper.JavaScript
+open WebSharper.JQuery
+open WebSharper.UI.Next.Html
+open WebSharper.UI.Next.Notation
 
 open System
 

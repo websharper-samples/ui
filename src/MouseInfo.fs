@@ -9,12 +9,12 @@
 //-----------------------------------------------------------------
 // $end{copyright}
 
-namespace IntelliFactory.WebSharper.UI.Next
+namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next
-open IntelliFactory.WebSharper.UI.Next.Input
-open IntelliFactory.WebSharper.UI.Next.Html
+open WebSharper
+open WebSharper.UI.Next
+open WebSharper.UI.Next.Input
+open WebSharper.UI.Next.Html
 
 // An example of a div chasing the mouse, displaying mouse co-ordinates.
 // See this live at http://intellifactory.github.io/websharper.ui.next/#MouseChase.fs !

@@ -1,8 +1,8 @@
-﻿namespace IntelliFactory.WebSharper.UI.Next
+﻿namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next.Html
-open IntelliFactory.WebSharper.UI.Next.Input
+open WebSharper
+open WebSharper.UI.Next.Html
+open WebSharper.UI.Next.Input
 
 open System
 
@@ -25,7 +25,7 @@ module KeyboardInfo =
         "[" + addCommas xs + "]"
 
     // "keys" is a View<Key list> of all keys currently pressed.
-    let keys = Input.Keyboard.KeysPressed
+    let keys = Keyboard.KeysPressed
 
     let Main () =
         Div0 [
@@ -45,13 +45,13 @@ module KeyboardInfo =
             P0 [
                 Doc.TextNode "Last pressed key: "
                 // Input.Keyboard.LastPressed is a View<Key>
-                Doc.TextView <| View.Map string Input.Keyboard.LastPressed
+                Doc.TextView <| View.Map string Keyboard.LastPressed
             ]
 
             P0 [
                 Doc.TextNode "Is 'A' pressed? "
                 Doc.TextView <| View.Map (fun x -> if x then "Yes" else "No")
-                    (Input.Keyboard.IsPressed (ToKey "A"))
+                    (Keyboard.IsPressed (ToKey "A"))
             ]
 
         ]

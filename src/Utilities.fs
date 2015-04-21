@@ -1,6 +1,6 @@
-﻿namespace IntelliFactory.WebSharper.UI.Next
+﻿namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
+open WebSharper
 
 /// Some shortcut functions for working with the RDOM library.
 [<AutoOpen>]

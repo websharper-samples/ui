@@ -1,10 +1,10 @@
-﻿namespace IntelliFactory.WebSharper.UI.Next
+﻿namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next
-open IntelliFactory.WebSharper.UI.Next.Html
-open IntelliFactory.WebSharper.UI.Next.Notation
-open IntelliFactory.WebSharper.UI.Next.SiteCommon
+open WebSharper
+open WebSharper.UI.Next
+open WebSharper.UI.Next.Html
+open WebSharper.UI.Next.Notation
+open WebSharper.UI.Next.SiteCommon
 
 [<JavaScript>]
 module Site =
@@ -86,12 +86,12 @@ module Site =
     let NavPages = [Home ; About; Samples]
 
     let linkBtn caption href =
-        Elements.A [cls "btn" ; cls "btn-default" ; "href" ==> href]
+        A [cls "btn" ; cls "btn-default" ; "href" ==> href]
             [ txt caption ]
 
     let HomePage go =
         Div [cls "container"] [
-            Elements.Section
+            Section
                 [
                     cls "block-huge"
                     cls "teaser-home"
@@ -104,7 +104,7 @@ module Site =
                     Div [cls "container"] [
                         Div [cls "row"] [
                             Div [cls "col-12"] [
-                                Elements.Br [] []
+                                Br [] []
                                 H10 [
                                     txt "WebSharper UI.Next: "
                                     Span [cls "text-muted"] [
@@ -113,7 +113,7 @@ module Site =
                                 ]
                                 H30 [
                                     txt "Write powerful, data-backed applications"
-                                    Elements.Br [] []
+                                    Br [] []
                                     txt " using F# and WebSharper."
                                 ]
 
@@ -145,11 +145,11 @@ module Site =
             ] |> Doc.Concat
 
         let oddEntry entry =
-            Elements.Section [cls "block-large" ] [
+            Section [cls "block-large" ] [
                 Div [cls "container"] [
                     Div [cls "row"] [
                         Div [cls "col-lg-3"] [
-                            Elements.Img ["src" ==> entry.ImgURL ; sty "width" "100%"] []
+                            Img ["src" ==> entry.ImgURL ; sty "width" "100%"] []
                         ]
                         Div [cls "col-lg-1"] []
                         Div [cls "col-lg-8"] [
@@ -160,7 +160,7 @@ module Site =
             ]
 
         let evenEntry entry =
-            Elements.Section [cls "block-large" ; cls "bg-alt" ] [
+            Section [cls "block-large" ; cls "bg-alt" ] [
                 Div [cls "container"] [
                     Div [cls "row"] [
                         Div [cls "col-lg-8"] [
@@ -168,7 +168,7 @@ module Site =
                         ]
                         Div [cls "col-lg-1"] []
                         Div [cls "col-lg-3"] [
-                            Elements.Img ["src" ==> entry.ImgURL; sty "width" "100%"] []
+                            Img ["src" ==> entry.ImgURL; sty "width" "100%"] []
                         ]
                     ]
                 ]
@@ -180,7 +180,7 @@ module Site =
 
         Div [cls "extensions"] [
             Div [cls "container"] [
-                Elements.Section [cls "block-huge"] [
+                Section [cls "block-huge"] [
                     H10 [
                         txt "WebSharper UI.Next: "
                         Span [cls "text-muted"] [
@@ -249,20 +249,20 @@ module Site =
                 href title lnk
             ]
 
-        Elements.Nav [cls "container"] [
+        Nav [cls "container"] [
             Div [sty "float" "left"] [
                 A ["href" ==> "http://www.websharper.com/home"
                    sty "text-decoration" "none"
                    cls "first"
                   ] [
-                    Elements.Img [
+                    Img [
                         "src" ==> "files/logo-websharper-icon.png"
                         "alt" ==> "[logo]"
                         sty "margin-top" "0"
                         sty "border-right" "1px"
                         sty "solid" "#eee"
                     ] []
-                    Elements.Img [
+                    Img [
                         "src" ==> "files/logo-websharper-text-dark.png"
                         "alt" ==> "WebSharper"
                         sty "height" "32px"
@@ -270,7 +270,7 @@ module Site =
                   ]
             ]
 
-            Elements.Nav [
+            Nav [
                 cls "nav"
                 cls "nav-collapsible"
                 cls "right"

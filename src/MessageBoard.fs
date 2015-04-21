@@ -1,9 +1,9 @@
-﻿namespace IntelliFactory.WebSharper.UI.Next
+﻿namespace WebSharper.UI.Next
 
 open System
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.UI.Next.Html
-open IntelliFactory.WebSharper.UI.Next.Notation
+open WebSharper
+open WebSharper.UI.Next.Html
+open WebSharper.UI.Next.Notation
 // Common types, used by both the client and server
 [<JavaScript ; AutoOpen>]
 module Common =

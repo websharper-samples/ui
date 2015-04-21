@@ -9,14 +9,14 @@
 //-----------------------------------------------------------------
 // $end{copyright}
 
-namespace IntelliFactory.WebSharper.UI.Next
+namespace WebSharper.UI.Next
 
-open IntelliFactory.WebSharper
-open IntelliFactory.WebSharper.JavaScript
-open IntelliFactory.WebSharper.JQuery
-open IntelliFactory.WebSharper.UI.Next
-open IntelliFactory.WebSharper.UI.Next.Html
-module S = IntelliFactory.WebSharper.UI.Next.Html.SvgElements
+open WebSharper
+open WebSharper.JavaScript
+open WebSharper.JQuery
+open WebSharper.UI.Next
+open WebSharper.UI.Next.Html
+module S = WebSharper.UI.Next.Html.SvgElements
 
 /// Attempt to reconstruct this D3 example in UI.Next:
 /// http://bost.ocks.org/mike/constancy/
