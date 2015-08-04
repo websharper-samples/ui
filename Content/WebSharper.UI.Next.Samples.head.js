@@ -1,1 +1,1 @@
-document.write("<script src=\"http://code.jquery.com/jquery-1.11.2.min.js\" type=\"text/javascript\" charset=\"UTF-8\">\r\n\r\n</script><!--[if lte IE 7.0]>\r\n<![endif]-->\r\n")
+document.write("<script src=\"http://code.jquery.com/jquery-1.11.2.min.js\" type=\"text/javascript\" charset=\"UTF-8\">\r\n\r\n</script><!--[if lte IE 7.0]>\r\n<![endif]-->\r\n<script src=\"//code.jquery.com/qunit/qunit-1.18.0.js\" type=\"text/javascript\" charset=\"UTF-8\">\r\n\r\n</script><link type=\"text/css\" rel=\"stylesheet\" href=\"//code.jquery.com/qunit/qunit-1.18.0.css\" />\r\n")
