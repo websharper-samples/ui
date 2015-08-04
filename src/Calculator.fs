@@ -25,7 +25,7 @@ module Calculator =
 
     // ============== MODEL ============== //
 
-    type Op = Add | Sub | Mul | Div_
+    type Op = Add | Sub | Mul | Div
 
     // Model of our calculator
     type Calculator =
@@ -51,14 +51,14 @@ module Calculator =
         | Add -> (+)
         | Sub -> (-)
         | Mul -> (*)
-        | Div_ -> (/)
+        | Div -> (/)
 
     let showOp op =
         match op with
         | Add -> "+"
         | Sub -> "-"
         | Mul -> "*"
-        | Div_ -> "/"
+        | Div -> "/"
 
     // Calculates the answer using the selected operation, and writes the new
     // answer to the operand section. Sets memory to 0.
@@ -75,10 +75,11 @@ module Calculator =
         View.Map (fun c -> string c.Operand) rviCalc
 
     // Button creation functions, and their associated (very simple) callbacks
-    let calcBtn i rvCalc = Doc.Button (string i) [] (fun _ -> pushInt i rvCalc)
-    let opBtn o rvCalc = Doc.Button (showOp o) [] (fun _ -> shiftToMem o rvCalc)
-    let cBtn rvCalc = Doc.Button "C" [] (fun _ -> Var.Set rvCalc initCalc)
-    let eqBtn rvCalc = Doc.Button "=" [] (fun _ -> calculate rvCalc)
+    let button txt f = Doc.Button txt [sty "width" "25px"] f
+    let calcBtn i rvCalc = button (string i) (fun _ -> pushInt i rvCalc)
+    let opBtn o rvCalc = button (showOp o) (fun _ -> shiftToMem o rvCalc)
+    let cBtn rvCalc = button "C" (fun _ -> Var.Set rvCalc initCalc)
+    let eqBtn rvCalc = button "=" (fun _ -> calculate rvCalc)
 
     let calcView rvCalc =
         let rviCalc = View.FromVar rvCalc
@@ -93,11 +94,16 @@ module Calculator =
         //           7 8 9 *
         //           0 C = /
         div [
-            textView (displayCalc rvCalc)
+            divAttr [
+                sty "border" "solid 1px #aaa"
+                sty "width" "100px"
+                sty "text-align" "right"
+                sty "padding" "0 5px"
+            ] [textView (displayCalc rvCalc)]
             div [btn 1 ; btn 2 ; btn 3 ; obtn Add]
             div [btn 4 ; btn 5 ; btn 6 ; obtn Sub]
             div [btn 7 ; btn 8 ; btn 9 ; obtn Mul]
-            div [btn 0 ; cbtn  ; eqbtn ; obtn Div_]
+            div [btn 0 ; cbtn  ; eqbtn ; obtn Div]
         ]
 
     // Run it!
