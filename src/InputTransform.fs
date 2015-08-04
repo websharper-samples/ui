@@ -13,6 +13,7 @@ namespace WebSharper.UI.Next
 
 open WebSharper
 open WebSharper.UI.Next
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Html
 
 // An example which takes some input from a text box, and outputs
@@ -34,22 +35,22 @@ module InputTransform =
         // parameter. Whenever the input field is updated, the new value is
         // automatically placed into the variable.
         let inputField =
-            Div [cls "panel" ; cls "panel-default"] [
-                Div [cls "panel-heading"] [
-                    H3 [cls "panel-title"] [
-                        Doc.TextNode "Input"
+            divAttr [cls "panel" ; cls "panel-default"] [
+                divAttr [cls "panel-heading"] [
+                    h3Attr [cls "panel-title"] [
+                        text "Input"
                     ]
                 ]
 
-                Div [cls "panel-body"] [
-                    Form [cls "form-horizontal" ; "role" ==> "form"] [
-                        Div [cls "form-group"] [
-                            Label [cls "col-sm-2" ; cls "control-label" ; "for" ==> "inputBox"] [
+                divAttr [cls "panel-body"] [
+                    formAttr [cls "form-horizontal" ; Attr.Create "role" "form"] [
+                        divAttr [cls "form-group"] [
+                            labelAttr [cls "col-sm-2" ; cls "control-label" ; attr.``for`` "inputBox"] [
                                 Doc.TextNode "Write something: "
                             ]
 
-                            Div [cls "col-sm-10"] [
-                                Doc.Input ["class" ==> "form-control" ; "id" ==> "inputBox"] rvText
+                            divAttr [cls "col-sm-10"] [
+                                Doc.Input [attr.``class`` "form-control" ; attr.id "inputBox"] rvText
                             ]
                         ]
                     ]
@@ -84,26 +85,26 @@ module InputTransform =
             ]
 
         let tableRow (lbl, view) =
-            TR0 [
-                TD0 [
-                    Doc.TextNode lbl
+            tr [
+                td [
+                    text lbl
                 ]
-                TD [sty "width" "70%"] [
-                    Doc.TextView view
+                tdAttr [sty "width" "70%"] [
+                    textView view
                 ]
-            ]
+            ] :> Doc
 
         let tbl =
-            Div [cls "panel" ; cls "panel-default"] [
-                Div [cls "panel-heading"] [
-                    H3 [cls "panel-title"] [
-                        Doc.TextNode "Output"
+            divc "panel panel-default" [
+                divc "panel-heading" [
+                    h3Attr [cls "panel-title"] [
+                        text "Output"
                     ]
                 ]
 
-                Div [cls "panel-body"] [
-                    Table [cls "table"] [
-                        TBody0 [
+                divc "panel-body" [
+                    tableAttr [cls "table"] [
+                        tbody [
                             // We map the tableRow function onto the different
                             // views of the source, and concatenate the resulting
                             // documents.
@@ -113,13 +114,13 @@ module InputTransform =
                 ]
             ]
 
-        Div0 [
+        div [
             inputField
             tbl
         ]
 
     let Description () =
-        Div0 [
+        div [
             Doc.TextNode "Transforming the data provided by a single data source."
         ]
 

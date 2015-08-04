@@ -13,6 +13,7 @@ namespace WebSharper.UI.Next
 
 open WebSharper
 open WebSharper.UI.Next
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Input
 open WebSharper.UI.Next.Html
 
@@ -30,28 +31,28 @@ module MouseInfo =
         let lastClickPos = View.SnapshotOn (0,0) Mouse.LeftPressed Mouse.Position
 
         let mouseDiv =
-            Div0 [
-                P0 [View.Map (fun x -> "X: " + string(x)) xView |> Doc.TextView
-                    View.Map (fun y -> "Y: " + string(y)) yView |> Doc.TextView]
+            div [
+                p [ View.Map (fun x -> "X: " + string(x)) xView |> textView
+                    View.Map (fun y -> "Y: " + string(y)) yView |> textView]
                 // Mouse.[Left/Middle/Right] are View<bool>s, specifying whether the
                 // button has been pressed.
-                P0 [View.Map (fun l -> "Left button pressed: " + string(l))
-                        Mouse.LeftPressed |> Doc.TextView]
-                P0 [View.Map (fun m -> "Middle button pressed: " + string(m))
-                        Mouse.MiddlePressed |> Doc.TextView]
-                P0 [View.Map (fun r -> "Right button pressed: " + string(r))
-                        Mouse.RightPressed |> Doc.TextView]
-                P0 [View.Map (fun (x, y) -> "Position on last left click: (" + (string x) + "," + (string y) + ")")
-                        lastClickPos |> Doc.TextView]
-                P0 [View.Map (fun (x, y) -> "Position of mouse while left button held: (" + (string x) + "," + (string y) + ")")
-                        lastHeldPos |> Doc.TextView]
+                p [View.Map (fun l -> "Left button pressed: " + string(l))
+                        Mouse.LeftPressed |> textView]
+                p [View.Map (fun m -> "Middle button pressed: " + string(m))
+                        Mouse.MiddlePressed |> textView]
+                p [View.Map (fun r -> "Right button pressed: " + string(r))
+                        Mouse.RightPressed |> textView]
+                p [View.Map (fun (x, y) -> "Position on last left click: (" + (string x) + "," + (string y) + ")")
+                        lastClickPos |> textView]
+                p [View.Map (fun (x, y) -> "Position of mouse while left button held: (" + (string x) + "," + (string y) + ")")
+                        lastHeldPos |> textView]
             ]
 
         mouseDiv
 
     let Description () =
-        Div0 [
-            Doc.TextNode "Shows information about the mouse"
+        div [
+            text "Shows information about the mouse"
         ]
 
     let Sample =

@@ -2,6 +2,7 @@
 
 open WebSharper
 open WebSharper.UI.Next
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Html
 
 module S = BobsleighSite
@@ -42,8 +43,8 @@ module RoutedBobsleighSite =
         |> Doc.EmbedView
 
     let description v =
-        Div0 [
-            txt
+        div [
+            text
                 "A small website about bobsleighs, demonstrating how UI.Next \
                  may be used to structure single-page applications. Routed using \
                  the URL."

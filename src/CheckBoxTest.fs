@@ -13,6 +13,7 @@ namespace WebSharper.UI.Next
 
 open WebSharper
 open WebSharper.UI.Next
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Html
 
 // An example making use of the checkbox controls within RDOM.
@@ -49,13 +50,13 @@ module CheckBoxTest =
 
         // We now need to make check box components for each of the people.
         let mkCheckBox person =
-            Div0 [
+            div [
                 Doc.CheckBoxGroup [] person selPeople
                 Doc.TextNode person.Name
-            ]
+            ] :> Doc
 
         let checkBoxes =
-            Div0 [ List.map mkCheckBox People |> Doc.Concat ]
+            div (List.map mkCheckBox People)
 
         // Shows names of a list of people.
         let showNames xs = List.fold (fun acc p -> acc + p.Name + ", ") "" xs
@@ -67,30 +68,30 @@ module CheckBoxTest =
             |> Doc.TextView
 
         // Create a document fragment for check boxes
-        let checkBoxSection = Div0 [checkBoxes; label]
+        let checkBoxSection = div [checkBoxes; label]
 
         // Now let's do something with radio buttons
         let radioBoxVar = Var.Create Jelen
         let restaurants = [Csiga; Suszterinas ; Jelen ; Stex]
         let mkRadioButton restaurant =
-            Div0 [
+            div [
                 Doc.Radio [] restaurant radioBoxVar
                 showRestaurant restaurant |> Doc.TextNode
-            ]
+            ] :> Doc
 
         let restaurantsSection =
-            Div0 [
+            div [
                 List.map mkRadioButton restaurants |> Doc.Concat
                 Doc.TextView (View.Map showRestaurant radioBoxVar.View)
             ]
 
-        Div0 [
+        div [
             checkBoxSection
             restaurantsSection
         ]
 
     let Description () =
-        Div0 [
+        div [
             Doc.TextNode "An application which shows the selected values."
         ]
 

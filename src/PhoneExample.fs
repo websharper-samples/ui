@@ -13,6 +13,7 @@ namespace WebSharper.UI.Next
 
 open WebSharper
 open WebSharper.UI.Next
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Html
 
 // This example is a translation of the basics from the AngularJS tutorial,
@@ -70,33 +71,33 @@ module PhoneExample =
 
         // A simple function for displaying the details of a phone:
         let showPhone ph =
-            LI0 [
-                Span0 [ txt ph.Name ]
-                P0 [ txt ph.Snippet ]
-            ]
+            li [
+                span [ text ph.Name ]
+                p [ text ph.Snippet ]
+            ] :> Doc
 
         let showPhones phones =
             Doc.Concat (List.map showPhone phones)
 
         // The main body.
-        Div [cls "row"] [
+        divc "row" [
 
-            Div [cls "col-sm-6"] [
+            divc "col-sm-6" [
 
                 // We specify a label, and an input box linked to our query RVar.
-                txt "Search: "
+                text "Search: "
                 Doc.Input [Attr.Create "class" "form-control"] query
 
                 // We then have a select box, linked to our orders variable
-                txt "Sort by: "
+                text "Sort by: "
                 Doc.Select [Attr.Create "class" "form-control"] Order.Show [Newest; Alphabetical] order
 
             ]
 
             // Finally, we render the list of phones using RD.ForEach.
             // When the list changes, the DOM will be updated to reflect this.
-            Div [cls "col-sm-6"] [
-                UL0 [ Doc.EmbedView (View.Map showPhones visiblePhones) ]
+            divc "col-sm-6" [
+                ul [ Doc.EmbedView (View.Map showPhones visiblePhones) ]
             ]
         ]
 
@@ -117,10 +118,10 @@ module PhoneExample =
 
     // Todo: I don't like this. There's got to be a nicer way of embedding links.
     let Description () =
-        Div0 [
-            Doc.TextNode "Taken from the "
+        div [
+            text "Taken from the "
             href "AngularJS Tutorial" "https://docs.angularjs.org/tutorial/"
-            Doc.TextNode ", a list filtering and sorting application for phones."
+            text ", a list filtering and sorting application for phones."
         ]
 
     // Boilerplate..

@@ -1,6 +1,7 @@
 ﻿namespace WebSharper.UI.Next
 
 open WebSharper
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Html
 
 // An example of a flowlet for getting contact details from a user.
@@ -30,19 +31,18 @@ module AnimatedContactFlow =
 
     // Helper function to display an input field within a form prettily.
     let inputRow rv id lblText =
-        Div [cls "form-group"] [
-            Label [
-                "for" ==> id
-                cls "col-sm-2"
-                cls "control-label"
-            ] [Doc.TextNode lblText]
+        divc "form-group" [
+            labelAttr [
+                attr.``for`` id
+                cls "col-sm-2 control-label"
+            ] [text lblText]
 
-            Div [cls "col-sm-10"] [
+            divc "col-sm-10" [
                 Doc.Input
-                    ["type" ==> "text"
+                    [attr.``type`` "text"
                      cls "form-control"
-                     "id" ==> id
-                     "placeholder" ==> lblText
+                     attr.id id
+                     attr.placeholder lblText
                     ] rv
             ]
         ]
@@ -77,9 +77,8 @@ module AnimatedContactFlow =
         Trans.Create Swipe
         |> Trans.Exit (fun i -> Swipe 0.0 400.0)
 
-    let AnimateFlow pg =
-        Div
-            [
+    let AnimateFlow (pg: #Doc) =
+        divAttr [
                 Attr.Style "position" "relative"
                 // The best way to do animations is to have them as attributes.
                 // The properties we're modifying in this case are opacity for fade,
@@ -89,11 +88,9 @@ module AnimatedContactFlow =
                 // and a function to change the property to a string.
                 Attr.AnimatedStyle "opacity" FadeTransition (View.Const 1.0) string
                 Attr.AnimatedStyle "left" SwipeTransition (View.Const 0.0) (fun x -> (string x) + "px")
-            ]
-
-            [
-                pg
-            ]
+        ] [
+            pg
+        ]
 
     // The initial "page" of the flowlet, which gets name and address detiails
     let personFlowlet =
@@ -101,14 +98,14 @@ module AnimatedContactFlow =
             let rvName = Var.Create ""
             let rvAddress = Var.Create ""
 
-            Form [cls "form-horizontal" ; "role" ==> "form"] [
+            formAttr [cls "form-horizontal" ; Attr.Create "role" "form"] [
                 // Name
                 inputRow rvName "lblName" "Name"
                 // Address
                 inputRow rvAddress "lblAddr" "Address"
-                Div [cls "form-group"] [
-                    Div [cls "col-sm-offset-2" ; cls "col-sm-10"] [
-                        Doc.Button "Next" [cls "btn" ; cls "btn-default"] (fun () ->
+                divc "form-group" [
+                    divc "col-sm-offset-2 col-sm-10" [
+                        Doc.Button "Next" [cls "btn btn-default"] (fun () ->
                             let name = Var.Get rvName
                             let addr = Var.Get rvAddress
                             // We use the continuation function to return the
@@ -119,26 +116,28 @@ module AnimatedContactFlow =
                 ]
             ]
             |> AnimateFlow
+            :> Doc
         )
 
     // The second page of the flowlet, which asks whether the user wants
     // to specify an e-mail address or phone number.
     let contactTypeFlowlet =
         Flow.Define (fun cont ->
-            Form [cls "form-horizontal" ; "role" ==> "form"] [
-                Div [cls "form-group"] [
-                    Div0 [
-                        Doc.Button "E-Mail Address" [cls "btn" ; cls "btn-default"]
+            formAttr [cls "form-horizontal" ; Attr.Create "role" "form"] [
+                divc "form-group" [
+                    div [
+                        Doc.Button "E-Mail Address" [cls "btn btn-default"]
                             (fun () -> cont EmailTy)
                     ]
 
-                    Div0 [
-                        Doc.Button "Phone Number" [cls "btn" ; cls "btn-default"]
+                    div [
+                        Doc.Button "Phone Number" [cls "btn btn-default"]
                             (fun () -> cont PhoneTy)
                     ]
                ]
             ]
             |> AnimateFlow
+            :> Doc
         )
 
     // Using this, we either get an e-mail address or phone number from the user.
@@ -151,11 +150,11 @@ module AnimatedContactFlow =
 
         Flow.Define ( fun cont ->
             let rvContact = Var.Create ""
-            Form [cls "form-horizontal" ; "role" ==> "form"] [
+            formAttr [cls "form-horizontal" ; Attr.Create "role" "form"] [
                 inputRow rvContact "contact" label
-                Div [cls "form-group"] [
-                    Div [cls "col-sm-offset-2" ; cls "col-sm-10"] [
-                        Doc.Button "Finish" [cls "btn" ; cls "btn-default"]
+                divc "form-group" [
+                    divc "col-sm-offset-2 col-sm-10" [
+                        Doc.Button "Finish" [cls "btn btn-default"]
                             // Call the continuation with the contact details
                             // and the constructor to use.
                             ( fun () ->
@@ -166,6 +165,7 @@ module AnimatedContactFlow =
                 ]
             ]
             |> AnimateFlow
+            :> Doc
         )
 
     // Should be Flow<unit>
@@ -176,9 +176,9 @@ module AnimatedContactFlow =
             | Email s -> "the e-mail address " + s
             | PhoneNumber s -> "the phone number " + s
 
-        Div0 [
-            Doc.TextNode <| "You said your name was " + person.Name + ", your address was " + person.Address + ", "
-            Doc.TextNode <| " and you provided " + detailsStr + "."
+        div [
+            text <| "You said your name was " + person.Name + ", your address was " + person.Address + ", "
+            text <| " and you provided " + detailsStr + "."
         ]
         |> AnimateFlow
 
@@ -196,8 +196,8 @@ module AnimatedContactFlow =
         |> Flow.Embed
 
     let Description () =
-        Div0 [
-            Doc.TextNode "A WS.UI.Next flowlet implementation."
+        div [
+            text "A WS.UI.Next flowlet implementation."
         ]
 
     // You can ignore the bits here -- it just links the example into the site.

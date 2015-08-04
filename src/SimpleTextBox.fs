@@ -13,6 +13,7 @@ namespace WebSharper.UI.Next
 
 open WebSharper
 open WebSharper.UI.Next
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Html
 
 // A simple example consisting of a label which mirrors the content of a text
@@ -38,21 +39,21 @@ module SimpleTextBox =
 
         // A TextView is a component, backed by a reactive view, that updates
         // its contents automatically whenever the variable changes.
-        let label = Doc.TextView rvText.View
+        let label = textView rvText.View
 
         // Put together our RDOM structures; some bootstrap stuff
         divc "panel-default" [
             divc "panel-body" [
                 // Note how components are composable, meaning we can
                 // embed multiple different components here without issue.
-                Div0 [inputField]
-                Div0 [label]
+                div [inputField]
+                div [label]
             ]
         ]
 
     let Description () =
-        Div0 [
-            Doc.TextNode "A label which copies the contents of a text box."
+        div [
+            text "A label which copies the contents of a text box."
         ]
 
     // You can ignore the bits here -- it just links the example into the site.

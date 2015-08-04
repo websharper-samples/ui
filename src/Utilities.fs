@@ -1,6 +1,8 @@
 ﻿namespace WebSharper.UI.Next
 
 open WebSharper
+open WebSharper.UI.Next.Html
+open WebSharper.UI.Next.Client
 
 /// Some shortcut functions for working with the RDOM library.
 [<AutoOpen>]
@@ -13,20 +15,8 @@ module internal Utilities =
     /// Style attribute
     let sty n v = Attr.Style n v
 
-    /// Static attribute
-    let ( ==> ) k v = Attr.Create k v
-
     /// Div with single class
     let divc c docs = Doc.Element "div" [cls c] docs
 
-    /// Text node
-    let txt t = Doc.TextNode t
-
-    /// Button with Bootstrap attributes
-    let btn caption act = Doc.Button caption [cls "btn"; cls "btn-default"] act
-
     /// Link with click callback
-    let link cap attr act = Doc.Link cap attr act
-
-    /// Link with click callback
-    let href text url = Doc.Element "a" ["href" ==> url] [txt text]
+    let href txt url = Doc.Element "a" [attr.href url] [text txt]

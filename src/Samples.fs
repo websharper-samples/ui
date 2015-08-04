@@ -13,6 +13,7 @@ namespace WebSharper.UI.Next
 
 open WebSharper
 open WebSharper.UI.Next
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Html
 open WebSharper.UI.Next.Notation
 open WebSharper.UI.Next.SiteCommon
@@ -42,29 +43,30 @@ module Samples =
             Doc.Link sample.Meta.Title
                 [cls "list-group-item"; activeAttr]
                 (fun () -> Var.Set vPage sample.SamplePage)
+                :> Doc
 
-        Div [cls "col-md-3"] [
-            H40 [txt "Samples"]
+        divc "col-md-3" [
+            h4 [text "Samples"]
             List.map renderItem samples |> Doc.Concat
         ]
 
     let RenderContent sample =
-        Div [cls "samples"; cls "col-md-9"] [
-            Div0 [
-                Div [cls "row"] [
-                    H10 [txt sample.Meta.Title]
-                    Div0 [
-                        P0 [ sample.Description ]
-                        P0 [
-                            A
-                                [ "href" ==> "https://github.com/intellifactory/websharper.ui.next.samples/blob/master/src/" + sample.Meta.Uri + ".fs" ]
-                                [txt "View Source"]
+        divc "samples col-md-9" [
+            div [
+                divc "row" [
+                    h1 [text sample.Meta.Title]
+                    div [
+                        p [ sample.Description ]
+                        p [
+                            aAttr
+                                [ attr.href ("https://github.com/intellifactory/websharper.ui.next.samples/blob/master/src/" + sample.Meta.Uri + ".fs") ]
+                                [text "View Source"]
                         ]
                     ]
                 ]
 
-                Div [cls "row"] [
-                    P0 [ sample.Body ]
+                divc "row" [
+                    p [ sample.Body ]
                 ]
             ]
         ]
@@ -75,9 +77,9 @@ module Samples =
             | Some s -> s
             | None -> failwith "Attempted to render non-sample on samples page"
 
-        Section [cls "block-small"] [
-            Div [cls "container"] [
-                Div [cls "row"] [
+        sectionAttr [cls "block-small"] [
+            divc "container" [
+                divc "row" [
                     Sidebar vPage samples
                     RenderContent sample
                 ]
@@ -163,10 +165,10 @@ module Samples =
             meta <- { meta with Keywords = x }; b
 
         member b.Render f =
-            vis <- { vis with Main = f }; b
+            vis <- { vis with Main = (fun x -> f x :> Doc) }; b
 
-        member b.RenderDescription x =
-            vis <- { vis with Desc = x }; b
+        member b.RenderDescription f =
+            vis <- { vis with Desc = (fun x -> f x :> Doc) }; b
 
         member b.Title x =
             meta <- { meta with Title = x }; b
@@ -179,8 +181,6 @@ module Samples =
 
     let Routed (router, init) =
         Builder (CreateRouted router init)
-
-    let nav = Nav
 
     let InitialSamplePage samples =
         (List.head samples).SamplePage

@@ -2,6 +2,7 @@
 
 open WebSharper
 open WebSharper.UI.Next
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Html
 open WebSharper.UI.Next.Notation
 open WebSharper.UI.Next.SiteCommon
@@ -86,12 +87,12 @@ module Site =
     let NavPages = [Home ; About; Samples]
 
     let linkBtn caption href =
-        A [cls "btn" ; cls "btn-default" ; "href" ==> href]
-            [ txt caption ]
+        aAttr [cls "btn" ; cls "btn-default" ; attr.href href]
+            [ text caption ]
 
     let HomePage go =
-        Div [cls "container"] [
-            Section
+        divc "container" [
+            sectionAttr
                 [
                     cls "block-huge"
                     cls "teaser-home"
@@ -101,24 +102,24 @@ module Site =
                     sty "margin-bottom" "40px"
                 ]
                 [
-                    Div [cls "container"] [
-                        Div [cls "row"] [
-                            Div [cls "col-12"] [
-                                Br [] []
-                                H10 [
-                                    txt "WebSharper UI.Next: "
-                                    Span [cls "text-muted"] [
-                                        txt "A new generation of reactive web applications."
+                    divc "container" [
+                        divc "row" [
+                            divc "col-12" [
+                                br []
+                                h1 [
+                                    text "WebSharper UI.Next: "
+                                    spanAttr [cls "text-muted"] [
+                                        text "A new generation of reactive web applications."
                                     ]
                                 ]
-                                H30 [
-                                    txt "Write powerful, data-backed applications"
-                                    Br [] []
-                                    txt " using F# and WebSharper."
+                                h3 [
+                                    text "Write powerful, data-backed applications"
+                                    br []
+                                    text " using F# and WebSharper."
                                 ]
 
-                                P [cls "lead"] [
-                                    txt "Get it free on NuGet today!"
+                                pAttr [cls "lead"] [
+                                    text "Get it free on NuGet today!"
                                 ]
                             ]
                         ]
@@ -129,30 +130,28 @@ module Site =
     let AboutPage go =
 
         let renderBody entry =
-            [
-                H10 [ txt entry.Name ]
-                P [cls "lead"] [
-                    txt entry.Description
+            Doc.Concat [
+                h1 [ text entry.Name ]
+                pAttr [cls "lead"] [
+                    text entry.Description
                 ]
-                P0 [
-                    UL [cls "list-unstyled"] [
-                        List.map (fun lnk ->
-                            LI0 [
-                                lnk
-                            ]) entry.URLs |> Doc.Concat
-                    ]
+                p [
+                    ulAttr [cls "list-unstyled"] (
+                        entry.URLs
+                        |> List.map (fun lnk -> li [lnk] :> Doc)
+                    )
                 ]
-            ] |> Doc.Concat
+            ]
 
         let oddEntry entry =
-            Section [cls "block-large" ] [
-                Div [cls "container"] [
-                    Div [cls "row"] [
-                        Div [cls "col-lg-3"] [
-                            Img ["src" ==> entry.ImgURL ; sty "width" "100%"] []
+            sectionAttr [cls "block-large" ] [
+                divc "container" [
+                    divc "row" [
+                        divc "col-lg-3" [
+                            imgAttr [attr.src entry.ImgURL ; sty "width" "100%"] []
                         ]
-                        Div [cls "col-lg-1"] []
-                        Div [cls "col-lg-8"] [
+                        divc "col-lg-1" []
+                        divc "col-lg-8" [
                             renderBody entry
                         ]
                     ]
@@ -160,15 +159,15 @@ module Site =
             ]
 
         let evenEntry entry =
-            Section [cls "block-large" ; cls "bg-alt" ] [
-                Div [cls "container"] [
-                    Div [cls "row"] [
-                        Div [cls "col-lg-8"] [
+            sectionAttr [cls "block-large" ; cls "bg-alt" ] [
+                divc "container" [
+                    divc "row" [
+                        divc "col-lg-8" [
                             renderBody entry
                         ]
-                        Div [cls "col-lg-1"] []
-                        Div [cls "col-lg-3"] [
-                            Img ["src" ==> entry.ImgURL; sty "width" "100%"] []
+                        divc "col-lg-1" []
+                        divc "col-lg-3" [
+                            imgAttr [attr.src entry.ImgURL; sty "width" "100%"] []
                         ]
                     ]
                 ]
@@ -176,49 +175,49 @@ module Site =
 
         let ico name =
         // font-size:400%;color:#aaa;
-            Span [cls "fa" ; cls name; cls "fa-3x" ; sty "font-size" "400%" ; sty "color" "#aaa"] []
+            spanAttr [cls "fa" ; cls name; cls "fa-3x" ; sty "font-size" "400%" ; sty "color" "#aaa"] []
 
-        Div [cls "extensions"] [
-            Div [cls "container"] [
-                Section [cls "block-huge"] [
-                    H10 [
-                        txt "WebSharper UI.Next: "
-                        Span [cls "text-muted"] [
-                            txt "Everything you need to know."
+        divc "extensions" [
+            divc "container" [
+                sectionAttr [cls "block-huge"] [
+                    h1 [
+                        text "WebSharper UI.Next: "
+                        spanAttr [cls "text-muted"] [
+                            text "Everything you need to know."
                         ]
                     ]
 
-                    P [cls "lead"] [
-                        txt "A selection of resources about UI.Next."
+                    pAttr [cls "lead"] [
+                        text "A selection of resources about UI.Next."
                     ]
                 ]
             ]
 
-            Div [cls "block-large" ; cls "bg-alt"] [
-                Div [cls "container"] [
-                    Div [cls "row" ; cls "text-center"] [
-                        Div [cls "col-lg-4"] [
+            divc "block-large bg-alt" [
+                divc "container" [
+                    divc "row text-center" [
+                        divc "col-lg-4" [
                             ico "fa-graduation-cap"
-                            H30 [txt "Get Started"]
-                            P0 [txt "Take the tutorial, and you'll be writing reactive applications in no time!"]
+                            h3 [text "Get Started"]
+                            p [text "Take the tutorial, and you'll be writing reactive applications in no time!"]
                             linkBtn "Tutorial" "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Tutorial.md"
                             // Tutorial
                         ]
 
-                        Div [cls "col-lg-4"] [
+                        divc "col-lg-4" [
      //                       Elements.I [cls "fa" ; cls "fa-graduation-cap" ; cls "fa-3x" ] []
                             ico "fa-book"
-                            H30 [txt "Dive Right In"]
-                            P0 [txt "Comprehensive documentation on the UI.Next API."]
+                            h3 [text "Dive Right In"]
+                            p [text "Comprehensive documentation on the UI.Next API."]
                             linkBtn "API Reference" "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/API.md"
                             // Dive right in
                             // API Reference
                         ]
 
-                        Div [cls "col-lg-4"] [
+                        divc "col-lg-4" [
                             ico "fa-send"
-                            H30 [txt "See it in Action"]
-                            P0 [txt "A variety of samples using UI.Next, and their associated source code!"]
+                            h3 [text "See it in Action"]
+                            p [text "A variety of samples using UI.Next, and their associated source code!"]
                             Doc.Button "Samples" [cls "btn" ; cls "btn-default" ] (fun () -> go Samples)
                             // See it in action
                             // Samples link
@@ -229,7 +228,7 @@ module Site =
             ]
             List.mapi (fun i entry ->
                 let renderFn = if i % 2 = 0 then oddEntry else evenEntry
-                renderFn entry
+                renderFn entry :> Doc
             ) Entries |> Doc.Concat
         ]
 
@@ -237,46 +236,47 @@ module Site =
         let renderLink pg =
             View.FromVar v
             |> View.Map (fun page ->
-                let liAttr = if page.PageType = pg then Attr.Class "active" else Attr.Empty
-                LI [cls "nav-item"; liAttr] [
-                    link (showPgTy pg) [] (fun () -> Var.Set v (pageFor pg samples))
+                let active = if page.PageType = pg then cls "active" else Attr.Empty
+                liAttr [cls "nav-item"; active] [
+                    Doc.Link (showPgTy pg) [] (fun () -> Var.Set v (pageFor pg samples))
                 ]
             )
             |> Doc.EmbedView
 
         let renderExternal (title, lnk) =
-            LI [cls "nav-item"] [
+            liAttr [cls "nav-item"] [
                 href title lnk
-            ]
+            ] :> Doc
 
-        Nav [cls "container"] [
-            Div [sty "float" "left"] [
-                A ["href" ==> "http://www.websharper.com/home"
-                   sty "text-decoration" "none"
-                   cls "first"
-                  ] [
-                    Img [
-                        "src" ==> "files/logo-websharper-icon.png"
-                        "alt" ==> "[logo]"
+        navAttr [cls "container"] [
+            divAttr [sty "float" "left"] [
+                aAttr [
+                    attr.href "http://www.websharper.com/home"
+                    sty "text-decoration" "none"
+                    cls "first"
+                ] [
+                    imgAttr [
+                        attr.src "files/logo-websharper-icon.png"
+                        attr.alt "[logo]"
                         sty "margin-top" "0"
                         sty "border-right" "1px"
                         sty "solid" "#eee"
                     ] []
-                    Img [
-                        "src" ==> "files/logo-websharper-text-dark.png"
-                        "alt" ==> "WebSharper"
+                    imgAttr [
+                        attr.src "files/logo-websharper-text-dark.png"
+                        attr.alt "WebSharper"
                         sty "height" "32px"
                     ] []
                   ]
             ]
 
-            Nav [
+            navAttr [
                 cls "nav"
                 cls "nav-collapsible"
                 cls "right"
                 sty "float" "right"
             ] [
-                UL [cls "nav-list"] [
+                ulAttr [cls "nav-list"] [
                     List.map renderLink NavPages |> Doc.Concat
                     List.map renderExternal NavExternalLinks |> Doc.Concat
                 ]
@@ -317,7 +317,7 @@ module Site =
         |> Trans.Exit (fun i -> Fade 1.0 0.0)
 
     let MakePage pg =
-        Div [Attr.AnimatedStyle "opacity" FadeTransition (View.Const 1.0) string] [
+        divAttr [Attr.AnimatedStyle "opacity" FadeTransition (View.Const 1.0) string] [
             pg
         ]
 

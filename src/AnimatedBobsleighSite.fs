@@ -2,6 +2,7 @@
 
 open WebSharper
 open WebSharper.UI.Next.Html
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Notation
 
 // A small example of a single-page mini-sitelet.
@@ -57,12 +58,12 @@ module AnimatedBobsleighSite =
             let renderLink action =
                 let attr = if action = active then cls "active" else Attr.Empty
 
-                LI [attr] [
-                    link (showAct action) [] (fun _ -> GlobalGo var action)
-                ]
+                liAttr [attr] [
+                    Doc.Link (showAct action) [] (fun _ -> GlobalGo var action)
+                ] :> Doc
 
-            Nav [cls "navbar" ; cls "navbar-default" ; Attr.Create "role" "navigation"] [
-                UL [cls "nav" ; cls "navbar-nav"] [
+            navAttr [cls "navbar navbar-default" ; Attr.Create "role" "navigation"] [
+                ulAttr [cls "nav navbar-nav"] [
                     List.map renderLink pages |> Doc.Concat
                 ]
             ])
@@ -71,7 +72,7 @@ module AnimatedBobsleighSite =
     let MakePage var pg =
         Doc.Concat [
             NavBar var
-            Div [Attr.AnimatedStyle "opacity" FadeTransition (View.Const 1.0) string] [
+            divAttr [Attr.AnimatedStyle "opacity" FadeTransition (View.Const 1.0) string] [
                 pg
             ]
         ]
@@ -81,37 +82,37 @@ module AnimatedBobsleighSite =
     // To change the page, we call this function with the action we want to perform.
     let HomePage ctx =
         Doc.Concat [
-            Div0 [
-                H10 [txt "Welcome!"]
-                P0 [
-                    txt "Welcome to the IntelliFactory Bobsleigh MiniSite!"
+            div [
+                h1 [text "Welcome!"]
+                p [
+                    text "Welcome to the IntelliFactory Bobsleigh MiniSite!"
                 ]
-                P0 [
-                    txt "Here you can find out about the "
-                    link "history" [] (fun () -> ctx.Go BobsleighHistory)
-                    txt " of bobsleighs, the "
-                    link "International Bobsleigh and Skeleton Federation" [] (fun () -> ctx.Go BobsleighGovernance)
-                    txt ", which serve as the governing body for the sport, and finally the world-famous "
-                    link "IntelliFactory Bobsleigh Team." [] (fun () -> ctx.Go BobsleighTeam)
+                p [
+                    text "Here you can find out about the "
+                    Doc.Link "history" [] (fun () -> ctx.Go BobsleighHistory)
+                    text " of bobsleighs, the "
+                    Doc.Link "International Bobsleigh and Skeleton Federation" [] (fun () -> ctx.Go BobsleighGovernance)
+                    text ", which serve as the governing body for the sport, and finally the world-famous "
+                    Doc.Link "IntelliFactory Bobsleigh Team." [] (fun () -> ctx.Go BobsleighTeam)
                 ]
             ]
         ]
 
     let History ctx =
         Doc.Concat [
-            Div0 [
-                H10 [txt "History"]
-                P0 [
-                    txt "According to "
+            div [
+                h1 [text "History"]
+                p [
+                    text "According to "
                     href "Wikipedia" "http://en.wikipedia.org/wiki/Bobsleigh"
-                    txt ", the beginnings of bobsleigh came about due to a hotelier \
+                    text ", the beginnings of bobsleigh came about due to a hotelier \
                          becoming increasingly frustrated about having entire seasons \
                          where he could not rent out his properties. In response, he got \
                          a few people interested, and the Swiss town of St Moritz became \
                          the home of the first bobsleigh races."
                 ]
-                P0 [
-                    txt "Bobsleigh races have been a regular event at the Winter Olympics \
+                p [
+                    text "Bobsleigh races have been a regular event at the Winter Olympics \
                          since the very first competition in 1924."
                 ]
             ]
@@ -119,12 +120,12 @@ module AnimatedBobsleighSite =
 
     let Governance ctx =
         Doc.Concat [
-            Div0 [
-                H10 [txt "Governance"]
-                P0 [
-                    txt "The sport is overseen by the "
+            div [
+                h1 [text "Governance"]
+                p [
+                    text "The sport is overseen by the "
                     href "International Bobsleigh and Skeleton Federation" "http://www.fibt.com/"
-                    txt ", an organisation founded in 1923. \
+                    text ", an organisation founded in 1923. \
                          The organisation governs all international competitions, \
                          acting as a body to regulate athletes' conduct, as well as \
                          providing funding for training and education."
@@ -139,16 +140,16 @@ module AnimatedBobsleighSite =
              ("Simon", "Simon_JF")]
 
         Doc.Concat [
-            Div0 [
-                H10 [txt "The IntelliFactory Bobsleigh Team"]
-                P0 [
-                    txt "The world-famous IntelliFactory Bobsleigh Team was founded \
+            div [
+                h1 [text "The IntelliFactory Bobsleigh Team"]
+                p [
+                    text "The world-famous IntelliFactory Bobsleigh Team was founded \
                          in 2004, and currently consists of:"
                 ]
-                UL0 [
+                ul [
                     teamMembers
                     |> List.map (fun (name, handle) ->
-                        LI0 [href name ("http://www.twitter.com/" + handle)])
+                        li [href name ("http://www.twitter.com/" + handle)] :> Doc)
                     |> Doc.Concat
                 ]
             ]
@@ -175,8 +176,8 @@ module AnimatedBobsleighSite =
         |> Doc.EmbedView
 
     let description () =
-        Div0 [
-            txt "A small website about bobsleighs, demonstrating how UI.Next \
+        div [
+            text "A small website about bobsleighs, demonstrating how UI.Next \
                  may be used to structure single-page applications."
         ]
 

@@ -13,6 +13,7 @@ namespace WebSharper.UI.Next
 
 open WebSharper
 open WebSharper.UI.Next
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Html
 open WebSharper.UI.Next.Notation
 
@@ -91,12 +92,12 @@ module Calculator =
         //           4 5 6 -
         //           7 8 9 *
         //           0 C = /
-        Div0 [
-            Doc.TextView <| displayCalc rvCalc
-            Div0 [btn 1 ; btn 2 ; btn 3 ; obtn Add]
-            Div0 [btn 4 ; btn 5 ; btn 6 ; obtn Sub]
-            Div0 [btn 7 ; btn 8 ; btn 9 ; obtn Mul]
-            Div0 [btn 0 ; cbtn  ; eqbtn ; obtn Div_]
+        div [
+            textView (displayCalc rvCalc)
+            div [btn 1 ; btn 2 ; btn 3 ; obtn Add]
+            div [btn 4 ; btn 5 ; btn 6 ; obtn Sub]
+            div [btn 7 ; btn 8 ; btn 9 ; obtn Mul]
+            div [btn 0 ; cbtn  ; eqbtn ; obtn Div_]
         ]
 
     // Run it!
@@ -105,7 +106,7 @@ module Calculator =
         Var.Create initCalc |> calcView
 
     let Description () =
-        Div0 [
+        div [
             Doc.TextNode "A calculator application"
         ]
 

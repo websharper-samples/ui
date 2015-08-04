@@ -15,8 +15,10 @@ open WebSharper
 open WebSharper.JavaScript
 open WebSharper.JQuery
 open WebSharper.UI.Next
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Html
 module S = WebSharper.UI.Next.Html.SvgElements
+module SA = WebSharper.UI.Next.Html.SvgAttributes
 
 /// Attempt to reconstruct this D3 example in UI.Next:
 /// http://bost.ocks.org/mike/constancy/
@@ -158,12 +160,12 @@ module ObjectConstancy =
         let y st = Height * double st.Position / double st.Total
         let h st = Height / double st.Total - 2.
         // Shorthand for a reactive text node in SVG
-        let txt f attr = S.Text attr [state |> View.Map f |> Doc.TextView]
+        let txt f attr = S.text attr [state |> View.Map f |> Doc.TextView]
         Doc.Concat [
-            S.G [Attr.Style "fill" "steelblue"] [
-                S.Rect [
+            S.g [Attr.Style "fill" "steelblue"] [
+                S.rect [
                     // X is always 0 for each of the bars
-                    "x" ==> "0"
+                    SA.x "0"
                     // Y is specified as an in-out transition.
                     anim "y" InOutTransition y
                     // Width and height are simple transitions the the X and Y vals
@@ -173,15 +175,15 @@ module ObjectConstancy =
             ]
             // Text labels
             txt (fun s -> Percent s.Value) [
-                "text-anchor" ==> "end"
+                Attr.Create "text-anchor" "end"
                 anim "x" SimpleTransition x; anim "y" InOutTransition y
-                "dx" ==> "-2"; "dy" ==> "14"
+                SA.dx "-2"; SA.dy "14"
                 sty "fill" "white"
                 sty "font" "12px sans-serif"
             ]
             txt (fun s -> s.State) [
-                "x" ==> "0"; anim "y" InOutTransition y
-                "dx" ==> "2"; "dy" ==> "16"
+                SA.x "0"; anim "y" InOutTransition y
+                SA.dx "2"; SA.dy "16"
                 sty "fill" "white"
                 sty "font" "14px sans-serif"
                 sty "font-weight" "bold"
@@ -191,17 +193,17 @@ module ObjectConstancy =
     let Main () =
         // Firstly, set up the data model
         let (dataSet, bracket, shownData) = SetupDataModel ()
-        Div0 [
-            H20 [txt "Top States by Age Bracket, 2008"]
+        div [
+            h2 [text "Top States by Age Bracket, 2008"]
             dataSet
             |> View.Map (fun dS ->
                 // Select box control
                 Doc.Select [cls "form-control"] (fun (AgeBracket b) -> b)
                     (List.ofArray dS.Brackets.[1..]) bracket)
             |> Doc.EmbedView
-            Div [cls "skip"] []
+            divc "skip" []
             // Create the SVG image.
-            S.Svg ["width" ==> string Width; "height" ==> string Height] [
+            S.svg [SA.width (string Width); SA.height (string Height)] [
                 shownData
                 // Render the data that needs to be shown.
                 // ConvertSeqBy takes an equality key, a function to apply to a
@@ -210,19 +212,19 @@ module ObjectConstancy =
                 |> View.Map Doc.Concat
                 |> Doc.EmbedView
             ]
-            P0 [
-                txt "Source: "
+            p [
+                text "Source: "
                 href "Census Bureau" "http://www.census.gov/popest/data\
                     /historical/2000s/vintage_2008/"
             ]
-            P0 [
-                txt "Original Sample by Mike Bostock: "
+            p [
+                text "Original Sample by Mike Bostock: "
                 href "Object Constancy" "http://bost.ocks.org/mike/constancy/"
             ]
         ]
 
     let Description () =
-        Div0 [txt "This sample show-cases declarative animation and interpolation (tweening)"]
+        div [text "This sample show-cases declarative animation and interpolation (tweening)"]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =

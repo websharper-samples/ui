@@ -4,6 +4,7 @@ open WebSharper
 open WebSharper.JavaScript
 open WebSharper.JQuery
 open WebSharper.UI.Next.Html
+open WebSharper.UI.Next.Client
 open WebSharper.UI.Next.Notation
 
 open System
@@ -111,20 +112,20 @@ module SortableBarChart =
             let x d = (width d + Spacing) * (double d.Rank )
             let y d = (Height - height d)
 
-            SVG.G [Attr.Style "fill" "steelblue"] [
-                SVG.Rect [
+            SVG.g [Attr.Style "fill" "steelblue"] [
+                SVG.rect [
                     dyn "width" width
                     dyn "height" height
                     //"x" ==> (string x)
                     anim "x" BarTransition x
                     dyn "y" y
                 ] []
-            ]
+            ] :> Doc
 //        |> Doc.EmbedView
 
     let DisplayGraph (data: View<seq<DataView>>) =
-        Div0 [
-            SVG.Svg ["width" ==> string Width ; "height" ==> string Height] [
+        div [
+            SVG.svg [SVGA.width (string Width); SVGA.height (string Height)] [
                 View.ConvertSeqBy (fun d -> d.Label) Render data
                 |> View.Map Doc.Concat
                 |> Doc.EmbedView
@@ -138,13 +139,13 @@ module SortableBarChart =
         let vOrder = Var.Create ByLetter
         let data = View.Map List.ofSeq LoadData
         let dataView = View.Map2 ViewData data vOrder.View
-        Div0 [
+        div [
             Doc.Select [] ShowOrdering [ByLetter ; ByFrequency] vOrder
             DisplayGraph dataView
         ]
 
     let Description () =
-        Div0 [txt "This sample show-cases animation and data display."]
+        div [text "This sample show-cases animation and data display."]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
