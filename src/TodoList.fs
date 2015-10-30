@@ -99,7 +99,7 @@ module TodoList =
     // Embed a time-varying collection of items.
     let TodoList m =
         ListModel.View m.Items
-        |> Doc.ConvertBy (fun m -> m.Key) (RenderItem m)
+        |> Doc.BindSeqCachedBy (fun m -> m.Key) (RenderItem m)
 
     // Finally, we put it all together...
     let TodoExample () =

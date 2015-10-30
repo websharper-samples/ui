@@ -150,7 +150,7 @@ module ObjectConstancy =
         string (floor (100. * x)) + "." + string (int (floor (1000. * x)) % 10) + "%"
 
     // The main rendering function
-    let Render (state: View<StateView>) =
+    let Render _ (state: View<StateView>) =
         // Function to create an animated attribute, based on a member of
         // a StateView record.
         let anim name kind (proj: StateView -> double) =
@@ -208,7 +208,7 @@ module ObjectConstancy =
                 // Render the data that needs to be shown.
                 // ConvertSeqBy takes an equality key, a function to apply to a
                 // reactive view of a record, and a view of
-                |> View.ConvertSeqBy (fun s -> s.State) Render
+                |> View.MapSeqCachedViewBy (fun s -> s.State) Render
                 |> View.Map Doc.Concat
                 |> Doc.EmbedView
             ]
