@@ -101,7 +101,7 @@ module SortableBarChart =
         SimpleTransition
         |> Trans.Enter (fun x -> SimpleAnimation 0. x)
 
-    let Render (dView: View<DataView>) =
+    let Render _ (dView: View<DataView>) =
             let anim name kind (proj: DataView -> double) =
                 Attr.Animated name kind (View.Map proj dView) string
 
@@ -126,7 +126,7 @@ module SortableBarChart =
     let DisplayGraph (data: View<seq<DataView>>) =
         div [
             SVG.svg [SVGA.width (string Width); SVGA.height (string Height)] [
-                View.ConvertSeqBy (fun d -> d.Label) Render data
+                View.MapSeqCachedViewBy (fun d -> d.Label) Render data
                 |> View.Map Doc.Concat
                 |> Doc.EmbedView
             ]

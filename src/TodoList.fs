@@ -1,15 +1,4 @@
-﻿// $begin{copyright}
-//
-// This file is confidential and proprietary.
-//
-// Copyright (c) IntelliFactory, 2004-2014.
-//
-// All rights reserved.  Reproduction or use in whole or in part is
-// prohibited without the written consent of the copyright holder.
-//-----------------------------------------------------------------
-// $end{copyright}
-
-namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI.Next
 
 open WebSharper
 open WebSharper.UI.Next
@@ -99,7 +88,7 @@ module TodoList =
     // Embed a time-varying collection of items.
     let TodoList m =
         ListModel.View m.Items
-        |> Doc.ConvertBy (fun m -> m.Key) (RenderItem m)
+        |> Doc.BindSeqCachedBy (fun m -> m.Key) (RenderItem m)
 
     // Finally, we put it all together...
     let TodoExample () =
