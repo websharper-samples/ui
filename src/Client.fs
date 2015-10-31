@@ -9,6 +9,7 @@ module Client =
         Site.Main [
             SimpleTextBox.Sample
             InputTransform.Sample
+            InputTransformHtml.Sample
             TodoList.Sample
             PhoneExample.Sample
             EditablePersonList.Sample
