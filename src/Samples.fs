@@ -1,15 +1,49 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
-open WebSharper.UI.Next
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
-open WebSharper.UI.Next.Notation
-open WebSharper.UI.Next.SiteCommon
+open WebSharper.UI
+open WebSharper.UI.Client
+open WebSharper.UI.Html
+open WebSharper.UI.Notation
+open WebSharper.UI.SiteCommon
+module Router = WebSharper.Sitelets.Router
 
 /// A little framework for displaying samples on the site.
 [<JavaScript>]
 module Samples =
+
+    type SampleTy =
+        | SimpleTextBox
+        | InputTransform
+        | InputTransformHtml
+        | TodoList
+        | PhoneExample
+        | EditablePersonList
+        | CheckBoxTest
+        | Calculator
+        | ContactFlow
+        | AnimatedContactFlow
+        | MessageBoard
+        | BobsleighSite
+        | RoutedBobsleighSite of BobsleighSitePage
+        | AnimatedBobsleighSite
+        | ObjectConstancy
+        | MouseInfo
+        | KeyboardInfo
+        | SortableBarChart
+
+    and BobsleighSitePage =
+        | [<EndPoint "/">] BobsleighHome
+        | [<EndPoint "/history">] BobsleighHistory
+        | [<EndPoint "/governance">] BobsleighGovernance
+        | [<EndPoint "/team">] BobsleighTeam
+
+    type PageTy =
+        | [<EndPoint "/home">] Home
+        | [<EndPoint "/about">] About
+        | [<EndPoint "/samples">] Samples of SampleTy
+
+    let SamplesDefault = Samples SimpleTextBox
 
     // First, define the samples type, which specifies metadata and a rendering
     // function for each of the samples.
@@ -22,158 +56,114 @@ module Samples =
             Main : 'T -> Doc
         }
 
-    let Sidebar vPage samples =
-        let renderItem sample =
+    type Model = { Route : PageTy }
+
+    type Sample =
+        {
+            Page : Var<PageTy> -> list<Sample> -> Elt
+            IsThis : SampleTy -> bool
+            Meta : Meta
+            DefaultPage : SampleTy
+        }
+
+    type Builder<'T> =
+        {
+            DefaultPage : 'T
+            Wrap : 'T -> SampleTy
+            Unwrap : SampleTy -> option<'T>
+            Body : Var<'T> -> Doc
+            Description : Var<'T> -> Doc
+            Meta : Meta
+        }
+
+    let Sidebar vPage (samples: list<Sample>) =
+        let renderItem (sample: Sample) =
             let attrView =
                 View.FromVar vPage
-                |> View.Map (fun pg -> pg.PageSample)
-            let pred s = Option.exists (fun smp -> sample.Meta.FileName = smp.Meta.FileName) s
-            let activeAttr = Attr.DynamicClass "active" attrView pred
+            let pred = function Samples smp -> sample.IsThis smp | _ -> false
+            let activeAttr = Attr.ClassPred "active" (pred attrView.V)
             Doc.Link sample.Meta.Title
                 [cls "list-group-item"; activeAttr]
-                (fun () -> Var.Set vPage sample.SamplePage)
+                (fun () -> Var.Set vPage (Samples sample.DefaultPage))
                 :> Doc
 
         divc "col-md-3" [
-            h4 [text "Samples"]
+            h4 [] [text "Samples"]
             List.map renderItem samples |> Doc.Concat
         ]
 
-    let RenderContent sample =
+    let RenderContent meta body description =
         divc "samples col-md-9" [
-            div [
+            div [] [
                 divc "row" [
-                    h1 [text sample.Meta.Title]
-                    div [
-                        p [ sample.Description ]
-                        p [
-                            aAttr
-                                [ attr.href ("https://github.com/intellifactory/websharper.ui.next.samples/blob/master/src/" + sample.Meta.Uri + ".fs") ]
+                    h1 [] [text meta.Title]
+                    div [] [
+                        p [] [ description ]
+                        p [] [
+                            a
+                                [ attr.href ("https://github.com/intellifactory/websharper.ui.next.samples/blob/master/src/" + meta.FileName) ]
                                 [text "View Source"]
                         ]
                     ]
                 ]
 
                 divc "row" [
-                    p [ sample.Body ]
+                    p [] [ body ]
                 ]
             ]
         ]
 
-    let Render vPage pg samples =
-        let sample =
-            match pg.PageSample with
-            | Some s -> s
-            | None -> failwith "Attempted to render non-sample on samples page"
-
-        sectionAttr [cls "block-small"] [
+    let Render vPage meta body description samples =
+        section [cls "block-small"] [
             divc "container" [
                 divc "row" [
                     Sidebar vPage samples
-                    RenderContent sample
+                    RenderContent meta body description
                 ]
             ]
         ]
 
-    let CreateRouted router init vis meta =
-        let sample =
-            {
-                Body = Doc.Empty
-                Description = Doc.Empty
-                Meta = meta
-                Router = Unchecked.defaultof<_>
-                RouteId = Unchecked.defaultof<_>
-                SamplePage = Unchecked.defaultof<_>
-            }
-        let r =
-             Router.Route router init (fun id cur ->
-                sample.RouteId <- id
-                sample.Body <- vis.Main cur
-                sample.Description <- vis.Desc cur
-                let page = mkPage sample.Meta.Title id Samples
-                page.PageSample <- Some sample
-                page.PageRouteId <- id
-                sample.SamplePage <- page
-                page
-             )
-             |> Router.Prefix meta.Uri
-        sample.Router <- r
-        sample
+    type Builder<'T> with
 
-    let CreateSimple vis meta =
-        let unitRouter = RouteMap.Create (fun () -> []) (fun _ -> ())
-        let sample =
+        member this.Id(id) = { this with Meta = { this.Meta with Title = id } }
+        member this.FileName(n) = { this with Meta = { this.Meta with FileName = n } }
+        member this.Keywords(k) = { this with Meta = { this.Meta with Keywords = k } }
+        member this.Render(f) = { this with Body = fun x -> upcast f x }
+        member this.RenderDescription(f) = { this with Description = fun x -> upcast f x }
+
+        member this.Create() : Sample =
             {
-                Body = vis.Main ()
-                Description = vis.Desc ()
-                Meta = meta
-                Router = Unchecked.defaultof<_>
-                RouteId = Unchecked.defaultof<_>
-                SamplePage = Unchecked.defaultof<_>
+                DefaultPage = this.Wrap this.DefaultPage
+                IsThis = this.Unwrap >> Option.isSome
+                Page =
+                    let mutable rendered = None
+                    fun var samples ->
+                        match rendered with
+                        | Some doc -> doc
+                        | None ->
+                            let unwrap = function
+                                | PageTy.Samples x -> defaultArg (this.Unwrap x) this.DefaultPage
+                                | _ -> this.DefaultPage
+                            let var' = Var.Lens var unwrap (fun _ x -> Samples (this.Wrap x))
+                            let doc = Render var this.Meta (this.Body var') (this.Description var') samples
+                            rendered <- Some doc
+                            doc
+                Meta = this.Meta
             }
 
-        sample.Router <-
-            // mkPage name routeId ty
-            Router.Route unitRouter () (fun id cur ->
-                let page = mkPage sample.Meta.Title id Samples
-                sample.RouteId <- id
-                page.PageSample <- Some sample
-                page.PageRouteId <- id
-                sample.SamplePage <- page
-                page)
-            |> Router.Prefix meta.Uri
-        sample
+    let Routed<'T> (wrap, def, unwrap) : Builder<'T> =
+        {
+            DefaultPage = def
+            Wrap = wrap
+            Unwrap = unwrap
+            Body = fun _ -> Doc.Empty
+            Description = fun _ -> Doc.Empty
+            Meta =
+                {
+                    FileName = "Unknown.fs"
+                    Keywords = []
+                    Title = "Unknown"
+                }
+        }
 
-    [<Sealed>]
-    type Builder<'T>(create: Visuals<'T> -> Meta -> Sample) =
-
-        let mutable meta =
-            {
-                FileName = "Unknown.fs"
-                Keywords = []
-                Title = "Unknown"
-                Uri = "unknown"
-            }
-
-        let mutable vis =
-            {
-                Desc = fun _ -> Doc.Empty
-                Main = fun _ -> Doc.Empty
-            }
-
-        member b.Create () =
-            create vis meta
-
-        member b.FileName x =
-            meta <- { meta with FileName = x }; b
-
-        member b.Id x =
-            meta <- { meta with Title = x; Uri = x }; b
-
-        member b.Keywords x =
-            meta <- { meta with Keywords = x }; b
-
-        member b.Render f =
-            vis <- { vis with Main = (fun x -> f x :> Doc) }; b
-
-        member b.RenderDescription f =
-            vis <- { vis with Desc = (fun x -> f x :> Doc) }; b
-
-        member b.Title x =
-            meta <- { meta with Title = x }; b
-
-        member b.Uri x =
-            meta <- { meta with Uri = x }; b
-
-    let Build () =
-        Builder CreateSimple
-
-    let Routed (router, init) =
-        Builder (CreateRouted router init)
-
-    let InitialSamplePage samples =
-        (List.head samples).SamplePage
-
-    let SamplesRouter samples =
-        Router.Merge [ for s in samples -> s.Router ]
-        |> Router.Prefix "samples"
+    let Build (page) = Routed<unit> ((fun () -> page), (), fun x -> if x = page then Some () else None)

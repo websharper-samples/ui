@@ -1,8 +1,8 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
+open WebSharper.UI.Client
+open WebSharper.UI.Html
 
 // An example of a flowlet for getting contact details from a user.
 // See this live at http://intellifactory.github.io/websharper.ui.next/#ContactFlow.fs !
@@ -34,7 +34,7 @@ module ContactFlow =
         let control = if isArea then Doc.InputArea else Doc.Input
         divc "row" [
             divc "form-group" [
-                labelAttr [
+                label [
                     cls "col-sm-2 control-label"
                     attr.``for`` id
                 ] [text lblText]
@@ -58,7 +58,7 @@ module ContactFlow =
             let rvName = Var.Create ""
             let rvAddress = Var.Create ""
 
-            formAttr [cls "form-horizontal" ; Attr.Create "role" "form"] [
+            form [cls "form-horizontal" ; Attr.Create "role" "form"] [
                 // Name
                 inputRow rvName "lblName" "Name" false
                 // Address
@@ -85,14 +85,14 @@ module ContactFlow =
     // to specify an e-mail address or phone number.
     let contactTypeFlowlet =
         Flow.Define (fun cont ->
-            formAttr [cls "form-horizontal" ; Attr.Create "role" "form"] [
-                formAttr [cls "form-group"] [
-                    div [
+            form [cls "form-horizontal" ; Attr.Create "role" "form"] [
+                form [cls "form-group"] [
+                    div [] [
                         Doc.Button "E-Mail Address" [cls "btn btn-default"]
                             (fun () -> cont EmailTy)
                     ]
 
-                    div [
+                    div [] [
                         Doc.Button "Phone Number" [cls "btn btn-default"]
                             (fun () -> cont PhoneTy)
                     ]
@@ -110,7 +110,7 @@ module ContactFlow =
 
         Flow.Define ( fun cont ->
             let rvContact = Var.Create ""
-            formAttr [cls "form-horizontal" ; Attr.Create "role" "form"] [
+            form [cls "form-horizontal" ; Attr.Create "role" "form"] [
                 inputRow rvContact "contact" label false
                 divc "form-group" [
                     divc "col-sm-offset-2 col-sm-10" [
@@ -134,7 +134,7 @@ module ContactFlow =
             | Email s -> "the e-mail address " + s
             | PhoneNumber s -> "the phone number " + s
 
-        div [
+        div [] [
             text <| "You said your name was " + person.Name + ", your address was " + person.Address + ", "
             text <| " and you provided " + detailsStr + "."
         ]
@@ -143,7 +143,7 @@ module ContactFlow =
     // We firstly get the person details, then the contact type, then the
     // contact details (using the contact type we got in the previous step).
     // Finally, we display a static end page.
-    let ExampleFlow () =
+    let ExampleFlow _ =
         Flow.Do {
             let! person = personFlowlet
             let! ct = contactTypeFlowlet
@@ -152,14 +152,14 @@ module ContactFlow =
         }
         |> Flow.Embed
 
-    let Description () =
-        div [
+    let Description _ =
+        div [] [
             text "A WS.UI.Next flowlet implementation."
         ]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
-        Samples.Build()
+        Samples.Build(Samples.ContactFlow)
             .Id("ContactFlow")
             .FileName(__SOURCE_FILE__)
             .Keywords(["flowlet"])

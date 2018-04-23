@@ -1,8 +1,8 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
+open WebSharper.UI.Client
+open WebSharper.UI.Html
 
 // An example of a flowlet for getting contact details from a user.
 // See this live at http://intellifactory.github.io/websharper.ui.next/#ContactFlow.fs !
@@ -32,7 +32,7 @@ module AnimatedContactFlow =
     // Helper function to display an input field within a form prettily.
     let inputRow rv id lblText =
         divc "form-group" [
-            labelAttr [
+            label [
                 attr.``for`` id
                 cls "col-sm-2 control-label"
             ] [text lblText]
@@ -78,7 +78,7 @@ module AnimatedContactFlow =
         |> Trans.Exit (fun i -> Swipe 0.0 400.0)
 
     let AnimateFlow (pg: #Doc) =
-        divAttr [
+        div [
                 Attr.Style "position" "relative"
                 // The best way to do animations is to have them as attributes.
                 // The properties we're modifying in this case are opacity for fade,
@@ -98,7 +98,7 @@ module AnimatedContactFlow =
             let rvName = Var.Create ""
             let rvAddress = Var.Create ""
 
-            formAttr [cls "form-horizontal" ; Attr.Create "role" "form"] [
+            form [cls "form-horizontal" ; Attr.Create "role" "form"] [
                 // Name
                 inputRow rvName "lblName" "Name"
                 // Address
@@ -123,14 +123,14 @@ module AnimatedContactFlow =
     // to specify an e-mail address or phone number.
     let contactTypeFlowlet =
         Flow.Define (fun cont ->
-            formAttr [cls "form-horizontal" ; Attr.Create "role" "form"] [
+            form [cls "form-horizontal" ; Attr.Create "role" "form"] [
                 divc "form-group" [
-                    div [
+                    div [] [
                         Doc.Button "E-Mail Address" [cls "btn btn-default"]
                             (fun () -> cont EmailTy)
                     ]
 
-                    div [
+                    div [] [
                         Doc.Button "Phone Number" [cls "btn btn-default"]
                             (fun () -> cont PhoneTy)
                     ]
@@ -150,7 +150,7 @@ module AnimatedContactFlow =
 
         Flow.Define ( fun cont ->
             let rvContact = Var.Create ""
-            formAttr [cls "form-horizontal" ; Attr.Create "role" "form"] [
+            form [cls "form-horizontal" ; Attr.Create "role" "form"] [
                 inputRow rvContact "contact" label
                 divc "form-group" [
                     divc "col-sm-offset-2 col-sm-10" [
@@ -176,7 +176,7 @@ module AnimatedContactFlow =
             | Email s -> "the e-mail address " + s
             | PhoneNumber s -> "the phone number " + s
 
-        div [
+        div [] [
             text <| "You said your name was " + person.Name + ", your address was " + person.Address + ", "
             text <| " and you provided " + detailsStr + "."
         ]
@@ -186,7 +186,7 @@ module AnimatedContactFlow =
     // We firstly get the person details, then the contact type, then the
     // contact details (using the contact type we got in the previous step).
     // Finally, we display a static end page.
-    let ExampleFlow () =
+    let ExampleFlow _ =
         Flow.Do {
             let! person = personFlowlet
             let! ct = contactTypeFlowlet
@@ -195,14 +195,14 @@ module AnimatedContactFlow =
         }
         |> Flow.Embed
 
-    let Description () =
-        div [
+    let Description _ =
+        div [] [
             text "A WS.UI.Next flowlet implementation."
         ]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
-        Samples.Build()
+        Samples.Build(Samples.AnimatedContactFlow)
             .Id("AnimatedContactFlow")
             .FileName(__SOURCE_FILE__)
             .Keywords(["flowlet"])

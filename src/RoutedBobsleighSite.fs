@@ -1,29 +1,16 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
-open WebSharper.UI.Next
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
-
+open WebSharper.UI
+open WebSharper.UI.Client
+open WebSharper.UI.Html
+module Router = WebSharper.Sitelets.Router
 module S = BobsleighSite
 
 [<JavaScript>]
 module RoutedBobsleighSite =
 
-    let TheRouteMap =
-        RouteMap.Create
-            (function
-                | S.BobsleighHome -> []
-                | S.BobsleighHistory -> ["history"]
-                | S.BobsleighGovernance -> ["governance"]
-                | S.BobsleighTeam -> ["team"])
-            (function
-                | ["history"] -> S.BobsleighHistory
-                | ["governance"] -> S.BobsleighGovernance
-                | ["team"] -> S.BobsleighTeam
-                | _ -> S.BobsleighHome)
-
-    let Main (current: Var<S.Page>) =
+    let Main (current: Var<Samples.BobsleighSitePage>) =
 
        // withNavbar adds a navigation bar at the top of the page.
         let withNavbar =
@@ -36,14 +23,14 @@ module RoutedBobsleighSite =
         View.FromVar current
         |> View.Map (fun pg ->
             match pg with
-            | S.BobsleighHome -> S.HomePage ctx |> withNavbar
-            | S.BobsleighHistory -> S.History ctx |> withNavbar
-            | S.BobsleighGovernance -> S.Governance ctx |> withNavbar
-            | S.BobsleighTeam -> S.Team ctx |> withNavbar)
+            | Samples.BobsleighHome -> S.HomePage ctx |> withNavbar
+            | Samples.BobsleighHistory -> S.History ctx |> withNavbar
+            | Samples.BobsleighGovernance -> S.Governance ctx |> withNavbar
+            | Samples.BobsleighTeam -> S.Team ctx |> withNavbar)
         |> Doc.EmbedView
 
     let description v =
-        div [
+        div [] [
             text
                 "A small website about bobsleighs, demonstrating how UI.Next \
                  may be used to structure single-page applications. Routed using \
@@ -52,7 +39,9 @@ module RoutedBobsleighSite =
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
-        Samples.Routed(TheRouteMap, S.BobsleighHome)
+        Samples.Routed(Samples.RoutedBobsleighSite, Samples.BobsleighHome, function
+                | Samples.RoutedBobsleighSite x -> Some x
+                | _ -> None)
             .Id("RoutedBobsleighSite")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])

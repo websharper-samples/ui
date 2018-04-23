@@ -1,9 +1,9 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
-open WebSharper.UI.Next
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
+open WebSharper.UI
+open WebSharper.UI.Client
+open WebSharper.UI.Html
 
 // An example similar to InputTransform, but using a html file and the Template type provider 
 // to generate the view.
@@ -12,7 +12,7 @@ open WebSharper.UI.Next.Html
 [<JavaScript>]
 module InputTransformHtml =
     type ViewTemplate = Templating.Template<"InputTransformTemplate.html">
-    let Main () =
+    let Main _ =
 
         // Create a reactive variable and view.
         // Reactive *variables* are data *sources*.
@@ -44,19 +44,22 @@ module InputTransformHtml =
             ("Is the word count odd or even?", viewWordOddEven)
         ]
 
-        ViewTemplate.Elt(
-            inputText = rvText, 
-            tableBody = List.map ViewTemplate.tableRow.Doc views
-        )
+        ViewTemplate()
+            .inputText(rvText)
+            .tableBody(
+                views |> List.map (fun (lbl, view) ->
+                    ViewTemplate.tableRow().lbl(lbl).view(view).Doc() )
+            )
+            .Elt()
 
-    let Description () =
-        div [
+    let Description _ =
+        div [] [
             Doc.TextNode "Similar to InputTransform, but using a html file and the Template type provider."
         ]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
-        Samples.Build()
+        Samples.Build(Samples.InputTransformHtml)
             .Id("InputTransformHtml")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])

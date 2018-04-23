@@ -1,9 +1,9 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
-open WebSharper.UI.Next.Html
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Notation
+open WebSharper.UI.Html
+open WebSharper.UI.Client
+open WebSharper.UI.Notation
 
 // A small example of a single-page mini-sitelet.
 // See this live at http://intellifactory.github.io/websharper.ui.next/#MiniSiteletTest.fs !
@@ -58,12 +58,12 @@ module AnimatedBobsleighSite =
             let renderLink action =
                 let attr = if action = active then cls "active" else Attr.Empty
 
-                liAttr [attr] [
+                li [attr] [
                     Doc.Link (showAct action) [] (fun _ -> GlobalGo var action)
                 ] :> Doc
 
-            navAttr [cls "navbar navbar-default" ; Attr.Create "role" "navigation"] [
-                ulAttr [cls "nav navbar-nav"] [
+            nav [cls "navbar navbar-default" ; Attr.Create "role" "navigation"] [
+                ul [cls "nav navbar-nav"] [
                     List.map renderLink pages |> Doc.Concat
                 ]
             ])
@@ -72,7 +72,7 @@ module AnimatedBobsleighSite =
     let MakePage var pg =
         Doc.Concat [
             NavBar var
-            divAttr [Attr.AnimatedStyle "opacity" FadeTransition (View.Const 1.0) string] [
+            div [Attr.AnimatedStyle "opacity" FadeTransition (View.Const 1.0) string] [
                 pg
             ]
         ]
@@ -82,12 +82,12 @@ module AnimatedBobsleighSite =
     // To change the page, we call this function with the action we want to perform.
     let HomePage ctx =
         Doc.Concat [
-            div [
-                h1 [text "Welcome!"]
-                p [
+            div [] [
+                h1 [] [text "Welcome!"]
+                p [] [
                     text "Welcome to the IntelliFactory Bobsleigh MiniSite!"
                 ]
-                p [
+                p [] [
                     text "Here you can find out about the "
                     Doc.Link "history" [] (fun () -> ctx.Go BobsleighHistory)
                     text " of bobsleighs, the "
@@ -100,9 +100,9 @@ module AnimatedBobsleighSite =
 
     let History ctx =
         Doc.Concat [
-            div [
-                h1 [text "History"]
-                p [
+            div [] [
+                h1 [] [text "History"]
+                p [] [
                     text "According to "
                     href "Wikipedia" "http://en.wikipedia.org/wiki/Bobsleigh"
                     text ", the beginnings of bobsleigh came about due to a hotelier \
@@ -111,7 +111,7 @@ module AnimatedBobsleighSite =
                          a few people interested, and the Swiss town of St Moritz became \
                          the home of the first bobsleigh races."
                 ]
-                p [
+                p [] [
                     text "Bobsleigh races have been a regular event at the Winter Olympics \
                          since the very first competition in 1924."
                 ]
@@ -120,9 +120,9 @@ module AnimatedBobsleighSite =
 
     let Governance ctx =
         Doc.Concat [
-            div [
-                h1 [text "Governance"]
-                p [
+            div [] [
+                h1 [] [text "Governance"]
+                p [] [
                     text "The sport is overseen by the "
                     href "International Bobsleigh and Skeleton Federation" "http://www.fibt.com/"
                     text ", an organisation founded in 1923. \
@@ -140,23 +140,23 @@ module AnimatedBobsleighSite =
              ("Simon", "Simon_JF")]
 
         Doc.Concat [
-            div [
-                h1 [text "The IntelliFactory Bobsleigh Team"]
-                p [
+            div [] [
+                h1 [] [text "The IntelliFactory Bobsleigh Team"]
+                p [] [
                     text "The world-famous IntelliFactory Bobsleigh Team was founded \
                          in 2004, and currently consists of:"
                 ]
-                ul [
+                ul [] [
                     teamMembers
                     |> List.map (fun (name, handle) ->
-                        li [href name ("http://www.twitter.com/" + handle)] :> Doc)
+                        li [] [href name ("http://www.twitter.com/" + handle)] :> Doc)
                     |> Doc.Concat
                 ]
             ]
         ]
 
     // Here we define the sitelet.
-    let Main () =
+    let Main _ =
         // We first create a variable to hold our current page.
         let m = Var.Create BobsleighHome
 
@@ -175,15 +175,15 @@ module AnimatedBobsleighSite =
             |> MakePage m)
         |> Doc.EmbedView
 
-    let description () =
-        div [
+    let description _ =
+        div [] [
             text "A small website about bobsleighs, demonstrating how UI.Next \
                  may be used to structure single-page applications."
         ]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
-        Samples.Build()
+        Samples.Build(Samples.AnimatedBobsleighSite)
             .Id("AnimatedBobsleighSite")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])

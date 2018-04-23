@@ -1,9 +1,9 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
-open WebSharper.UI.Next
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
+open WebSharper.UI
+open WebSharper.UI.Client
+open WebSharper.UI.Html
 
 // An example which takes some input from a text box, and outputs
 // it with different functions applied to it, making use of View.Map.
@@ -12,7 +12,7 @@ open WebSharper.UI.Next.Html
 [<JavaScript>]
 module InputTransform =
 
-    let Main () =
+    let Main _ =
 
         // Create a reactive variable and view.
         // Reactive *variables* are data *sources*.
@@ -24,21 +24,21 @@ module InputTransform =
         // parameter. Whenever the input field is updated, the new value is
         // automatically placed into the variable.
         let inputField =
-            divAttr [cls "panel" ; cls "panel-default"] [
-                divAttr [cls "panel-heading"] [
-                    h3Attr [cls "panel-title"] [
+            div [cls "panel" ; cls "panel-default"] [
+                div [cls "panel-heading"] [
+                    h3 [cls "panel-title"] [
                         text "Input"
                     ]
                 ]
 
-                divAttr [cls "panel-body"] [
-                    formAttr [cls "form-horizontal" ; Attr.Create "role" "form"] [
-                        divAttr [cls "form-group"] [
-                            labelAttr [cls "col-sm-2" ; cls "control-label" ; attr.``for`` "inputBox"] [
+                div [cls "panel-body"] [
+                    form [cls "form-horizontal" ; Attr.Create "role" "form"] [
+                        div [cls "form-group"] [
+                            label [cls "col-sm-2" ; cls "control-label" ; attr.``for`` "inputBox"] [
                                 Doc.TextNode "Write something: "
                             ]
 
-                            divAttr [cls "col-sm-10"] [
+                            div [cls "col-sm-10"] [
                                 Doc.Input [attr.``class`` "form-control" ; attr.id "inputBox"] rvText
                             ]
                         ]
@@ -74,11 +74,11 @@ module InputTransform =
             ]
 
         let tableRow (lbl, view) =
-            tr [
-                td [
+            tr [] [
+                td [] [
                     text lbl
                 ]
-                tdAttr [sty "width" "70%"] [
+                td [sty "width" "70%"] [
                     textView view
                 ]
             ] :> Doc
@@ -86,14 +86,14 @@ module InputTransform =
         let tbl =
             divc "panel panel-default" [
                 divc "panel-heading" [
-                    h3Attr [cls "panel-title"] [
+                    h3 [cls "panel-title"] [
                         text "Output"
                     ]
                 ]
 
                 divc "panel-body" [
-                    tableAttr [cls "table"] [
-                        tbody [
+                    table [cls "table"] [
+                        tbody [] [
                             // We map the tableRow function onto the different
                             // views of the source, and concatenate the resulting
                             // documents.
@@ -103,19 +103,19 @@ module InputTransform =
                 ]
             ]
 
-        div [
+        div [] [
             inputField
             tbl
         ]
 
-    let Description () =
-        div [
+    let Description _ =
+        div [] [
             Doc.TextNode "Transforming the data provided by a single data source."
         ]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
-        Samples.Build()
+        Samples.Build(Samples.InputTransform)
             .Id("InputTransform")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])

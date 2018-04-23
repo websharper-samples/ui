@@ -1,11 +1,11 @@
-namespace WebSharper.UI.Next
+namespace WebSharper.UI
 
 open WebSharper
 
 [<JavaScript>]
 module Client =
-
-    let Main =
+    [<SPAEntryPoint>]
+    let Main() =
         Site.Main [
             SimpleTextBox.Sample
             InputTransform.Sample

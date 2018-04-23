@@ -1,8 +1,9 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
-open WebSharper.UI.Next.Html
-open WebSharper.UI.Next.Client
+open WebSharper.UI
+open WebSharper.UI.Html
+open WebSharper.UI.Client
 
 /// Some shortcut functions for working with the RDOM library.
 [<AutoOpen>]

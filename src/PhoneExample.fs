@@ -1,9 +1,9 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
-open WebSharper.UI.Next
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
+open WebSharper.UI
+open WebSharper.UI.Client
+open WebSharper.UI.Html
 
 // This example is a translation of the basics from the AngularJS tutorial,
 // found here: https://docs.angularjs.org/tutorial/.
@@ -60,9 +60,9 @@ module PhoneExample =
 
         // A simple function for displaying the details of a phone:
         let showPhone ph =
-            li [
-                span [ text ph.Name ]
-                p [ text ph.Snippet ]
+            li [] [
+                span [] [ text ph.Name ]
+                p [] [ text ph.Snippet ]
             ] :> Doc
 
         let showPhones phones =
@@ -86,11 +86,11 @@ module PhoneExample =
             // Finally, we render the list of phones using RD.ForEach.
             // When the list changes, the DOM will be updated to reflect this.
             divc "col-sm-6" [
-                ul [ Doc.EmbedView (View.Map showPhones visiblePhones) ]
+                ul [] [ Doc.EmbedView (View.Map showPhones visiblePhones) ]
             ]
         ]
 
-    let Main () =
+    let Main _ =
         // Here, we make a couple of phones, and declare a phonesWidget, then run the example.
         let defPhone name snip age =
             {
@@ -106,8 +106,8 @@ module PhoneExample =
         ]
 
     // Todo: I don't like this. There's got to be a nicer way of embedding links.
-    let Description () =
-        div [
+    let Description _ =
+        div [] [
             text "Taken from the "
             href "AngularJS Tutorial" "https://docs.angularjs.org/tutorial/"
             text ", a list filtering and sorting application for phones."
@@ -115,7 +115,7 @@ module PhoneExample =
 
     // Boilerplate..
     let Sample =
-        Samples.Build()
+        Samples.Build(Samples.PhoneExample)
             .Id("PhoneExample")
             .FileName(__SOURCE_FILE__)
             .Keywords(["todo"])

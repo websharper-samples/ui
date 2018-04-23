@@ -1,9 +1,9 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
-open WebSharper.UI.Next.Html
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Input
+open WebSharper.UI.Html
+open WebSharper.UI.Client
+open WebSharper.UI.Input
 
 open System
 
@@ -28,28 +28,28 @@ module KeyboardInfo =
     // "keys" is a View<Key list> of all keys currently pressed.
     let keys = Keyboard.KeysPressed
 
-    let Main () =
-        div [
-            p [
+    let Main _ =
+        div [] [
+            p [] [
                 text "Keys pressed (key codes): "
                 textView (View.Map
                     (fun xs -> List.map string xs |> commaList) keys)
             ]
 
-            p [
+            p [] [
                 text "Keys pressed: "
                 textView (View.Map (fun xs ->
                     List.map ToChar xs
                     |> commaList) keys)
             ]
 
-            p [
+            p [] [
                 text "Last pressed key: "
                 // Input.Keyboard.LastPressed is a View<Key>
                 textView <| View.Map string Keyboard.LastPressed
             ]
 
-            p [
+            p [] [
                 text "Is 'A' pressed? "
                 textView <| View.Map (fun x -> if x then "Yes" else "No")
                     (Keyboard.IsPressed (ToKey "A"))
@@ -57,14 +57,14 @@ module KeyboardInfo =
 
         ]
 
-    let Description () =
-        div [
+    let Description _ =
+        div [] [
             text "Information about the current keyboard state"
         ]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
-        Samples.Build()
+        Samples.Build(Samples.KeyboardInfo)
             .Id("KeyboardInfo")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])

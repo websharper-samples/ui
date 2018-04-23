@@ -1,13 +1,13 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
 open WebSharper.JavaScript
 open WebSharper.JQuery
-open WebSharper.UI.Next
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
-module S = WebSharper.UI.Next.Html.SvgElements
-module SA = WebSharper.UI.Next.Html.SvgAttributes
+open WebSharper.UI
+open WebSharper.UI.Client
+open WebSharper.UI.Html
+module S = WebSharper.UI.Html.SvgElements
+module SA = WebSharper.UI.Html.SvgAttributes
 
 /// Attempt to reconstruct this D3 example in UI.Next:
 /// http://bost.ocks.org/mike/constancy/
@@ -179,11 +179,11 @@ module ObjectConstancy =
             ]
         ]
 
-    let Main () =
+    let Main _ =
         // Firstly, set up the data model
         let (dataSet, bracket, shownData) = SetupDataModel ()
-        div [
-            h2 [text "Top States by Age Bracket, 2008"]
+        div [] [
+            h2 [] [text "Top States by Age Bracket, 2008"]
             dataSet
             |> View.Map (fun dS ->
                 // Select box control
@@ -201,23 +201,23 @@ module ObjectConstancy =
                 |> View.Map Doc.Concat
                 |> Doc.EmbedView
             ]
-            p [
+            p [] [
                 text "Source: "
                 href "Census Bureau" "http://www.census.gov/popest/data\
                     /historical/2000s/vintage_2008/"
             ]
-            p [
+            p [] [
                 text "Original Sample by Mike Bostock: "
                 href "Object Constancy" "http://bost.ocks.org/mike/constancy/"
             ]
         ]
 
-    let Description () =
-        div [text "This sample show-cases declarative animation and interpolation (tweening)"]
+    let Description _ =
+        div [] [text "This sample show-cases declarative animation and interpolation (tweening)"]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
-        Samples.Build()
+        Samples.Build(Samples.ObjectConstancy)
             .Id("ObjectConstancy")
             .FileName(__SOURCE_FILE__)
             .Keywords(["animation"])

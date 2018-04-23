@@ -1,11 +1,11 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
 open WebSharper.JavaScript
 open WebSharper.JQuery
-open WebSharper.UI.Next.Html
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Notation
+open WebSharper.UI.Html
+open WebSharper.UI.Client
+open WebSharper.UI.Notation
 
 open System
 
@@ -124,7 +124,7 @@ module SortableBarChart =
 //        |> Doc.EmbedView
 
     let DisplayGraph (data: View<seq<DataView>>) =
-        div [
+        div [] [
             SVG.svg [SVGA.width (string Width); SVGA.height (string Height)] [
                 View.MapSeqCachedViewBy (fun d -> d.Label) Render data
                 |> View.Map Doc.Concat
@@ -135,21 +135,21 @@ module SortableBarChart =
     let LoadData =
         View.MapAsync (fun () -> LoadFromCSV "AlphaFrequency.csv") (View.Const ())
 
-    let Main () =
+    let Main _ =
         let vOrder = Var.Create ByLetter
         let data = View.Map List.ofSeq LoadData
         let dataView = View.Map2 ViewData data vOrder.View
-        div [
+        div [] [
             Doc.Select [] ShowOrdering [ByLetter ; ByFrequency] vOrder
             DisplayGraph dataView
         ]
 
-    let Description () =
-        div [text "This sample show-cases animation and data display."]
+    let Description _ =
+        div [] [text "This sample show-cases animation and data display."]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
-        Samples.Build()
+        Samples.Build(Samples.SortableBarChart)
             .Id("SortableBarChart")
             .FileName(__SOURCE_FILE__)
             .Keywords(["animation"])

@@ -1,14 +1,17 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
-open WebSharper.UI.Next
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
-open WebSharper.UI.Next.Notation
-open WebSharper.UI.Next.SiteCommon
+open WebSharper.Sitelets.InferRouter
+open WebSharper.UI
+open WebSharper.UI.Client
+open WebSharper.UI.Html
+open WebSharper.UI.Notation
+open WebSharper.UI.SiteCommon
 
 [<JavaScript>]
 module Site =
+
+    type PageTy = Samples.PageTy
 
     type AboutEntry =
         {
@@ -68,31 +71,19 @@ module Site =
         ]
 
     let showPgTy = function
-        | Home -> "Home"
-        | About -> "About"
-        | Samples -> "Samples"
+        | PageTy.Home -> "Home"
+        | PageTy.About -> "About"
+        | PageTy.Samples _ -> "Samples"
 
-    let homePage =
-        mkPage (showPgTy Home) Unchecked.defaultof<_> Home
-
-    let aboutPage =
-         mkPage (showPgTy About) Unchecked.defaultof<_> About
-
-    let pageFor pty samples =
-        match pty with
-        | Home -> homePage
-        | About -> aboutPage
-        | Samples -> Samples.InitialSamplePage samples
-
-    let NavPages = [Home ; About; Samples]
+    let NavPages = [PageTy.Home ; PageTy.About; Samples.SamplesDefault]
 
     let linkBtn caption href =
-        aAttr [cls "btn" ; cls "btn-default" ; attr.href href]
+        a [cls "btn" ; cls "btn-default" ; attr.href href]
             [ text caption ]
 
     let HomePage go =
         divc "container" [
-            sectionAttr
+            section
                 [
                     cls "block-huge"
                     cls "teaser-home"
@@ -105,20 +96,20 @@ module Site =
                     divc "container" [
                         divc "row" [
                             divc "col-12" [
-                                br []
-                                h1 [
+                                br [] []
+                                h1 [] [
                                     text "WebSharper UI.Next: "
-                                    spanAttr [cls "text-muted"] [
+                                    span [cls "text-muted"] [
                                         text "A new generation of reactive web applications."
                                     ]
                                 ]
-                                h3 [
+                                h3 [] [
                                     text "Write powerful, data-backed applications"
-                                    br []
+                                    br [] []
                                     text " using F# and WebSharper."
                                 ]
 
-                                pAttr [cls "lead"] [
+                                p [cls "lead"] [
                                     text "Get it free on NuGet today!"
                                 ]
                             ]
@@ -131,24 +122,24 @@ module Site =
 
         let renderBody entry =
             Doc.Concat [
-                h1 [ text entry.Name ]
-                pAttr [cls "lead"] [
+                h1 [] [ text entry.Name ]
+                p [cls "lead"] [
                     text entry.Description
                 ]
-                p [
-                    ulAttr [cls "list-unstyled"] (
+                p [] [
+                    ul [cls "list-unstyled"] (
                         entry.URLs
-                        |> List.map (fun lnk -> li [lnk] :> Doc)
+                        |> List.map (fun lnk -> li [] [lnk] :> Doc)
                     )
                 ]
             ]
 
         let oddEntry entry =
-            sectionAttr [cls "block-large" ] [
+            section [cls "block-large" ] [
                 divc "container" [
                     divc "row" [
                         divc "col-lg-3" [
-                            imgAttr [attr.src entry.ImgURL ; sty "width" "100%"] []
+                            img [attr.src entry.ImgURL ; sty "width" "100%"] []
                         ]
                         divc "col-lg-1" []
                         divc "col-lg-8" [
@@ -159,7 +150,7 @@ module Site =
             ]
 
         let evenEntry entry =
-            sectionAttr [cls "block-large" ; cls "bg-alt" ] [
+            section [cls "block-large" ; cls "bg-alt" ] [
                 divc "container" [
                     divc "row" [
                         divc "col-lg-8" [
@@ -167,7 +158,7 @@ module Site =
                         ]
                         divc "col-lg-1" []
                         divc "col-lg-3" [
-                            imgAttr [attr.src entry.ImgURL; sty "width" "100%"] []
+                            img [attr.src entry.ImgURL; sty "width" "100%"] []
                         ]
                     ]
                 ]
@@ -175,19 +166,19 @@ module Site =
 
         let ico name =
         // font-size:400%;color:#aaa;
-            spanAttr [cls "fa" ; cls name; cls "fa-3x" ; sty "font-size" "400%" ; sty "color" "#aaa"] []
+            span [cls "fa" ; cls name; cls "fa-3x" ; sty "font-size" "400%" ; sty "color" "#aaa"] []
 
         divc "extensions" [
             divc "container" [
-                sectionAttr [cls "block-huge"] [
-                    h1 [
+                section [cls "block-huge"] [
+                    h1 [] [
                         text "WebSharper UI.Next: "
-                        spanAttr [cls "text-muted"] [
+                        span [cls "text-muted"] [
                             text "Everything you need to know."
                         ]
                     ]
 
-                    pAttr [cls "lead"] [
+                    p [cls "lead"] [
                         text "A selection of resources about UI.Next."
                     ]
                 ]
@@ -198,8 +189,8 @@ module Site =
                     divc "row text-center" [
                         divc "col-lg-4" [
                             ico "fa-graduation-cap"
-                            h3 [text "Get Started"]
-                            p [text "Take the tutorial, and you'll be writing reactive applications in no time!"]
+                            h3 [] [text "Get Started"]
+                            p [] [text "Take the tutorial, and you'll be writing reactive applications in no time!"]
                             linkBtn "Tutorial" "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Tutorial.md"
                             // Tutorial
                         ]
@@ -207,8 +198,8 @@ module Site =
                         divc "col-lg-4" [
      //                       Elements.I [cls "fa" ; cls "fa-graduation-cap" ; cls "fa-3x" ] []
                             ico "fa-book"
-                            h3 [text "Dive Right In"]
-                            p [text "Comprehensive documentation on the UI.Next API."]
+                            h3 [] [text "Dive Right In"]
+                            p [] [text "Comprehensive documentation on the UI.Next API."]
                             linkBtn "API Reference" "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/API.md"
                             // Dive right in
                             // API Reference
@@ -216,9 +207,9 @@ module Site =
 
                         divc "col-lg-4" [
                             ico "fa-send"
-                            h3 [text "See it in Action"]
-                            p [text "A variety of samples using UI.Next, and their associated source code!"]
-                            Doc.Button "Samples" [cls "btn" ; cls "btn-default" ] (fun () -> go Samples)
+                            h3 [] [text "See it in Action"]
+                            p [] [text "A variety of samples using UI.Next, and their associated source code!"]
+                            Doc.Button "Samples" [cls "btn" ; cls "btn-default" ] (fun () -> go Samples.SamplesDefault)
                             // See it in action
                             // Samples link
                         ]
@@ -232,37 +223,37 @@ module Site =
             ) Entries |> Doc.Concat
         ]
 
-    let NavBar (v: Var<Page>) samples =
+    let NavBar (v: Var<PageTy>) =
         let renderLink pg =
             View.FromVar v
             |> View.Map (fun page ->
-                let active = if page.PageType = pg then cls "active" else Attr.Empty
-                liAttr [cls "nav-item"; active] [
-                    Doc.Link (showPgTy pg) [] (fun () -> Var.Set v (pageFor pg samples))
+                let active = if page = pg then cls "active" else Attr.Empty
+                li [cls "nav-item"; active] [
+                    Doc.Link (showPgTy pg) [] (fun () -> Var.Set v pg)
                 ]
             )
             |> Doc.EmbedView
 
         let renderExternal (title, lnk) =
-            liAttr [cls "nav-item"] [
+            li [cls "nav-item"] [
                 href title lnk
             ] :> Doc
 
-        navAttr [cls "container"] [
-            divAttr [sty "float" "left"] [
-                aAttr [
+        nav [cls "container"] [
+            div [sty "float" "left"] [
+                a [
                     attr.href "http://www.websharper.com/home"
                     sty "text-decoration" "none"
                     cls "first"
                 ] [
-                    imgAttr [
+                    img [
                         attr.src "files/logo-websharper-icon.png"
                         attr.alt "[logo]"
                         sty "margin-top" "0"
                         sty "border-right" "1px"
                         sty "solid" "#eee"
                     ] []
-                    imgAttr [
+                    img [
                         attr.src "files/logo-websharper-text-dark.png"
                         attr.alt "WebSharper"
                         sty "height" "32px"
@@ -270,42 +261,19 @@ module Site =
                   ]
             ]
 
-            navAttr [
+            nav [
                 cls "nav"
                 cls "nav-collapsible"
                 cls "right"
                 sty "float" "right"
             ] [
-                ulAttr [cls "nav-list"] [
+                ul [cls "nav-list"] [
                     List.map renderLink NavPages |> Doc.Concat
                     List.map renderExternal NavExternalLinks |> Doc.Concat
                 ]
             ]
         ]
 
-    let unitRouteMap =
-        RouteMap.Create (fun () -> []) (fun _ -> ())
-
-    let homeRouter samples =
-        Router.Route unitRouteMap () (fun id v ->
-            let homePg = pageFor Home samples
-            homePg.PageRouteId <- id
-            homePg
-        )
-
-    let aboutRouter samples =
-        Router.Route unitRouteMap () (fun id v ->
-            let aboutPg = pageFor About samples
-            aboutPg.PageRouteId <- id
-            aboutPg
-        )
-
-    let SiteRouter samples =
-        Router.Merge [
-            Router.Prefix "home" (homeRouter samples)
-            Router.Prefix "about" (aboutRouter samples)
-            Router.Prefix "samples" (Samples.SamplesRouter samples)
-        ]
     let fadeTime = 300.0
 
     let Fade =
@@ -317,22 +285,39 @@ module Site =
         |> Trans.Exit (fun i -> Fade 1.0 0.0)
 
     let MakePage pg =
-        divAttr [Attr.AnimatedStyle "opacity" FadeTransition (View.Const 1.0) string] [
+        div [Attr.AnimatedStyle "opacity" FadeTransition (View.Const 1.0) string] [
             pg
         ]
 
-    let Main samples =
-        let router = Router.Install (fun pg -> pg.PageRouteId) (SiteRouter samples)
-        let renderMain v =
-            View.FromVar v
-            |> View.Map (fun (pg: Page) ->
-                match pg.PageType with
-                | Home -> HomePage (fun ty -> Var.Set v (pageFor ty samples))
-                | About -> AboutPage (fun ty -> Var.Set v (pageFor ty samples))
-                | Samples -> Samples.Render v pg samples
-        //        |> MakePage
-                )
-            |> Doc.EmbedView
+    let RenderSample =
+        function
+        | Samples.SimpleTextBox -> SimpleTextBox.Sample.Page
+        | Samples.InputTransform -> InputTransform.Sample.Page
+        | Samples.InputTransformHtml -> InputTransformHtml.Sample.Page
+        | Samples.TodoList -> TodoList.Sample.Page
+        | Samples.PhoneExample -> PhoneExample.Sample.Page
+        | Samples.EditablePersonList -> EditablePersonList.Sample.Page
+        | Samples.CheckBoxTest -> CheckBoxTest.Sample.Page
+        | Samples.Calculator -> Calculator.Sample.Page
+        | Samples.ContactFlow -> ContactFlow.Sample.Page
+        | Samples.AnimatedContactFlow -> AnimatedContactFlow.Sample.Page
+        | Samples.MessageBoard -> MessageBoard.Sample.Page
+        | Samples.BobsleighSite -> BobsleighSite.Sample.Page
+        | Samples.RoutedBobsleighSite _ -> RoutedBobsleighSite.Sample.Page
+        | Samples.AnimatedBobsleighSite -> AnimatedBobsleighSite.Sample.Page
+        | Samples.ObjectConstancy -> ObjectConstancy.Sample.Page
+        | Samples.MouseInfo -> MouseInfo.Sample.Page
+        | Samples.KeyboardInfo -> KeyboardInfo.Sample.Page
+        | Samples.SortableBarChart -> SortableBarChart.Sample.Page
 
-        Doc.RunById "main" (renderMain router)
-        Doc.RunById "navigation" (NavBar router samples)
+    let Main (samples: list<Samples.Sample>) =
+        let router = Router.Infer<PageTy>()
+        let var = Router.InstallHash PageTy.Home router
+        let go ty = Var.Set var ty
+        var.View.Doc(function
+            | PageTy.Home -> HomePage go
+            | PageTy.About -> AboutPage go
+            | PageTy.Samples pg -> RenderSample pg var samples
+        )
+        |> Doc.RunById "main"
+        Doc.RunById "navigation" (NavBar var)

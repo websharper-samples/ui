@@ -1,10 +1,10 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open System
 open WebSharper
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
-open WebSharper.UI.Next.Notation
+open WebSharper.UI.Client
+open WebSharper.UI.Html
+open WebSharper.UI.Notation
 // Common types, used by both the client and server
 [<JavaScript ; AutoOpen>]
 module Common =
@@ -128,8 +128,8 @@ module MessageBoard =
             let rvPass = Var.Create ""
             let rvMsg = Var.Create ""
             let message =
-                div [
-                    pAttr [cls "bg-danger"] [
+                div [] [
+                    p [cls "bg-danger"] [
                         textView rvMsg.View
                     ]
                 ]
@@ -137,7 +137,7 @@ module MessageBoard =
             let inputRow rv id lblText isPass =
                 let control = if isPass then Doc.PasswordBox else Doc.Input
                 divc "form-group" [
-                    labelAttr [
+                    label [
                         attr.``for`` id
                         cls "col-sm-2 control-label"
                     ] [text lblText]
@@ -151,11 +151,11 @@ module MessageBoard =
                     ]
                 ]
             // Main login page markup
-            div [
-                div [ text "Hint: TestUser/TestPass" ]
+            div [] [
+                div [] [ text "Hint: TestUser/TestPass" ]
                 message
                 // Login form
-                formAttr [cls "form-horizontal"; Attr.Create "role" "form"] [
+                form [cls "form-horizontal"; Attr.Create "role" "form"] [
                     inputRow rvUser "user" "Username" false
                     inputRow rvPass "pass" "Password" true
                     divc "form-group" [
@@ -182,13 +182,13 @@ module MessageBoard =
                 | Some usr ->
                     let t = "Welcome, " + usr.Name + "!"
                     Doc.Concat [
-                        li [Doc.Link t [] ignore]
-                        li [Doc.Link "Logout" [] logout]
+                        li [] [Doc.Link t [] ignore]
+                        li [] [Doc.Link "Logout" [] logout]
                     ]
                 | None ->
                     Doc.Concat [
-                        li [Doc.Link "You are not logged in." [] ignore]
-                        li [Doc.Link "Login" [] login]
+                        li [] [Doc.Link "You are not logged in." [] ignore]
+                        li [] [Doc.Link "Login" [] login]
                     ])
             |> Doc.EmbedView
 
@@ -201,7 +201,7 @@ module MessageBoard =
                 hidden.View
                 |> View.Map (fun yes -> if yes then "none" else "block")
             let loginForm =
-                divAttr [Attr.DynamicStyle "display" display] [
+                div [Attr.DynamicStyle "display" display] [
                     LoginForm (fun user ->
                         loggedIn.Value <- Some user
                         hide ())
@@ -248,14 +248,14 @@ module MessageBoard =
             View.FromVar var
             |> View.Map (fun active ->
                 let attr = if ShowAction action = ShowAction active then cls "active" else Attr.Empty
-                liAttr [attr] [ evtLink (ShowAction action) action ])
+                li [attr] [ evtLink (ShowAction action) action ])
             |> Doc.EmbedView
-        navAttr [cls "navbar navbar-default"; Attr.Create "role" "navigation"] [
+        nav [cls "navbar navbar-default"; Attr.Create "role" "navigation"] [
             divc "container-fluid" [
-                ulAttr [cls "nav navbar-nav"] [
+                ul [cls "nav navbar-nav"] [
                     List.map renderLink actions |> Doc.Concat
                 ]
-                ulAttr [cls "nav navbar-nav navbar-right"] [
+                ul [cls "nav navbar-nav navbar-right"] [
                     //li [ auth.StatusWidget ]
                     auth.StatusWidget
                 ]
@@ -278,14 +278,14 @@ module MessageBoard =
                 ShowThread newThread |> st.Go
             divc "panel panel-default" [
                 divc "panel-heading" [
-                    h3Attr [cls "panel-title"] [
+                    h3 [cls "panel-title"] [
                         text "New Thread"
                     ]
                 ]
                 divc "panel-body" [
-                    formAttr [cls "form-horizontal"; Attr.Create "role" "form"] [
+                    form [cls "form-horizontal"; Attr.Create "role" "form"] [
                         divc "form-group" [
-                            labelAttr [attr.``for`` "threadTitle"; cls "col-sm-2 control-label"] [
+                            label [attr.``for`` "threadTitle"; cls "col-sm-2 control-label"] [
                                 text "Title"
                             ]
                             divc "col-sm-10" [
@@ -293,7 +293,7 @@ module MessageBoard =
                             ]
                         ]
                         divc "form-group" [
-                            labelAttr [attr.``for`` "postContent"; cls "col-sm-2 control-label"] [
+                            label [attr.``for`` "postContent"; cls "col-sm-2 control-label"] [
                                 text "Content"
                             ]
                             divc "col-sm-10" [
@@ -316,9 +316,9 @@ module MessageBoard =
 
     let ThreadListPage st =
         let renderThread thread =
-            tr [
-                td [text thread.ThreadAuthorName]
-                td [
+            tr [] [
+                td [] [text thread.ThreadAuthorName]
+                td [] [
                     Doc.Link thread.Title [] (fun _ -> ShowThread thread |> st.Go)
                 ]
             ] :> Doc
@@ -329,8 +329,8 @@ module MessageBoard =
             Var.Set threads threadList
         } |> Async.Start
 
-        tableAttr [cls "table table-hover"] [
-            tbody [
+        table [cls "table table-hover"] [
+            tbody [] [
                 View.Map (fun threads ->
                     List.map renderThread threads |> Doc.Concat
                 ) (View.FromVar st.Threads) |> Doc.EmbedView
@@ -347,22 +347,22 @@ module MessageBoard =
             } |> Async.Start
 
         let renderPost (post : Post) =
-            tr [
-                td [text post.PostAuthorName]
-                td [text post.Content]
+            tr [] [
+                td [] [text post.PostAuthorName]
+                td [] [text post.Content]
             ] :> Doc
 
         // List of posts
         let postList =
             divc "panel panel-default" [
                 divc "panel-heading" [
-                    h3Attr [cls "panel-title"] [
+                    h3 [cls "panel-title"] [
                         text <| "Posts in thread \"" + thread.Title + "\""
                     ]
                 ]
                 divc "panel-body" [
-                    tableAttr [cls "table table-hover" ] [
-                        tbody [
+                    table [cls "table table-hover" ] [
+                        tbody [] [
                             View.Map (fun posts ->
                                 List.map renderPost posts |> Doc.Concat
                             ) (View.FromVar rvPosts) |> Doc.EmbedView
@@ -382,14 +382,14 @@ module MessageBoard =
                 } |> Async.Start
             divc "panel panel-default" [
                 divc "panel-heading" [
-                    h3Attr [cls "panel-title"] [
+                    h3 [cls "panel-title"] [
                         text "New Post"
                     ]
                 ]
                 divc "panel-body" [
-                    formAttr [cls "form-horizontal"; Attr.Create "role" "form"] [
+                    form [cls "form-horizontal"; Attr.Create "role" "form"] [
                         divc "form-group" [
-                            labelAttr [attr.``for`` "postContent"; cls "col-sm-2 control-label"] [
+                            label [attr.``for`` "postContent"; cls "col-sm-2 control-label"] [
                                 text "Content"
                             ]
                             divc "col-sm-10" [
@@ -406,7 +406,7 @@ module MessageBoard =
             ]
 
         getPosts ()
-        div [
+        div [] [
             postList
             st.Auth.LoggedIn
             |> View.Map (function
@@ -423,7 +423,7 @@ module MessageBoard =
             do! Server.AddPost thread post
         } |> Async.Start
 
-    let Main () =
+    let Main _ =
         Initialise ()
         let actVar = Var.Create ThreadList
         let auth = Auth.Create ()
@@ -445,12 +445,12 @@ module MessageBoard =
             | ShowThread t -> ShowThreadPage st t
             |> layout) |> Doc.EmbedView
 
-    let Description () =
-        div [ text "A message board application built using MiniSitelets."]
+    let Description _ =
+        div [] [ text "A message board application built using MiniSitelets."]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
-        Samples.Build()
+        Samples.Build(Samples.MessageBoard)
             .Id("MessageBoard")
             .FileName(__SOURCE_FILE__)
             .Keywords(["text"])

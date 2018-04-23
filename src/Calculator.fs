@@ -1,10 +1,10 @@
-﻿namespace WebSharper.UI.Next
+﻿namespace WebSharper.UI
 
 open WebSharper
-open WebSharper.UI.Next
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
-open WebSharper.UI.Next.Notation
+open WebSharper.UI
+open WebSharper.UI.Client
+open WebSharper.UI.Html
+open WebSharper.UI.Notation
 
 // A calculator application, showing model-view separation.
 // See this live at http://intellifactory.github.io/websharper.ui.next/#Calculator.fs !
@@ -82,32 +82,32 @@ module Calculator =
         //           4 5 6 -
         //           7 8 9 *
         //           0 C = /
-        div [
-            divAttr [
+        div [] [
+            div [
                 sty "border" "solid 1px #aaa"
                 sty "width" "100px"
                 sty "text-align" "right"
                 sty "padding" "0 5px"
             ] [textView (displayCalc rvCalc)]
-            div [btn 1 ; btn 2 ; btn 3 ; obtn Add]
-            div [btn 4 ; btn 5 ; btn 6 ; obtn Sub]
-            div [btn 7 ; btn 8 ; btn 9 ; obtn Mul]
-            div [btn 0 ; cbtn  ; eqbtn ; obtn Div]
+            div [] [btn 1 ; btn 2 ; btn 3 ; obtn Add]
+            div [] [btn 4 ; btn 5 ; btn 6 ; obtn Sub]
+            div [] [btn 7 ; btn 8 ; btn 9 ; obtn Mul]
+            div [] [btn 0 ; cbtn  ; eqbtn ; obtn Div]
         ]
 
     // Run it!
-    let Main () =
+    let Main _ =
         // Create a reactive variable and view.
         Var.Create initCalc |> calcView
 
-    let Description () =
-        div [
+    let Description _ =
+        div [] [
             Doc.TextNode "A calculator application"
         ]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =
-        Samples.Build()
+        Samples.Build(Samples.Calculator)
             .Id("Calculator")
             .FileName(__SOURCE_FILE__)
             .Keywords(["calculator"])
