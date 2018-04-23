@@ -135,8 +135,8 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="HtmlAgilityPack, Version=1.8.1.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a">
-      <HintPath>..\packages\HtmlAgilityPack.1.8.1\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.7.1.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a">
+      <HintPath>..\packages\HtmlAgilityPack.1.7.1\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
@@ -186,19 +186,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="WebSharper.UI, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.UI.4.2.5.116\lib\net461\WebSharper.UI.dll</HintPath>
+      <HintPath>..\packages\WebSharper.UI.4.2.5.115\lib\net461\WebSharper.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WebSharper.UI.Templating, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.UI.4.2.5.116\lib\net461\WebSharper.UI.Templating.dll</HintPath>
+      <HintPath>..\packages\WebSharper.UI.4.2.5.115\lib\net461\WebSharper.UI.Templating.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WebSharper.UI.Templating.Common, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.UI.4.2.5.116\lib\net461\WebSharper.UI.Templating.Common.dll</HintPath>
+      <HintPath>..\packages\WebSharper.UI.4.2.5.115\lib\net461\WebSharper.UI.Templating.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WebSharper.UI.Templating.Runtime, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.UI.4.2.5.116\lib\net461\WebSharper.UI.Templating.Runtime.dll</HintPath>
+      <HintPath>..\packages\WebSharper.UI.4.2.5.115\lib\net461\WebSharper.UI.Templating.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WebSharper.Web, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
@@ -226,7 +226,6 @@
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\WebSharper.UI.Next.4.2.0.187\build\WebSharper.UI.Next.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WebSharper.UI.Next.4.2.0.187\build\WebSharper.UI.Next.targets'))" />
     <Error Condition="!Exists('..\packages\WebSharper.FSharp.4.2.9.256\build\WebSharper.FSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WebSharper.FSharp.4.2.9.256\build\WebSharper.FSharp.targets'))" />
   </Target>
   <Import Project="..\packages\WebSharper.FSharp.4.2.9.256\build\WebSharper.FSharp.targets" Condition="Exists('..\packages\WebSharper.FSharp.4.2.9.256\build\WebSharper.FSharp.targets')" />
