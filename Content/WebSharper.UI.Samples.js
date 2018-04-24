@@ -348,7 +348,7 @@ if (!console) {
 (function()
 {
  "use strict";
- var Global,WebSharper,UI,Client,Site,List,SimpleTextBox,InputTransform,InputTransformHtml,TodoList,PhoneExample,EditablePersonList,CheckBoxTest,Calculator,ContactFlow,AnimatedContactFlow,MessageBoard,BobsleighSite,RoutedBobsleighSite,AnimatedBobsleighSite,ObjectConstancy,MouseInfo,KeyboardInfo,Samples,BobsleighSitePage,SampleTy,PageTy,WebSharper$UI$Next$Samples_Router,WebSharper$UI$Next$Samples_Templates,Router,Var,Operators,Obj,T,Arrays,SC$1,SC$2,SC$3,SC$4,SC$5,SC$6,SC$7,SC$8,SC$9,SC$10,SC$11,SC$12,SC$13,SC$14,SC$15,SC$16,SC$17,Sitelets,RouterOperators,Route,RouterModule,Doc,AboutEntry,Utilities,HtmlModule,attr,Sample,SortableBarChart,JavaScript,Pervasives,View,Unchecked,AttrProxy,Builder,Person,Person$1,Calculator$1,Op,Flow,Person$2,ContactType,Interpolation,Easing,An,Trans,Person$3,ContactType$1,Collections,Map,Page,Input,Keyboard,Seq,JSModule,Router$1,List$1,EventTarget,Utils,ConcreteVar,Snap,Node,AttrModule,SC$18,SC$19,SiteCommon,Meta,SC$20,DomUtility,Attrs,System,Guid,Templating,Runtime,Server,TemplateInstance,Handler,Phone,Restaurant,FlowBuilder,DoubleInterpolation,Easings,FSharpMap,Action,Auth,State,Component,Context,Context$1,Slice,DataSet,StateView,Mouse,KeyListenerSt,Enumerator,Object,T$1,Lazy,Strings,Abbrev,Fresh,Async,Array,SC$21,Docs,SC$22,Dictionary,HashSet,Client$1,Order,Numeric,SC$23,MapUtil,Common,User,Server$1,Thread,Post,MousePosSt,Event,UIEvent,MouseBtnSt,SC$24,BalancedTree,Tree,Pair,LazyExtensionsProxy,LazyRecord,DocElemNode,CharacterData,Elt,Ordering,Settings,Mailbox,DictionaryUtil,Model,TodoItem,ListModel,Util,Anims,AnimatedAttrNode,Fresh$1,Concurrency,SC$25,PathUtil,Attrs$1,Dyn,Updates,DataEntry,DataView,SC$26,Docs$1,RunState,NodeSet,Key,Storage,AsyncBody,CT,DynamicAttrNode,SC$27,FormatException,AppendList,Queue,ArrayStorage,ListModels,Scheduler,CancellationTokenSource,HashSetUtil,HashSet$1,OperationCanceledException,DomNodes,CheckedInput,SC$28,String,Char,Math,String$1,$,console,IntelliFactory,Runtime$1,Date;
+ var Global,WebSharper,UI,Client,Site,List,SimpleTextBox,InputTransform,InputTransformHtml,TodoList,PhoneExample,EditablePersonList,CheckBoxTest,Calculator,ContactFlow,AnimatedContactFlow,MessageBoard,BobsleighSite,RoutedBobsleighSite,AnimatedBobsleighSite,ObjectConstancy,MouseInfo,KeyboardInfo,Samples,BobsleighSitePage,SampleTy,PageTy,WebSharper$UI$Samples_Router,WebSharper$UI$Samples_Templates,Router,Var,Operators,Obj,T,Arrays,SC$1,SC$2,SC$3,SC$4,SC$5,SC$6,SC$7,SC$8,SC$9,SC$10,SC$11,SC$12,SC$13,SC$14,SC$15,SC$16,SC$17,Sitelets,RouterOperators,Route,RouterModule,Doc,AboutEntry,Utilities,HtmlModule,attr,Sample,SortableBarChart,JavaScript,Pervasives,View,Unchecked,AttrProxy,Builder,Person,Person$1,Calculator$1,Op,Flow,Person$2,ContactType,Interpolation,Easing,An,Trans,Person$3,ContactType$1,Collections,Map,Page,Input,Keyboard,Seq,JSModule,Router$1,List$1,EventTarget,Utils,ConcreteVar,Snap,Node,AttrModule,SC$18,SC$19,SiteCommon,Meta,SC$20,DomUtility,Attrs,System,Guid,Templating,Runtime,Server,TemplateInstance,Handler,Phone,Restaurant,FlowBuilder,DoubleInterpolation,Easings,FSharpMap,Action,Auth,State,Component,Context,Context$1,Slice,DataSet,StateView,Mouse,KeyListenerSt,Enumerator,Object,T$1,Lazy,Strings,Abbrev,Fresh,Async,Array,SC$21,Docs,SC$22,Dictionary,HashSet,Client$1,Order,Numeric,SC$23,MapUtil,Common,User,Server$1,Thread,Post,MousePosSt,Event,UIEvent,MouseBtnSt,SC$24,BalancedTree,Tree,Pair,LazyExtensionsProxy,LazyRecord,DocElemNode,CharacterData,Elt,Ordering,Settings,Mailbox,DictionaryUtil,Model,TodoItem,ListModel,Util,Anims,AnimatedAttrNode,Fresh$1,Concurrency,SC$25,PathUtil,Attrs$1,Dyn,Updates,DataEntry,DataView,SC$26,Docs$1,RunState,NodeSet,Key,Storage,AsyncBody,CT,DynamicAttrNode,SC$27,FormatException,AppendList,Queue,ArrayStorage,ListModels,Scheduler,CancellationTokenSource,HashSetUtil,HashSet$1,OperationCanceledException,DomNodes,CheckedInput,SC$28,String,Char,Math,String$1,$,console,IntelliFactory,Runtime$1,Date;
  Global=window;
  WebSharper=Global.WebSharper=Global.WebSharper||{};
  UI=WebSharper.UI=WebSharper.UI||{};
@@ -376,31 +376,31 @@ if (!console) {
  BobsleighSitePage=Samples.BobsleighSitePage=Samples.BobsleighSitePage||{};
  SampleTy=Samples.SampleTy=Samples.SampleTy||{};
  PageTy=Samples.PageTy=Samples.PageTy||{};
- WebSharper$UI$Next$Samples_Router=Global.WebSharper$UI$Next$Samples_Router=Global.WebSharper$UI$Next$Samples_Router||{};
- WebSharper$UI$Next$Samples_Templates=Global.WebSharper$UI$Next$Samples_Templates=Global.WebSharper$UI$Next$Samples_Templates||{};
+ WebSharper$UI$Samples_Router=Global.WebSharper$UI$Samples_Router=Global.WebSharper$UI$Samples_Router||{};
+ WebSharper$UI$Samples_Templates=Global.WebSharper$UI$Samples_Templates=Global.WebSharper$UI$Samples_Templates||{};
  Router=UI.Router=UI.Router||{};
  Var=UI.Var=UI.Var||{};
  Operators=WebSharper.Operators=WebSharper.Operators||{};
  Obj=WebSharper.Obj=WebSharper.Obj||{};
  T=List.T=List.T||{};
  Arrays=WebSharper.Arrays=WebSharper.Arrays||{};
- SC$1=Global.StartupCode$WebSharper_UI_Next_Samples$SimpleTextBox=Global.StartupCode$WebSharper_UI_Next_Samples$SimpleTextBox||{};
- SC$2=Global.StartupCode$WebSharper_UI_Next_Samples$InputTransform=Global.StartupCode$WebSharper_UI_Next_Samples$InputTransform||{};
- SC$3=Global.StartupCode$WebSharper_UI_Next_Samples$InputTransformHtml=Global.StartupCode$WebSharper_UI_Next_Samples$InputTransformHtml||{};
- SC$4=Global.StartupCode$WebSharper_UI_Next_Samples$TodoList=Global.StartupCode$WebSharper_UI_Next_Samples$TodoList||{};
- SC$5=Global.StartupCode$WebSharper_UI_Next_Samples$PhoneExample=Global.StartupCode$WebSharper_UI_Next_Samples$PhoneExample||{};
- SC$6=Global.StartupCode$WebSharper_UI_Next_Samples$EditablePersonList=Global.StartupCode$WebSharper_UI_Next_Samples$EditablePersonList||{};
- SC$7=Global.StartupCode$WebSharper_UI_Next_Samples$CheckBoxTest=Global.StartupCode$WebSharper_UI_Next_Samples$CheckBoxTest||{};
- SC$8=Global.StartupCode$WebSharper_UI_Next_Samples$Calculator=Global.StartupCode$WebSharper_UI_Next_Samples$Calculator||{};
- SC$9=Global.StartupCode$WebSharper_UI_Next_Samples$ContactFlow=Global.StartupCode$WebSharper_UI_Next_Samples$ContactFlow||{};
- SC$10=Global.StartupCode$WebSharper_UI_Next_Samples$AnimatedContactFlow=Global.StartupCode$WebSharper_UI_Next_Samples$AnimatedContactFlow||{};
- SC$11=Global.StartupCode$WebSharper_UI_Next_Samples$MessageBoard=Global.StartupCode$WebSharper_UI_Next_Samples$MessageBoard||{};
- SC$12=Global.StartupCode$WebSharper_UI_Next_Samples$BobsleighSite=Global.StartupCode$WebSharper_UI_Next_Samples$BobsleighSite||{};
- SC$13=Global.StartupCode$WebSharper_UI_Next_Samples$RoutedBobsleighSite=Global.StartupCode$WebSharper_UI_Next_Samples$RoutedBobsleighSite||{};
- SC$14=Global.StartupCode$WebSharper_UI_Next_Samples$AnimatedBobsleighSite=Global.StartupCode$WebSharper_UI_Next_Samples$AnimatedBobsleighSite||{};
- SC$15=Global.StartupCode$WebSharper_UI_Next_Samples$ObjectConstancy=Global.StartupCode$WebSharper_UI_Next_Samples$ObjectConstancy||{};
- SC$16=Global.StartupCode$WebSharper_UI_Next_Samples$MouseInfo=Global.StartupCode$WebSharper_UI_Next_Samples$MouseInfo||{};
- SC$17=Global.StartupCode$WebSharper_UI_Next_Samples$KeyboardInfo=Global.StartupCode$WebSharper_UI_Next_Samples$KeyboardInfo||{};
+ SC$1=Global.StartupCode$WebSharper_UI_Samples$SimpleTextBox=Global.StartupCode$WebSharper_UI_Samples$SimpleTextBox||{};
+ SC$2=Global.StartupCode$WebSharper_UI_Samples$InputTransform=Global.StartupCode$WebSharper_UI_Samples$InputTransform||{};
+ SC$3=Global.StartupCode$WebSharper_UI_Samples$InputTransformHtml=Global.StartupCode$WebSharper_UI_Samples$InputTransformHtml||{};
+ SC$4=Global.StartupCode$WebSharper_UI_Samples$TodoList=Global.StartupCode$WebSharper_UI_Samples$TodoList||{};
+ SC$5=Global.StartupCode$WebSharper_UI_Samples$PhoneExample=Global.StartupCode$WebSharper_UI_Samples$PhoneExample||{};
+ SC$6=Global.StartupCode$WebSharper_UI_Samples$EditablePersonList=Global.StartupCode$WebSharper_UI_Samples$EditablePersonList||{};
+ SC$7=Global.StartupCode$WebSharper_UI_Samples$CheckBoxTest=Global.StartupCode$WebSharper_UI_Samples$CheckBoxTest||{};
+ SC$8=Global.StartupCode$WebSharper_UI_Samples$Calculator=Global.StartupCode$WebSharper_UI_Samples$Calculator||{};
+ SC$9=Global.StartupCode$WebSharper_UI_Samples$ContactFlow=Global.StartupCode$WebSharper_UI_Samples$ContactFlow||{};
+ SC$10=Global.StartupCode$WebSharper_UI_Samples$AnimatedContactFlow=Global.StartupCode$WebSharper_UI_Samples$AnimatedContactFlow||{};
+ SC$11=Global.StartupCode$WebSharper_UI_Samples$MessageBoard=Global.StartupCode$WebSharper_UI_Samples$MessageBoard||{};
+ SC$12=Global.StartupCode$WebSharper_UI_Samples$BobsleighSite=Global.StartupCode$WebSharper_UI_Samples$BobsleighSite||{};
+ SC$13=Global.StartupCode$WebSharper_UI_Samples$RoutedBobsleighSite=Global.StartupCode$WebSharper_UI_Samples$RoutedBobsleighSite||{};
+ SC$14=Global.StartupCode$WebSharper_UI_Samples$AnimatedBobsleighSite=Global.StartupCode$WebSharper_UI_Samples$AnimatedBobsleighSite||{};
+ SC$15=Global.StartupCode$WebSharper_UI_Samples$ObjectConstancy=Global.StartupCode$WebSharper_UI_Samples$ObjectConstancy||{};
+ SC$16=Global.StartupCode$WebSharper_UI_Samples$MouseInfo=Global.StartupCode$WebSharper_UI_Samples$MouseInfo||{};
+ SC$17=Global.StartupCode$WebSharper_UI_Samples$KeyboardInfo=Global.StartupCode$WebSharper_UI_Samples$KeyboardInfo||{};
  Sitelets=WebSharper.Sitelets=WebSharper.Sitelets||{};
  RouterOperators=Sitelets.RouterOperators=Sitelets.RouterOperators||{};
  Route=Sitelets.Route=Sitelets.Route||{};
@@ -446,11 +446,11 @@ if (!console) {
  Snap=UI.Snap=UI.Snap||{};
  Node=Global.Node;
  AttrModule=UI.AttrModule=UI.AttrModule||{};
- SC$18=Global.StartupCode$WebSharper_UI_Next_Samples$Samples=Global.StartupCode$WebSharper_UI_Next_Samples$Samples||{};
- SC$19=Global.StartupCode$WebSharper_UI_Next_Samples$Site=Global.StartupCode$WebSharper_UI_Next_Samples$Site||{};
+ SC$18=Global.StartupCode$WebSharper_UI_Samples$Samples=Global.StartupCode$WebSharper_UI_Samples$Samples||{};
+ SC$19=Global.StartupCode$WebSharper_UI_Samples$Site=Global.StartupCode$WebSharper_UI_Samples$Site||{};
  SiteCommon=UI.SiteCommon=UI.SiteCommon||{};
  Meta=SiteCommon.Meta=SiteCommon.Meta||{};
- SC$20=Global.StartupCode$WebSharper_UI_Next_Samples$SortableBarChart=Global.StartupCode$WebSharper_UI_Next_Samples$SortableBarChart||{};
+ SC$20=Global.StartupCode$WebSharper_UI_Samples$SortableBarChart=Global.StartupCode$WebSharper_UI_Samples$SortableBarChart||{};
  DomUtility=UI.DomUtility=UI.DomUtility||{};
  Attrs=UI.Attrs=UI.Attrs||{};
  System=Global.System=Global.System||{};
@@ -576,7 +576,7 @@ if (!console) {
   {
    Var.Set(_var,ty);
   }
-  _var=Router.InstallHash(PageTy.Home,WebSharper$UI$Next$Samples_Router.r$2());
+  _var=Router.InstallHash(PageTy.Home,WebSharper$UI$Samples_Router.r$2());
   Doc.RunById("main",Doc.BindView(function(a)
   {
    return a.$==1?Site.AboutPage(go):a.$==2?((Site.RenderSample(a.$0))(_var))(samples):Site.HomePage(go);
@@ -604,7 +604,7 @@ if (!console) {
   {
    return Doc.Element("span",[Utilities.cls("fa"),Utilities.cls(name),Utilities.cls("fa-3x"),Utilities.sty("font-size","400%"),Utilities.sty("color","#aaa")],[]);
   }
-  return Utilities.divc("extensions",[Utilities.divc("container",[Doc.Element("section",[Utilities.cls("block-huge")],[Doc.Element("h1",[],[Doc.TextNode("WebSharper UI.Next: "),Doc.Element("span",[Utilities.cls("text-muted")],[Doc.TextNode("Everything you need to know.")])]),Doc.Element("p",[Utilities.cls("lead")],[Doc.TextNode("A selection of resources about UI.Next.")])])]),Utilities.divc("block-large bg-alt",[Utilities.divc("container",[Utilities.divc("row text-center",[Utilities.divc("col-lg-4",[ico("fa-graduation-cap"),Doc.Element("h3",[],[Doc.TextNode("Get Started")]),Doc.Element("p",[],[Doc.TextNode("Take the tutorial, and you'll be writing reactive applications in no time!")]),Site.linkBtn("Tutorial","https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Tutorial.md")]),Utilities.divc("col-lg-4",[ico("fa-book"),Doc.Element("h3",[],[Doc.TextNode("Dive Right In")]),Doc.Element("p",[],[Doc.TextNode("Comprehensive documentation on the UI.Next API.")]),Site.linkBtn("API Reference","https://github.com/intellifactory/websharper.ui.next/blob/master/docs/API.md")]),Utilities.divc("col-lg-4",[ico("fa-send"),Doc.Element("h3",[],[Doc.TextNode("See it in Action")]),Doc.Element("p",[],[Doc.TextNode("A variety of samples using UI.Next, and their associated source code!")]),Doc.Button("Samples",[Utilities.cls("btn"),Utilities.cls("btn-default")],function()
+  return Utilities.divc("extensions",[Utilities.divc("container",[Doc.Element("section",[Utilities.cls("block-huge")],[Doc.Element("h1",[],[Doc.TextNode("WebSharper UI: "),Doc.Element("span",[Utilities.cls("text-muted")],[Doc.TextNode("Everything you need to know.")])]),Doc.Element("p",[Utilities.cls("lead")],[Doc.TextNode("A selection of resources about UI.")])])]),Utilities.divc("block-large bg-alt",[Utilities.divc("container",[Utilities.divc("row text-center",[Utilities.divc("col-lg-4",[ico("fa-graduation-cap"),Doc.Element("h3",[],[Doc.TextNode("Get Started")]),Doc.Element("p",[],[Doc.TextNode("Take the tutorial, and you'll be writing reactive applications in no time!")]),Site.linkBtn("Tutorial","https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Tutorial.md")]),Utilities.divc("col-lg-4",[ico("fa-book"),Doc.Element("h3",[],[Doc.TextNode("Dive Right In")]),Doc.Element("p",[],[Doc.TextNode("Comprehensive documentation on the UI API.")]),Site.linkBtn("API Reference","https://github.com/intellifactory/websharper.ui.next/blob/master/docs/API.md")]),Utilities.divc("col-lg-4",[ico("fa-send"),Doc.Element("h3",[],[Doc.TextNode("See it in Action")]),Doc.Element("p",[],[Doc.TextNode("A variety of samples using UI, and their associated source code!")]),Doc.Button("Samples",[Utilities.cls("btn"),Utilities.cls("btn-default")],function()
   {
    go(Samples.SamplesDefault());
   })])])])]),Doc.Concat(List.mapi(function($1,$2)
@@ -621,7 +621,7 @@ if (!console) {
  };
  Site.HomePage=function(go)
  {
-  return Utilities.divc("container",[Doc.Element("section",[Utilities.cls("block-huge"),Utilities.cls("teaser-home"),Utilities.sty("height","700px"),Utilities.sty("padding-top","40px"),Utilities.sty("padding-bottom","30px"),Utilities.sty("margin-bottom","40px")],[Utilities.divc("container",[Utilities.divc("row",[Utilities.divc("col-12",[Doc.Element("br",[],[]),Doc.Element("h1",[],[Doc.TextNode("WebSharper UI.Next: "),Doc.Element("span",[Utilities.cls("text-muted")],[Doc.TextNode("A new generation of reactive web applications.")])]),Doc.Element("h3",[],[Doc.TextNode("Write powerful, data-backed applications"),Doc.Element("br",[],[]),Doc.TextNode(" using F# and WebSharper.")]),Doc.Element("p",[Utilities.cls("lead")],[Doc.TextNode("Get it free on NuGet today!")])])])])])]);
+  return Utilities.divc("container",[Doc.Element("section",[Utilities.cls("block-huge"),Utilities.cls("teaser-home"),Utilities.sty("height","700px"),Utilities.sty("padding-top","40px"),Utilities.sty("padding-bottom","30px"),Utilities.sty("margin-bottom","40px")],[Utilities.divc("container",[Utilities.divc("row",[Utilities.divc("col-12",[Doc.Element("br",[],[]),Doc.Element("h1",[],[Doc.TextNode("WebSharper UI: "),Doc.Element("span",[Utilities.cls("text-muted")],[Doc.TextNode("A new generation of reactive web applications.")])]),Doc.Element("h3",[],[Doc.TextNode("Write powerful, data-backed applications"),Doc.Element("br",[],[]),Doc.TextNode(" using F# and WebSharper.")]),Doc.Element("p",[Utilities.cls("lead")],[Doc.TextNode("Get it free on NuGet today!")])])])])])]);
  };
  Site.NavBar=function(v)
  {
@@ -970,7 +970,7 @@ if (!console) {
      },
      $1:T.Empty
     })
-   }),[]),($3[0]=new TemplateInstance.New(p$2[1],WebSharper$UI$Next$Samples_Templates.tablerow(p$2[0])),$3[0]))).get_Doc();
+   }),[]),($3[0]=new TemplateInstance.New(p$2[1],WebSharper$UI$Samples_Templates.tablerow(p$2[0])),$3[0]))).get_Doc();
   }
   rvText=Var.Create$1("");
   view=rvText.get_View();
@@ -1009,7 +1009,7 @@ if (!console) {
     },views))
    },
    $1:$2
-  })])),(r=p[0],(p$1=Handler.CompleteHoles(p[1],p[2],[["inputtext",0]]),(r[0]=new TemplateInstance.New(p$1[1],WebSharper$UI$Next$Samples_Templates.t(p$1[0])),r[0])))).get_Doc();
+  })])),(r=p[0],(p$1=Handler.CompleteHoles(p[1],p[2],[["inputtext",0]]),(r[0]=new TemplateInstance.New(p$1[1],WebSharper$UI$Samples_Templates.t(p$1[0])),r[0])))).get_Doc();
  };
  InputTransformHtml.Description=function(a)
  {
@@ -1344,7 +1344,7 @@ if (!console) {
  };
  ContactFlow.Description=function(a)
  {
-  return Doc.Element("div",[],[Doc.TextNode("A WS.UI.Next flowlet implementation.")]);
+  return Doc.Element("div",[],[Doc.TextNode("A WebSharper.UI flowlet implementation.")]);
  };
  ContactFlow.personFlowlet=function()
  {
@@ -1440,7 +1440,7 @@ if (!console) {
  };
  AnimatedContactFlow.Description=function(a)
  {
-  return Doc.Element("div",[],[Doc.TextNode("A WS.UI.Next flowlet implementation.")]);
+  return Doc.Element("div",[],[Doc.TextNode("A WebSharper.UI flowlet implementation.")]);
  };
  AnimatedContactFlow.FadeTransition=function()
  {
@@ -1695,7 +1695,7 @@ if (!console) {
  };
  BobsleighSite.description=function(a)
  {
-  return Doc.Element("div",[],[Doc.TextNode("A small website about bobsleighs, demonstrating how UI.Next may be used to structure single-page applications.")]);
+  return Doc.Element("div",[],[Doc.TextNode("A small website about bobsleighs, demonstrating how UI may be used to structure single-page applications.")]);
  };
  BobsleighSite.NavBar=function(_var)
  {
@@ -1780,7 +1780,7 @@ if (!console) {
  };
  RoutedBobsleighSite.description=function(v)
  {
-  return Doc.Element("div",[],[Doc.TextNode("A small website about bobsleighs, demonstrating how UI.Next may be used to structure single-page applications. Routed using the URL.")]);
+  return Doc.Element("div",[],[Doc.TextNode("A small website about bobsleighs, demonstrating how UI may be used to structure single-page applications. Routed using the URL.")]);
  };
  AnimatedBobsleighSite.Sample=function()
  {
@@ -1812,7 +1812,7 @@ if (!console) {
  };
  AnimatedBobsleighSite.description=function(a)
  {
-  return Doc.Element("div",[],[Doc.TextNode("A small website about bobsleighs, demonstrating how UI.Next may be used to structure single-page applications.")]);
+  return Doc.Element("div",[],[Doc.TextNode("A small website about bobsleighs, demonstrating how UI may be used to structure single-page applications.")]);
  };
  AnimatedBobsleighSite.History=function(ctx)
  {
@@ -2158,19 +2158,19 @@ if (!console) {
  PageTy.About={
   $:1
  };
- WebSharper$UI$Next$Samples_Router.r$2=function()
+ WebSharper$UI$Samples_Router.r$2=function()
  {
-  return RouterOperators.JSUnion(void 0,[[null,[[null,["home"]]],[]],[null,[[null,["about"]]],[]],[null,[[null,["samples"]]],[WebSharper$UI$Next$Samples_Router.r$1()]]]);
+  return RouterOperators.JSUnion(void 0,[[null,[[null,["home"]]],[]],[null,[[null,["about"]]],[]],[null,[[null,["samples"]]],[WebSharper$UI$Samples_Router.r$1()]]]);
  };
- WebSharper$UI$Next$Samples_Router.r$1=function()
+ WebSharper$UI$Samples_Router.r$1=function()
  {
-  return RouterOperators.JSUnion(void 0,[[null,[[null,["SimpleTextBox"]]],[]],[null,[[null,["InputTransform"]]],[]],[null,[[null,["InputTransformHtml"]]],[]],[null,[[null,["TodoList"]]],[]],[null,[[null,["PhoneExample"]]],[]],[null,[[null,["EditablePersonList"]]],[]],[null,[[null,["CheckBoxTest"]]],[]],[null,[[null,["Calculator"]]],[]],[null,[[null,["ContactFlow"]]],[]],[null,[[null,["AnimatedContactFlow"]]],[]],[null,[[null,["MessageBoard"]]],[]],[null,[[null,["BobsleighSite"]]],[]],[null,[[null,["RoutedBobsleighSite"]]],[WebSharper$UI$Next$Samples_Router.r()]],[null,[[null,["AnimatedBobsleighSite"]]],[]],[null,[[null,["ObjectConstancy"]]],[]],[null,[[null,["MouseInfo"]]],[]],[null,[[null,["KeyboardInfo"]]],[]],[null,[[null,["SortableBarChart"]]],[]]]);
+  return RouterOperators.JSUnion(void 0,[[null,[[null,["SimpleTextBox"]]],[]],[null,[[null,["InputTransform"]]],[]],[null,[[null,["InputTransformHtml"]]],[]],[null,[[null,["TodoList"]]],[]],[null,[[null,["PhoneExample"]]],[]],[null,[[null,["EditablePersonList"]]],[]],[null,[[null,["CheckBoxTest"]]],[]],[null,[[null,["Calculator"]]],[]],[null,[[null,["ContactFlow"]]],[]],[null,[[null,["AnimatedContactFlow"]]],[]],[null,[[null,["MessageBoard"]]],[]],[null,[[null,["BobsleighSite"]]],[]],[null,[[null,["RoutedBobsleighSite"]]],[WebSharper$UI$Samples_Router.r()]],[null,[[null,["AnimatedBobsleighSite"]]],[]],[null,[[null,["ObjectConstancy"]]],[]],[null,[[null,["MouseInfo"]]],[]],[null,[[null,["KeyboardInfo"]]],[]],[null,[[null,["SortableBarChart"]]],[]]]);
  };
- WebSharper$UI$Next$Samples_Router.r=function()
+ WebSharper$UI$Samples_Router.r=function()
  {
   return RouterOperators.JSUnion(void 0,[[null,[[null,[]]],[]],[null,[[null,["history"]]],[]],[null,[[null,["governance"]]],[]],[null,[[null,["team"]]],[]]]);
  };
- WebSharper$UI$Next$Samples_Templates.tablerow=function(h)
+ WebSharper$UI$Samples_Templates.tablerow=function(h)
  {
   return h?Doc.GetOrLoadTemplate("inputtransformtemplate",{
    $:1,
@@ -2186,7 +2186,7 @@ if (!console) {
    return $.parseHTML("<tr>\n                        <td>${lbl}</td>\n                        <td style=\"width: 70%;\">${view}</td>\n                    </tr>");
   });
  };
- WebSharper$UI$Next$Samples_Templates.t=function(h)
+ WebSharper$UI$Samples_Templates.t=function(h)
  {
   return h?Doc.GetOrLoadTemplate("inputtransformtemplate",null,function()
   {
@@ -6552,7 +6552,7 @@ if (!console) {
  {
   var a,a$1,a$2;
   SC$19.$cctor=Global.ignore;
-  SC$19.Entries=List.ofArray([Site.mkEntry("Documentation","Official documentation on WebSharper UI.Next, including the API reference and some discussion about the design decisions we made","files/gear.png",List.ofArray([Utilities.href("Tutorial","https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Tutorial.md"),Utilities.href("API Reference","https://github.com/intellifactory/websharper.ui.next/blob/master/docs/API.md"),Utilities.href("Full Documentation","https://github.com/intellifactory/websharper.ui.next/blob/master/README.md")])),Site.mkEntry("Articles","Articles written about UI.Next, which provide more detailed discussions about various aspects of the library.","files/uinext-screen.png",List.ofArray([Utilities.href("WebSharper UI.Next: An Introduction","http://www.websharper.com/blog-entry/3954"),Utilities.href("WebSharper UI.Next: Declarative Animation","http://www.websharper.com/blog-entry/3964"),Utilities.href("Structuring Applications with WebSharper UI.Next","http://www.websharper.com/blog-entry/3965")])),Site.mkEntry("Presentations","Presentations about UI.Next, providing an overview of the library and deeper insights into the thinking behind it.","files/anton-pres.png",List.ofArray([Utilities.href("Presentation: Tackle UI with Reactive DOM in F# and WebSharper","https://www.youtube.com/watch?v=wEkS09s3KBc")]))]);
+  SC$19.Entries=List.ofArray([Site.mkEntry("Documentation","Official documentation on WebSharper UI, including the API reference and some discussion about the design decisions we made","files/gear.png",List.ofArray([Utilities.href("Tutorial","https://github.com/intellifactory/websharper.ui.next/blob/master/docs/Tutorial.md"),Utilities.href("API Reference","https://github.com/intellifactory/websharper.ui.next/blob/master/docs/API.md"),Utilities.href("Full Documentation","https://github.com/intellifactory/websharper.ui.next/blob/master/README.md")])),Site.mkEntry("Articles","Articles written about UI, which provide more detailed discussions about various aspects of the library.","files/uinext-screen.png",List.ofArray([Utilities.href("WebSharper UI: An Introduction","http://www.websharper.com/blog-entry/3954"),Utilities.href("WebSharper UI: Declarative Animation","http://www.websharper.com/blog-entry/3964"),Utilities.href("Structuring Applications with WebSharper UI","http://www.websharper.com/blog-entry/3965")])),Site.mkEntry("Presentations","Presentations about UI, providing an overview of the library and deeper insights into the thinking behind it.","files/anton-pres.png",List.ofArray([Utilities.href("Presentation: Tackle UI with Reactive DOM in F# and WebSharper","https://www.youtube.com/watch?v=wEkS09s3KBc")]))]);
   SC$19.NavExternalLinks=List.ofArray([["GitHub","http://www.github.com/IntelliFactory/websharper.ui.next"],["API Reference","https://github.com/intellifactory/websharper.ui.next/blob/master/docs/API.md"]]);
   SC$19.NavPages=List.ofArray([PageTy.Home,PageTy.About,Samples.SamplesDefault()]);
   SC$19.fadeTime=300;
