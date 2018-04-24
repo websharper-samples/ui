@@ -36,9 +36,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Name>WebSharper.UI.Next.Samples</Name>
-    <RootNamespace>WebSharper.UI.Next.Samples</RootNamespace>
-    <AssemblyName>WebSharper.UI.Next.Samples</AssemblyName>
+    <Name>WebSharper.UI.Samples</Name>
+    <RootNamespace>WebSharper.UI.Samples</RootNamespace>
+    <AssemblyName>WebSharper.UI.Samples</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>v4.4.1.0</TargetFSharpCoreVersion>
     <WarningLevel>3</WarningLevel>

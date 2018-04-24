@@ -197,7 +197,7 @@ module AnimatedContactFlow =
 
     let Description _ =
         div [] [
-            text "A WS.UI.Next flowlet implementation."
+            text "A WebSharper.UI flowlet implementation."
         ]
 
     // You can ignore the bits here -- it just links the example into the site.

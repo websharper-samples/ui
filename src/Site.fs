@@ -33,7 +33,7 @@ module Site =
         [
             mkEntry
                 "Documentation"
-                "Official documentation on WebSharper UI.Next, including the \
+                "Official documentation on WebSharper UI, including the \
                  API reference and some discussion about the design decisions \
                  we made"
                 "files/gear.png"
@@ -44,17 +44,17 @@ module Site =
                 ] ;
             mkEntry
                 "Articles"
-                "Articles written about UI.Next, which provide more detailed \
+                "Articles written about UI, which provide more detailed \
                  discussions about various aspects of the library."
                 "files/uinext-screen.png"
                 [
-                    href "WebSharper UI.Next: An Introduction" "http://www.websharper.com/blog-entry/3954"
-                    href "WebSharper UI.Next: Declarative Animation" "http://www.websharper.com/blog-entry/3964"
-                    href "Structuring Applications with WebSharper UI.Next" "http://www.websharper.com/blog-entry/3965"
+                    href "WebSharper UI: An Introduction" "http://www.websharper.com/blog-entry/3954"
+                    href "WebSharper UI: Declarative Animation" "http://www.websharper.com/blog-entry/3964"
+                    href "Structuring Applications with WebSharper UI" "http://www.websharper.com/blog-entry/3965"
                 ] ;
              mkEntry
                 "Presentations"
-                "Presentations about UI.Next, providing an overview of the library \
+                "Presentations about UI, providing an overview of the library \
                  and deeper insights into the thinking behind it."
                 "files/anton-pres.png"
                 [
@@ -98,7 +98,7 @@ module Site =
                             divc "col-12" [
                                 br [] []
                                 h1 [] [
-                                    text "WebSharper UI.Next: "
+                                    text "WebSharper UI: "
                                     span [cls "text-muted"] [
                                         text "A new generation of reactive web applications."
                                     ]
@@ -172,14 +172,14 @@ module Site =
             divc "container" [
                 section [cls "block-huge"] [
                     h1 [] [
-                        text "WebSharper UI.Next: "
+                        text "WebSharper UI: "
                         span [cls "text-muted"] [
                             text "Everything you need to know."
                         ]
                     ]
 
                     p [cls "lead"] [
-                        text "A selection of resources about UI.Next."
+                        text "A selection of resources about UI."
                     ]
                 ]
             ]
@@ -199,7 +199,7 @@ module Site =
      //                       Elements.I [cls "fa" ; cls "fa-graduation-cap" ; cls "fa-3x" ] []
                             ico "fa-book"
                             h3 [] [text "Dive Right In"]
-                            p [] [text "Comprehensive documentation on the UI.Next API."]
+                            p [] [text "Comprehensive documentation on the UI API."]
                             linkBtn "API Reference" "https://github.com/intellifactory/websharper.ui.next/blob/master/docs/API.md"
                             // Dive right in
                             // API Reference
@@ -208,7 +208,7 @@ module Site =
                         divc "col-lg-4" [
                             ico "fa-send"
                             h3 [] [text "See it in Action"]
-                            p [] [text "A variety of samples using UI.Next, and their associated source code!"]
+                            p [] [text "A variety of samples using UI, and their associated source code!"]
                             Doc.Button "Samples" [cls "btn" ; cls "btn-default" ] (fun () -> go Samples.SamplesDefault)
                             // See it in action
                             // Samples link

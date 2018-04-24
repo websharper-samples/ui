@@ -9,7 +9,7 @@ open WebSharper.UI.Html
 module S = WebSharper.UI.Html.SvgElements
 module SA = WebSharper.UI.Html.SvgAttributes
 
-/// Attempt to reconstruct this D3 example in UI.Next:
+/// Attempt to reconstruct this D3 example in UI:
 /// http://bost.ocks.org/mike/constancy/
 
 [<JavaScript>]

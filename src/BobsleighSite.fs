@@ -158,7 +158,7 @@ module BobsleighSite =
 
     let description _ =
         div [] [
-            text "A small website about bobsleighs, demonstrating how UI.Next \
+            text "A small website about bobsleighs, demonstrating how UI \
                  may be used to structure single-page applications."
         ]
 

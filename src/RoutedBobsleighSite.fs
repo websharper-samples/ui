@@ -32,7 +32,7 @@ module RoutedBobsleighSite =
     let description v =
         div [] [
             text
-                "A small website about bobsleighs, demonstrating how UI.Next \
+                "A small website about bobsleighs, demonstrating how UI \
                  may be used to structure single-page applications. Routed using \
                  the URL."
         ]

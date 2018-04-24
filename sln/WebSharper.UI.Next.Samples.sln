@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WebSharper.UI.Next.Samples", "..\src\WebSharper.UI.Next.Samples.fsproj", "{CD66D1C6-7779-447C-AFC3-9AA222F57027}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WebSharper.UI.Samples", "..\src\WebSharper.UI.Samples.fsproj", "{CD66D1C6-7779-447C-AFC3-9AA222F57027}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{5AFC8401-698A-4066-AD4F-114577923817}"
 	ProjectSection(SolutionItems) = preProject
 		..\..\websharper.ui.next\tools\ElemScraper.fsx = ..\..\websharper.ui.next\tools\ElemScraper.fsx
 	EndProjectSection
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WebSharper.UI.Next", "..\..\websharper.ui.next\WebSharper.UI.Next\WebSharper.UI.Next.fsproj", "{085A6F78-50A7-46CF-B040-9853EC580BE5}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WebSharper.UI", "..\..\websharper.ui.next\WebSharper.UI\WebSharper.UI.fsproj", "{085A6F78-50A7-46CF-B040-9853EC580BE5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
