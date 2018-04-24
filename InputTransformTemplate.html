@@ -8,7 +8,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label" for="inputBox">Write something: </label>
                     <div class="col-sm-10">
-                        <input class="form-control" id="inputBox" data-var="inputText"/>
+                        <input class="form-control" id="inputBox" ws-var="inputText"/>
                     </div>
                 </div>
             </form>
@@ -20,10 +20,10 @@
         </div>
         <div class="panel-body">
             <table class="table">
-                <tbody data-hole="tableBody">
-                    <tr data-template="tableRow">
+                <tbody ws-hole="tableBody">
+                    <tr ws-template="tableRow">
                         <td>${lbl}</td>
-                        <td style="width: 70%;">$!{view}</td>
+                        <td style="width: 70%;">${view}</td>
                     </tr>
                 </tbody>
             </table>
