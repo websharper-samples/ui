@@ -42,7 +42,7 @@ module CheckBoxTest =
             div [] [
                 Doc.CheckBoxGroup [] person selPeople
                 Doc.TextNode person.Name
-            ] :> Doc
+            ]
 
         let checkBoxes =
             div [] (List.map mkCheckBox People)
@@ -66,7 +66,7 @@ module CheckBoxTest =
             div [] [
                 Doc.Radio [] restaurant radioBoxVar
                 showRestaurant restaurant |> Doc.TextNode
-            ] :> Doc
+            ]
 
         let restaurantsSection =
             div [] [

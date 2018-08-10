@@ -1,4 +1,4 @@
-﻿namespace WebSharper.UI
+namespace WebSharper.UI
 
 open WebSharper
 open WebSharper.UI
@@ -60,7 +60,7 @@ module Samples =
 
     type Sample =
         {
-            Page : Var<PageTy> -> list<Sample> -> Elt
+            Page : Var<PageTy> -> list<Sample> -> Doc
             IsThis : SampleTy -> bool
             Meta : Meta
             DefaultPage : SampleTy
@@ -85,7 +85,6 @@ module Samples =
             Doc.Link sample.Meta.Title
                 [cls "list-group-item"; activeAttr]
                 (fun () -> Var.Set vPage (Samples sample.DefaultPage))
-                :> Doc
 
         divc "col-md-3" [
             h4 [] [text "Samples"]

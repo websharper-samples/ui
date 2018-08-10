@@ -116,7 +116,6 @@ module AnimatedContactFlow =
                 ]
             ]
             |> AnimateFlow
-            :> Doc
         )
 
     // The second page of the flowlet, which asks whether the user wants
@@ -137,7 +136,6 @@ module AnimatedContactFlow =
                ]
             ]
             |> AnimateFlow
-            :> Doc
         )
 
     // Using this, we either get an e-mail address or phone number from the user.
@@ -165,7 +163,6 @@ module AnimatedContactFlow =
                 ]
             ]
             |> AnimateFlow
-            :> Doc
         )
 
     // Should be Flow<unit>

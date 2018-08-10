@@ -135,8 +135,8 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="HtmlAgilityPack, Version=1.7.1.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a">
-      <HintPath>..\packages\HtmlAgilityPack.1.7.1\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.8.5.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a">
+      <HintPath>..\packages\HtmlAgilityPack.1.8.5\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="mscorlib" />
@@ -149,60 +149,60 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WebSharper.Collections, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.4.2.9.256\lib\net461\WebSharper.Collections.dll</HintPath>
+    <Reference Include="WebSharper.Collections, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.4.5.0.290\lib\net461\WebSharper.Collections.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.Control, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.4.2.9.256\lib\net461\WebSharper.Control.dll</HintPath>
+    <Reference Include="WebSharper.Control, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.4.5.0.290\lib\net461\WebSharper.Control.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.Core, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.4.2.9.256\lib\net461\WebSharper.Core.dll</HintPath>
+    <Reference Include="WebSharper.Core, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.4.5.0.290\lib\net461\WebSharper.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.Core.JavaScript, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.4.2.9.256\lib\net461\WebSharper.Core.JavaScript.dll</HintPath>
+    <Reference Include="WebSharper.Core.JavaScript, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.4.5.0.290\lib\net461\WebSharper.Core.JavaScript.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.InterfaceGenerator, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.4.2.9.256\lib\net461\WebSharper.InterfaceGenerator.dll</HintPath>
+    <Reference Include="WebSharper.InterfaceGenerator, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.4.5.0.290\lib\net461\WebSharper.InterfaceGenerator.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.JavaScript, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.4.2.9.256\lib\net461\WebSharper.JavaScript.dll</HintPath>
+    <Reference Include="WebSharper.JavaScript, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.4.5.0.290\lib\net461\WebSharper.JavaScript.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.JQuery, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.4.2.9.256\lib\net461\WebSharper.JQuery.dll</HintPath>
+    <Reference Include="WebSharper.JQuery, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.4.5.0.290\lib\net461\WebSharper.JQuery.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.Main, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.4.2.9.256\lib\net461\WebSharper.Main.dll</HintPath>
+    <Reference Include="WebSharper.Main, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.4.5.0.290\lib\net461\WebSharper.Main.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.Sitelets, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.4.2.9.256\lib\net461\WebSharper.Sitelets.dll</HintPath>
+    <Reference Include="WebSharper.Sitelets, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.4.5.0.290\lib\net461\WebSharper.Sitelets.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.UI, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.UI.4.2.5.115\lib\net461\WebSharper.UI.dll</HintPath>
+    <Reference Include="WebSharper.UI, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.UI.4.5.0.140\lib\net461\WebSharper.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.UI.Templating, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.UI.4.2.5.115\lib\net461\WebSharper.UI.Templating.dll</HintPath>
+    <Reference Include="WebSharper.UI.Templating, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.UI.4.5.0.140\lib\net461\WebSharper.UI.Templating.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.UI.Templating.Common, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.UI.4.2.5.115\lib\net461\WebSharper.UI.Templating.Common.dll</HintPath>
+    <Reference Include="WebSharper.UI.Templating.Common, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.UI.4.5.0.140\lib\net461\WebSharper.UI.Templating.Common.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.UI.Templating.Runtime, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.UI.4.2.5.115\lib\net461\WebSharper.UI.Templating.Runtime.dll</HintPath>
+    <Reference Include="WebSharper.UI.Templating.Runtime, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.UI.4.5.0.140\lib\net461\WebSharper.UI.Templating.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="WebSharper.Web, Version=4.2.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
-      <HintPath>..\packages\WebSharper.4.2.9.256\lib\net461\WebSharper.Web.dll</HintPath>
+    <Reference Include="WebSharper.Web, Version=4.5.0.0, Culture=neutral, PublicKeyToken=dcd983dec8f76a71">
+      <HintPath>..\packages\WebSharper.4.5.0.290\lib\net461\WebSharper.Web.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -222,11 +222,11 @@
     <Copy SourceFiles="@(SiteFilesFiles)" DestinationFolder="..\build\html\files" SkipUnchangedFiles="true" />
   </Target>
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\packages\WebSharper.FSharp.4.5.0.290\build\WebSharper.FSharp.targets" Condition="Exists('..\packages\WebSharper.FSharp.4.5.0.290\build\WebSharper.FSharp.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105.The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\WebSharper.FSharp.4.2.9.256\build\WebSharper.FSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WebSharper.FSharp.4.2.9.256\build\WebSharper.FSharp.targets'))" />
+    <Error Condition="!Exists('..\packages\WebSharper.FSharp.4.5.0.290\build\WebSharper.FSharp.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\WebSharper.FSharp.4.5.0.290\build\WebSharper.FSharp.targets'))" />
   </Target>
-  <Import Project="..\packages\WebSharper.FSharp.4.2.9.256\build\WebSharper.FSharp.targets" Condition="Exists('..\packages\WebSharper.FSharp.4.2.9.256\build\WebSharper.FSharp.targets')" />
 </Project>

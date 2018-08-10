@@ -307,7 +307,7 @@ module MessageBoard =
                         ]
                     ]
                 ]
-            ] :> Doc
+            ]
         st.Auth.LoggedIn
         |> View.Map (function
             | Some user -> doc user
@@ -321,7 +321,7 @@ module MessageBoard =
                 td [] [
                     Doc.Link thread.Title [] (fun _ -> ShowThread thread |> st.Go)
                 ]
-            ] :> Doc
+            ]
         let threads = st.Threads
 
         async {
@@ -335,7 +335,7 @@ module MessageBoard =
                     List.map renderThread threads |> Doc.Concat
                 ) (View.FromVar st.Threads) |> Doc.EmbedView
             ]
-        ] :> Doc
+        ]
 
     let ShowThreadPage st thread =
         let rvPosts = Var.Create []
@@ -350,7 +350,7 @@ module MessageBoard =
             tr [] [
                 td [] [text post.PostAuthorName]
                 td [] [text post.Content]
-            ] :> Doc
+            ]
 
         // List of posts
         let postList =
@@ -411,9 +411,9 @@ module MessageBoard =
             st.Auth.LoggedIn
             |> View.Map (function
                 | None -> Doc.Empty
-                | Some user -> newPostForm user :> _)
+                | Some user -> newPostForm user)
             |> Doc.EmbedView
-        ] :> Doc
+        ]
 
     let Initialise () =
         let thread = CreateThread "SimonJF" "Hello, World! This is a topic."

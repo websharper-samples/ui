@@ -129,7 +129,7 @@ module Site =
                 p [] [
                     ul [cls "list-unstyled"] (
                         entry.URLs
-                        |> List.map (fun lnk -> li [] [lnk] :> Doc)
+                        |> List.map (fun lnk -> li [] [lnk])
                     )
                 ]
             ]
@@ -219,7 +219,7 @@ module Site =
             ]
             List.mapi (fun i entry ->
                 let renderFn = if i % 2 = 0 then oddEntry else evenEntry
-                renderFn entry :> Doc
+                renderFn entry
             ) Entries |> Doc.Concat
         ]
 
@@ -237,7 +237,7 @@ module Site =
         let renderExternal (title, lnk) =
             li [cls "nav-item"] [
                 href title lnk
-            ] :> Doc
+            ]
 
         nav [cls "container"] [
             div [sty "float" "left"] [

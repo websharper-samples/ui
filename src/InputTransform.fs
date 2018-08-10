@@ -81,7 +81,7 @@ module InputTransform =
                 td [sty "width" "70%"] [
                     textView view
                 ]
-            ] :> Doc
+            ]
 
         let tbl =
             divc "panel panel-default" [

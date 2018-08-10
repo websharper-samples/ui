@@ -17,7 +17,7 @@ module internal Utilities =
     let sty n v = Attr.Style n v
 
     /// Div with single class
-    let divc c docs = Doc.Element "div" [cls c] docs
+    let divc c docs = div [cls c] docs
 
     /// Link with click callback
-    let href txt url = Doc.Element "a" [attr.href url] [text txt]
+    let href txt url = a [attr.href url] [text txt]

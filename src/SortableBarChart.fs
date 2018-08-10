@@ -120,7 +120,7 @@ module SortableBarChart =
                     anim "x" BarTransition x
                     dyn "y" y
                 ] []
-            ] :> Doc
+            ]
 //        |> Doc.EmbedView
 
     let DisplayGraph (data: View<seq<DataView>>) =

@@ -42,7 +42,7 @@ module EditablePersonList =
                 // combinator allows us to embed this into the rest of the
                 // document: EmbedView : View<Doc> -> Doc.
                 |> Doc.EmbedView
-            ] :> Doc
+            ]
 
         div [] [
             ul [] [
@@ -63,7 +63,7 @@ module EditablePersonList =
             li [] [
                 Doc.Input [] person.FirstName
                 Doc.Input [] person.LastName
-            ] :> Doc
+            ]
 
         // We use the same trick as before: create a list of Docs from a list
         // of Person records, and flatten it using Doc.Concat

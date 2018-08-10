@@ -63,7 +63,7 @@ module PhoneExample =
             li [] [
                 span [] [ text ph.Name ]
                 p [] [ text ph.Snippet ]
-            ] :> Doc
+            ]
 
         let showPhones phones =
             Doc.Concat (List.map showPhone phones)

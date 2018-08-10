@@ -46,7 +46,7 @@ module TodoList =
                 // Let us render the item differently depending on whether it's done.
                 |> View.Map (fun isDone ->
                     if isDone
-                        then del [] [ text todo.TodoText ] :> Doc
+                        then del [] [ text todo.TodoText ]
                         else text todo.TodoText)
                 // Finally, we embed this possibly-changing fragment into the tree.
                 // Whenever the input changes, the parts of the tree change automatically. 

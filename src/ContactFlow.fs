@@ -78,7 +78,7 @@ module ContactFlow =
                     ]
                     divc "col-sm-4" []
                 ]
-            ] :> Doc
+            ]
         )
 
     // The second page of the flowlet, which asks whether the user wants
@@ -97,7 +97,7 @@ module ContactFlow =
                             (fun () -> cont PhoneTy)
                     ]
                ]
-            ] :> Doc
+            ]
         )
 
     // Using this, we either get an e-mail address or phone number from the user.
@@ -123,7 +123,7 @@ module ContactFlow =
                                 |> cont )
                     ]
                 ]
-            ] :> Doc
+            ]
         )
 
     // Should be Flow<unit>

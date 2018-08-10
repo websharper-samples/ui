@@ -46,7 +46,7 @@ module BobsleighSite =
 
                 li [attr] [
                     Doc.Link (showAct action) [] (fun _ -> GlobalGo var action)
-                ] :> Doc
+                ]
 
             nav [cls "navbar navbar-default" ; Attr.Create "role" "navigation"] [
                 ul [cls "nav navbar-nav"] [
@@ -127,7 +127,7 @@ module BobsleighSite =
                 ul [] [
                     teamMembers
                     |> List.map (fun (name, handle) ->
-                        li [] [href name ("http://www.twitter.com/" + handle)] :> Doc)
+                        li [] [href name ("http://www.twitter.com/" + handle)])
                     |> Doc.Concat
                 ]
             ]
