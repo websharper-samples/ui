@@ -1,4 +1,4 @@
-# WebSharper.UI [![Build status](https://ci.appveyor.com/api/projects/status/scmqf68re8otea8h)](https://ci.appveyor.com/project/Jand42/websharper-ui-next)
+# WebSharper.UI [![Build status](https://ci.appveyor.com/api/projects/status/n8uco25vdshc2lae?svg=true)](https://ci.appveyor.com/project/IntelliFactory/websharper-ui-next-samples)
 
 This is the source for the [samples
 website](http://intellifactory.github.io/websharper.ui.next.samples) for
