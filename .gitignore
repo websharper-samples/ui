@@ -1,6 +1,10 @@
-build/
-Content/
-bin/
-obj/
 *.suo
-packages/
+*.user
+.vs/
+*/bin/
+*/obj/
+src/build/
+src/wwwroot/Scripts/
+src/websharper.log
+dist/
+node_modules/

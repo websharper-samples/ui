@@ -61,8 +61,8 @@ module EditablePersonList =
         // fields.
         let renderPersonInput person =
             li [] [
-                Doc.Input [] person.FirstName
-                Doc.Input [] person.LastName
+                Doc.InputType.Text [] person.FirstName
+                Doc.InputType.Text [] person.LastName
             ]
 
         // We use the same trick as before: create a list of Docs from a list

@@ -34,7 +34,7 @@ module PhoneExample =
             | Newest -> compare p1.Age p2.Age
 
         /// A filtering function.
-        static member MatchesQuery q ph =
+        static member MatchesQuery (q: string) ph =
             ph.Name.Contains(q)
             || ph.Snippet.Contains(q)
 
@@ -75,11 +75,11 @@ module PhoneExample =
 
                 // We specify a label, and an input box linked to our query RVar.
                 text "Search: "
-                Doc.Input [Attr.Create "class" "form-control"] query
+                Doc.InputType.Text [Attr.Create "class" "form-control"] query
 
                 // We then have a select box, linked to our orders variable
                 text "Sort by: "
-                Doc.Select [Attr.Create "class" "form-control"] Order.Show [Newest; Alphabetical] order
+                Doc.InputType.Select [Attr.Create "class" "form-control"] Order.Show [Newest; Alphabetical] order
 
             ]
 

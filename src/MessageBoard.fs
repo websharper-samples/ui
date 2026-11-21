@@ -135,7 +135,7 @@ module MessageBoard =
                 ]
             // Row of the login form
             let inputRow rv id lblText isPass =
-                let control = if isPass then Doc.PasswordBox else Doc.Input
+                let control = if isPass then Doc.InputType.Password else Doc.InputType.Text
                 divc "form-group" [
                     label [
                         attr.``for`` id
@@ -289,7 +289,7 @@ module MessageBoard =
                                 text "Title"
                             ]
                             divc "col-sm-10" [
-                                Doc.Input [attr.id "threadTitle" ; sty "width" "100%" ; cls "form-control"] rvTitle
+                                Doc.InputType.Text [attr.id "threadTitle" ; sty "width" "100%" ; cls "form-control"] rvTitle
                             ]
                         ]
                         divc "form-group" [
@@ -297,7 +297,7 @@ module MessageBoard =
                                 text "Content"
                             ]
                             divc "col-sm-10" [
-                                Doc.InputArea [attr.id "postContent"; attr.rows "5" ; cls "form-control" ; sty "width" "100%"] rvPost
+                                Doc.InputType.TextArea [attr.id "postContent"; attr.rows "5" ; cls "form-control" ; sty "width" "100%"] rvPost
                             ]
                         ]
                         divc "form-group" [
@@ -393,7 +393,7 @@ module MessageBoard =
                                 text "Content"
                             ]
                             divc "col-sm-10" [
-                                Doc.InputArea [attr.id "postContent" ; attr.rows "5" ; cls "form-control" ; sty "width" "100%"] rvPost
+                                Doc.InputType.TextArea [attr.id "postContent" ; attr.rows "5" ; cls "form-control" ; sty "width" "100%"] rvPost
                             ]
                         ]
                         divc "form-group" [
@@ -446,7 +446,7 @@ module MessageBoard =
             |> layout) |> Doc.EmbedView
 
     let Description _ =
-        div [] [ text "A message board application built using MiniSitelets."]
+        div [] [ text "A message board application with login, threads and posts."]
 
     // You can ignore the bits here -- it just links the example into the site.
     let Sample =

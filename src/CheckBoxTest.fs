@@ -40,7 +40,7 @@ module CheckBoxTest =
         // We now need to make check box components for each of the people.
         let mkCheckBox person =
             div [] [
-                Doc.CheckBoxGroup [] person selPeople
+                Doc.InputType.CheckBoxGroup [] person selPeople
                 Doc.TextNode person.Name
             ]
 
@@ -64,7 +64,7 @@ module CheckBoxTest =
         let restaurants = [Csiga; Suszterinas ; Jelen ; Stex]
         let mkRadioButton restaurant =
             div [] [
-                Doc.Radio [] restaurant radioBoxVar
+                Doc.InputType.Radio [] restaurant radioBoxVar
                 showRestaurant restaurant |> Doc.TextNode
             ]
 

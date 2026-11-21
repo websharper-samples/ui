@@ -1,0 +1,12 @@
+{
+  "name": "websharper-ui-samples",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "node ./esbuild.config.mjs",
+    "serve": "python3 -m http.server 5290 --bind 127.0.0.1 --directory ../dist"
+  },
+  "devDependencies": {
+    "esbuild": "^0.19.9"
+  }
+}

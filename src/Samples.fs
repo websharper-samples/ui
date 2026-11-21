@@ -1,4 +1,4 @@
-namespace WebSharper.UI
+﻿namespace WebSharper.UI
 
 open WebSharper
 open WebSharper.UI
@@ -6,7 +6,6 @@ open WebSharper.UI.Client
 open WebSharper.UI.Html
 open WebSharper.UI.Notation
 open WebSharper.UI.SiteCommon
-module Router = WebSharper.Sitelets.Router
 
 /// A little framework for displaying samples on the site.
 [<JavaScript>]
@@ -86,29 +85,25 @@ module Samples =
                 [cls "list-group-item"; activeAttr]
                 (fun () -> Var.Set vPage (Samples sample.DefaultPage))
 
-        divc "col-md-3" [
+        div [cls "col-md-3"; cls "samples-nav"] [
             h4 [] [text "Samples"]
             List.map renderItem samples |> Doc.Concat
         ]
 
     let RenderContent meta body description =
-        divc "samples col-md-9" [
-            div [] [
-                divc "row" [
-                    h1 [] [text meta.Title]
-                    div [] [
-                        p [] [ description ]
-                        p [] [
-                            a
-                                [ attr.href ("https://github.com/intellifactory/websharper.ui.next.samples/blob/master/src/" + meta.FileName) ]
-                                [text "View Source"]
-                        ]
-                    ]
+        div [cls "samples"; cls "col-md-9"] [
+            div [cls "samples-head"] [
+                h1 [] [text meta.Title]
+                p [] [ description ]
+                p [cls "samples-source"] [
+                    a
+                        [ attr.href ("https://github.com/websharper-samples/ui/blob/master/src/" + meta.FileName) ]
+                        [text "View source"]
                 ]
+            ]
 
-                divc "row" [
-                    p [] [ body ]
-                ]
+            div [] [
+                body
             ]
         ]
 

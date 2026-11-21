@@ -14,7 +14,7 @@ module TodoList =
 
     [<AutoOpen>]
     module private Util =
-        let input x = Doc.Input [attr.``class`` "form-control"] x
+        let input x = Doc.InputType.Text [attr.``class`` "form-control"] x
         let button name handler = Doc.Button name [attr.``class`` "btn btn-default"] handler
 
     // Our Todo items consist of a textual description,
@@ -93,9 +93,13 @@ module TodoList =
     // Finally, we put it all together...
     let TodoExample () =
         let m = CreateModel ()
-        table [attr.``class`` "table table-hover"] [
-            tbody [] [
-                TodoList m
+        div [] [
+            table [attr.``class`` "table table-hover"] [
+                tbody [] [
+                    TodoList m
+                ]
+            ]
+            div [cls "todo-form"] [
                 TodoForm m
             ]
         ]

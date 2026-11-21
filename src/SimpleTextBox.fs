@@ -25,7 +25,7 @@ module SimpleTextBox =
         // The inputField is created using RD.Input, which takes an RVar as its
         // parameter. Whenever the input field is updated, the new value is
         // automatically placed into the variable.
-        let inputField = Doc.Input [Attr.Create "class" "form-control"] rvText
+        let inputField = Doc.InputType.Text [Attr.Create "class" "form-control"] rvText
 
         // A TextView is a component, backed by a reactive view, that updates
         // its contents automatically whenever the variable changes.

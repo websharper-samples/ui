@@ -24,5 +24,5 @@ module Client =
             ObjectConstancy.Sample
             MouseInfo.Sample
             KeyboardInfo.Sample
-      //      SortableBarChart.Sample
+            SortableBarChart.Sample
         ]

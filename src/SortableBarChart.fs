@@ -2,7 +2,6 @@
 
 open WebSharper
 open WebSharper.JavaScript
-open WebSharper.JQuery
 open WebSharper.UI.Html
 open WebSharper.UI.Client
 open WebSharper.UI.Notation
@@ -79,9 +78,11 @@ module SortableBarChart =
 
     // Asynchronous loading operation from a given URL
     let LoadFromCSV (url: string) =
-        Async.FromContinuations (fun (ok, no, _) ->
-            JQuery.Get(url, obj (), fun (data, _, _) ->
-                ok (ParseCSV (As<string> data)))
+        Async.FromContinuations (fun (ok, _, _) ->
+            JS.Fetch(url).Then(fun (resp: Response) ->
+                resp.Text().Then(fun text ->
+                    ok (ParseCSV text))
+                |> ignore)
             |> ignore)
 
     let DelayedAnimation delay x y =
@@ -140,7 +141,7 @@ module SortableBarChart =
         let data = View.Map List.ofSeq LoadData
         let dataView = View.Map2 ViewData data vOrder.View
         div [] [
-            Doc.Select [] ShowOrdering [ByLetter ; ByFrequency] vOrder
+            Doc.InputType.Select [] ShowOrdering [ByLetter ; ByFrequency] vOrder
             DisplayGraph dataView
         ]
 

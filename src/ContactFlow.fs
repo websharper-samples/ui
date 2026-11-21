@@ -31,7 +31,7 @@ module ContactFlow =
 
     // Helper function to display an input field within a form prettily.
     let inputRow rv id lblText isArea =
-        let control = if isArea then Doc.InputArea else Doc.Input
+        let control = if isArea then Doc.InputType.TextArea else Doc.InputType.Text
         divc "row" [
             divc "form-group" [
                 label [
@@ -72,7 +72,7 @@ module ContactFlow =
                                 let addr = Var.Get rvAddress
                                 // We use the continuation function to return the
                                 // data we retrieved from the form.
-                                cont ({Name = name ; Address = addr})
+                                cont.Next ({Name = name ; Address = addr})
                             )
                         ]
                     ]
@@ -89,12 +89,12 @@ module ContactFlow =
                 form [cls "form-group"] [
                     div [] [
                         Doc.Button "E-Mail Address" [cls "btn btn-default"]
-                            (fun () -> cont EmailTy)
+                            (fun () -> cont.Next EmailTy)
                     ]
 
                     div [] [
                         Doc.Button "Phone Number" [cls "btn btn-default"]
-                            (fun () -> cont PhoneTy)
+                            (fun () -> cont.Next PhoneTy)
                     ]
                ]
             ]
@@ -120,7 +120,7 @@ module ContactFlow =
                             ( fun () ->
                                 Var.Get rvContact
                                 |> constr
-                                |> cont )
+                                |> cont.Next )
                     ]
                 ]
             ]
@@ -144,11 +144,11 @@ module ContactFlow =
     // contact details (using the contact type we got in the previous step).
     // Finally, we display a static end page.
     let ExampleFlow _ =
-        Flow.Do {
+        flow {
             let! person = personFlowlet
             let! ct = contactTypeFlowlet
             let! contactDetails = contactFlowlet ct
-            return! Flow.Static (finalPage person contactDetails)
+            return! Flow.End (finalPage person contactDetails)
         }
         |> Flow.Embed
 

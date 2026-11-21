@@ -39,7 +39,7 @@ module InputTransform =
                             ]
 
                             div [cls "col-sm-10"] [
-                                Doc.Input [attr.``class`` "form-control" ; attr.id "inputBox"] rvText
+                                Doc.InputType.Text [attr.``class`` "form-control" ; attr.id "inputBox"] rvText
                             ]
                         ]
                     ]

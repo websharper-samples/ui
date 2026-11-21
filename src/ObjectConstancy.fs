@@ -2,7 +2,6 @@
 
 open WebSharper
 open WebSharper.JavaScript
-open WebSharper.JQuery
 open WebSharper.UI
 open WebSharper.UI.Client
 open WebSharper.UI.Html
@@ -65,9 +64,11 @@ module ObjectConstancy =
 
         // Asynchronous loading operation from a given URL
         static member LoadFromCSV (url: string) =
-            Async.FromContinuations (fun (ok, no, _) ->
-                JQuery.Get(url, obj (), fun (data, _, _) ->
-                    ok (DataSet.ParseCSV (As<string> data)))
+            Async.FromContinuations (fun (ok, _, _) ->
+                JS.Fetch(url).Then(fun (resp: Response) ->
+                    resp.Text().Then(fun text ->
+                        ok (DataSet.ParseCSV text))
+                    |> ignore)
                 |> ignore)
 
     // Information required to display a state in the chart
@@ -187,7 +188,7 @@ module ObjectConstancy =
             dataSet
             |> View.Map (fun dS ->
                 // Select box control
-                Doc.Select [cls "form-control"] (fun (AgeBracket b) -> b)
+                Doc.InputType.Select [cls "form-control"] (fun (AgeBracket b) -> b)
                     (List.ofArray dS.Brackets.[1..]) bracket)
             |> Doc.EmbedView
             divc "skip" []
