@@ -1,7 +1,7 @@
 # WebSharper.UI samples
 
 A gallery of **eight complete apps** and **five guided suites** built with
-[WebSharper.UI](https://websharper.com/docs/ui) — the reactive, composable
+[WebSharper.UI](https://docs.websharper.com/ui/reactive) — the reactive, composable
 user-interface library for F#. Everything is compiled from F# to JavaScript and
 runs entirely in the browser; the gallery itself is a WebSharper.UI SPA.
 

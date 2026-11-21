@@ -18,7 +18,7 @@ module Site =
     let NavExternalLinks =
         [
             ("GitHub", "https://github.com/websharper-samples/ui")
-            ("Documentation", "https://websharper.com/docs/ui")
+            ("Documentation", "https://docs.websharper.com/ui/reactive")
         ]
 
     let NavPages =
