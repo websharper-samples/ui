@@ -1,0 +1,41 @@
+City,Country,Region,Population,Area
+Tokyo,Japan,Asia,13960000,2194
+Delhi,India,Asia,32900000,1484
+Shanghai,China,Asia,29100000,6341
+São Paulo,Brazil,Americas,12330000,1521
+Mexico City,Mexico,Americas,21800000,1485
+Cairo,Egypt,Africa,22180000,3085
+Mumbai,India,Asia,24970000,603
+Beijing,China,Asia,21890000,1641
+Dhaka,Bangladesh,Asia,23230000,306
+Osaka,Japan,Asia,19010000,225
+New York,United States,Americas,18800000,7894
+Karachi,Pakistan,Asia,17000000,3780
+Buenos Aires,Argentina,Americas,15370000,203
+Istanbul,Turkey,Europe,15840000,5461
+Kolkata,India,Asia,15130000,205
+Manila,Philippines,Asia,14700000,619
+Lagos,Nigeria,Africa,15400000,1171
+Rio de Janeiro,Brazil,Americas,13630000,1200
+Guangzhou,China,Asia,19000000,7434
+Los Angeles,United States,Americas,12450000,1302
+Moscow,Russia,Europe,12500000,2561
+Shenzhen,China,Asia,17600000,1997
+Paris,France,Europe,11080000,105
+Bogotá,Colombia,Americas,11300000,1587
+Jakarta,Indonesia,Asia,33800000,664
+Lima,Peru,Americas,11000000,2672
+Bangkok,Thailand,Asia,10800000,1569
+London,United Kingdom,Europe,9540000,1572
+Tehran,Iran,Asia,9500000,730
+Seoul,South Korea,Asia,9990000,605
+Kinshasa,DR Congo,Africa,17000000,9965
+Johannesburg,South Africa,Africa,10000000,1645
+Madrid,Spain,Europe,6770000,604
+Toronto,Canada,Americas,6310000,5905
+Rome,Italy,Europe,4300000,1285
+Berlin,Germany,Europe,3700000,891
+Sydney,Australia,Oceania,5310000,12368
+Melbourne,Australia,Oceania,5080000,9993
+Auckland,New Zealand,Oceania,1700000,1086
+Singapore,Singapore,Asia,5700000,728

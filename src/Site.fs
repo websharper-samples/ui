@@ -6,7 +6,6 @@ open WebSharper.UI
 open WebSharper.UI.Client
 open WebSharper.UI.Html
 open WebSharper.UI.Notation
-open WebSharper.UI.SiteCommon
 open WebSharper.UI.Templating
 
 [<JavaScript>]
@@ -16,229 +15,106 @@ module Site =
 
     type ShellTemplate = Templating.Template<"wwwroot/index.html", ClientLoad.FromDocument>
 
-    type AboutEntry =
-        {
-            Name : string
-            ImgURL : string
-            Description : string
-            URLs : Doc list
-        }
-
-    let mkEntry name desc img urls =
-        {
-            Name = name
-            Description = desc
-            ImgURL = img
-            URLs = urls
-        }
-
-    let Entries =
-        [
-            mkEntry
-                "Documentation"
-                "The official documentation for WebSharper.UI: the API reference, \
-                 tutorials, and notes on the design decisions behind the library."
-                "files/gear.png"
-                [
-                    href "Tutorial" "https://websharper.com/docs/ui"
-                    href "API Reference" "https://websharper.com/docs/ui/api"
-                    href "Library source" "https://github.com/dotnet-websharper/ui"
-                ] ;
-            mkEntry
-                "Articles"
-                "Written introductions to reactive UI programming with WebSharper, \
-                 from first principles to structuring larger applications."
-                "files/uinext-screen.png"
-                [
-                    href "WebSharper UI: An Introduction" "https://websharper.com/blog-entry/3954"
-                    href "WebSharper UI: Declarative Animation" "https://websharper.com/blog-entry/3964"
-                    href "Structuring Applications with WebSharper UI" "https://websharper.com/blog-entry/3965"
-                ] ;
-             mkEntry
-                "Presentations"
-                "Talks about WebSharper.UI that give an overview of the library and a \
-                 deeper look at the thinking behind its reactive model."
-                "files/anton-pres.png"
-                [
-                    href
-                        "Tackle UI with Reactive DOM in F# and WebSharper"
-                        "https://www.youtube.com/watch?v=wEkS09s3KBc"
-                ]
-         ]
-
     let NavExternalLinks =
         [
             ("GitHub", "https://github.com/websharper-samples/ui")
             ("Documentation", "https://websharper.com/docs/ui")
         ]
 
-    let showPgTy = function
-        | PageTy.Home -> "Home"
-        | PageTy.About -> "About"
-        | PageTy.Samples _ -> "Samples"
+    let NavPages =
+        [
+            ("Home", PageTy.Home, (fun (p: PageTy) -> p = PageTy.Home))
+            ("Samples", Samples.SamplesDefault, (function PageTy.Samples _ -> true | _ -> false))
+        ]
 
-    let NavPages = [PageTy.Home ; PageTy.About; Samples.SamplesDefault]
+    let private appCard title blurb glyph link =
+        a [cls "app-card"; attr.href link] [
+            span [cls "app-icon"] [ text glyph ]
+            div [cls "app-card-body"] [
+                h3 [] [ text title ]
+                p [] [ text blurb ]
+            ]
+            span [cls "app-arrow"] [ text "→" ]
+        ]
 
-    let linkBtn caption href =
-        a [cls "btn" ; cls "btn-default" ; attr.href href]
-            [ text caption ]
+    let private suiteCard title blurb link =
+        a [cls "suite-card"; attr.href link] [
+            h4 [] [ text title ]
+            p [] [ text blurb ]
+        ]
 
-    let HomePage go =
+    let HomePage (_go: PageTy -> unit) =
         Doc.Concat [
             div [cls "hero"] [
                 div [cls "container"] [
                     p [cls "eyebrow"] [ text "WebSharper.UI samples" ]
                     h1 [] [
-                        text "Reactive web apps, built in "
+                        text "A gallery of real "
                         span [cls "accent"] [ text "F#" ]
+                        text " apps"
                     ]
                     p [cls "lead"] [
-                        text "A living gallery of composable, time-varying user interfaces. \
-                              Everything here is compiled from F# to JavaScript with \
-                              WebSharper, and the whole site is itself a WebSharper.UI \
-                              single-page application."
+                        text "Reactive dashboards, boards, explorers and multi-step \
+                              flows — all built with WebSharper.UI and compiled from F# \
+                              to JavaScript. No framework, no server, no page reloads."
                     ]
                     div [cls "hero-actions"] [
-                        Doc.Button "Explore the samples" [cls "btn" ; cls "btn-primary"]
-                            (fun () -> go Samples.SamplesDefault)
+                        a [cls "btn" ; cls "btn-primary" ; attr.href "#/samples/Dashboard"]
+                            [ text "Open the dashboard" ]
                         a [cls "btn" ; cls "btn-default" ; attr.href "https://websharper.com"]
                             [ text "Get WebSharper" ]
                     ]
                     ul [cls "hero-stats"] [
-                        li [] [ strong [] [ text "18" ] ; span [] [ text "interactive samples" ] ]
-                        li [] [ strong [] [ text "F#" ] ; span [] [ text "compiled to JavaScript" ] ]
-                        li [] [ strong [] [ text "0" ] ; span [] [ text "servers required" ] ]
+                        li [] [ strong [] [ text "8" ] ; span [] [ text "complete apps" ] ]
+                        li [] [ strong [] [ text "5" ] ; span [] [ text "guided suites" ] ]
+                        li [] [ strong [] [ text "100%" ] ; span [] [ text "F# to JavaScript" ] ]
                     ]
                 ]
             ]
 
             section [cls "block-large"] [
                 div [cls "container"] [
-                    div [cls "feature-grid"] [
-                        div [cls "feature-card"] [
-                            span [cls "feature-icon"] [ text "λ" ]
-                            h3 [] [ text "Reactive by design" ]
-                            p [] [
-                                text "Vars are data sources and Views are time-varying values. \
-                                      Build the UI once; it updates itself when the data changes."
-                            ]
-                        ]
-                        div [cls "feature-card"] [
-                            span [cls "feature-icon"] [ text "⧉" ]
-                            h3 [] [ text "Composable documents" ]
-                            p [] [
-                                text "Doc is a monoid. Embed views, concatenate fragments, and \
-                                      animate nodes in and out without touching the DOM by hand."
-                            ]
-                        ]
-                        div [cls "feature-card"] [
-                            span [cls "feature-icon"] [ text "⌘" ]
-                            h3 [] [ text "Templates and routing" ]
-                            p [] [
-                                text "Whole-page HTML templates with typed holes, plus hash-based \
-                                      client-side routing for real single-page applications."
-                            ]
-                        ]
+                    div [cls "section-head"] [
+                        h2 [] [ text "Featured apps" ]
+                        p [cls "lead"] [ text "Substantive, self-contained single-page applications." ]
+                    ]
+                    div [cls "app-grid"] [
+                        appCard "Dashboard" "Live KPIs, an animated trend chart and range controls driven by a timer." "◫" "#/samples/Dashboard"
+                        appCard "Kanban board" "Drag-and-drop columns, priorities and live search over a reactive list model." "▤" "#/samples/KanbanBoard"
+                        appCard "Expense tracker" "Record spending, filter by category and watch budget bars recalculate." "◎" "#/samples/ExpenseTracker"
+                        appCard "Data explorer" "Async CSV loading with sorting, filtering, paging and row details." "⌗" "#/samples/DataExplorer"
+                        appCard "Community board" "Login, threads and posts backed by a simulated async service." "✉" "#/samples/CommunityBoard"
+                        appCard "Game of Life" "A cellular automaton with play/pause, speed control and generations." "◉" "#/samples/GameOfLife"
+                        appCard "Onboarding flow" "A validated, animated multi-step flow with progress and review." "➜" "#/samples/OnboardingFlow"
+                        appCard "Todos" "Priorities, filters, progress and bulk actions over a ListModel." "✓" "#/samples/TodoApp"
                     ]
                 ]
             ]
-        ]
 
-    let AboutPage go =
-
-        let renderBody entry =
-            Doc.Concat [
-                h1 [] [ text entry.Name ]
-                p [cls "lead"] [ text entry.Description ]
-                ul [] (
-                    entry.URLs
-                    |> List.map (fun lnk -> li [] [lnk])
-                )
-            ]
-
-        let oddEntry entry =
-            section [cls "block-large" ; cls "about-entry"] [
+            section [cls "block-large" ; cls "bg-alt"] [
                 div [cls "container"] [
-                    div [cls "row"] [
-                        div [cls "col-lg-3"] [
-                            img [attr.src entry.ImgURL ; attr.alt entry.Name] []
-                        ]
-                        div [cls "col-lg-1"] []
-                        div [cls "col-lg-8"] [
-                            renderBody entry
-                        ]
+                    div [cls "section-head"] [
+                        h2 [] [ text "Guided suites" ]
+                        p [cls "lead"] [ text "Focused tours of one part of the library, several demos at a time." ]
+                    ]
+                    div [cls "suite-grid"] [
+                        suiteCard "Reactive basics" "Vars, views, templates and a calculator." "#/samples/VarPlayground"
+                        suiteCard "Collections & selection" "Filterable lists, editable records, check boxes and radios." "#/samples/CollectionsSuite"
+                        suiteCard "Pointer & keyboard" "Live mouse and keyboard state with a visual keyboard." "#/samples/InputInspector"
+                        suiteCard "Chart lab" "Animated CSV-driven bar charts and sortable SVG charts." "#/samples/ChartLab"
+                        suiteCard "Mini-site" "A routed, animated multi-page site inside the gallery." "#/samples/MiniSite"
                     ]
                 ]
             ]
-
-        let evenEntry entry =
-            section [cls "block-large" ; cls "bg-alt" ; cls "about-entry"] [
-                div [cls "container"] [
-                    div [cls "row"] [
-                        div [cls "col-lg-8"] [
-                            renderBody entry
-                        ]
-                        div [cls "col-lg-1"] []
-                        div [cls "col-lg-3"] [
-                            img [attr.src entry.ImgURL ; attr.alt entry.Name] []
-                        ]
-                    ]
-                ]
-            ]
-
-        div [cls "extensions"] [
-            section [cls "block-huge"] [
-                div [cls "container"] [
-                    p [cls "eyebrow" ; cls "text-muted"] [ text "About" ]
-                    h1 [] [
-                        text "WebSharper.UI: "
-                        span [cls "text-muted"] [ text "everything you need to know." ]
-                    ]
-                    p [cls "lead"] [
-                        text "A selection of resources for learning the library."
-                    ]
-                ]
-            ]
-
-            div [cls "block-large" ; cls "bg-alt"] [
-                div [cls "container"] [
-                    div [cls "feature-grid"] [
-                        div [cls "feature-card"] [
-                            span [cls "feature-icon"] [ text "01" ]
-                            h3 [] [ text "Get started" ]
-                            p [] [ text "Take the tutorial and you will be writing reactive applications in no time." ]
-                            linkBtn "Tutorial" "https://websharper.com/docs/ui"
-                        ]
-                        div [cls "feature-card"] [
-                            span [cls "feature-icon"] [ text "02" ]
-                            h3 [] [ text "Dive right in" ]
-                            p [] [ text "Comprehensive reference documentation for the UI API." ]
-                            linkBtn "API Reference" "https://websharper.com/docs/ui/api"
-                        ]
-                        div [cls "feature-card"] [
-                            span [cls "feature-icon"] [ text "03" ]
-                            h3 [] [ text "See it in action" ]
-                            p [] [ text "A variety of samples using UI, with their source code." ]
-                            Doc.Button "Samples" [cls "btn" ; cls "btn-default"]
-                                (fun () -> go Samples.SamplesDefault)
-                        ]
-                    ]
-                ]
-            ]
-
-            List.mapi (fun i entry ->
-                let renderFn = if i % 2 = 0 then oddEntry else evenEntry
-                renderFn entry
-            ) Entries |> Doc.Concat
         ]
 
     let NavBar (v: Var<PageTy>) =
-        let renderLink pg =
+        let renderLink (label, target, isActive) =
             View.FromVar v
             |> View.Map (fun page ->
-                let active = if page = pg then cls "active" else Attr.Empty
+                let active = if isActive page then cls "active" else Attr.Empty
                 li [cls "nav-item"; active] [
-                    Doc.Link (showPgTy pg) [] (fun () -> Var.Set v pg)
+                    Doc.Link label [] (fun () -> Var.Set v target)
                 ]
             )
             |> Doc.EmbedView
@@ -263,31 +139,21 @@ module Site =
         |> Trans.Enter (fun i -> Fade 0.0 1.0)
         |> Trans.Exit (fun i -> Fade 1.0 0.0)
 
-    let MakePage pg =
-        div [Attr.AnimatedStyle "opacity" FadeTransition (View.Const 1.0) string] [
-            pg
-        ]
-
     let RenderSample =
         function
-        | Samples.SimpleTextBox -> SimpleTextBox.Sample.Page
-        | Samples.InputTransform -> InputTransform.Sample.Page
-        | Samples.InputTransformHtml -> InputTransformHtml.Sample.Page
-        | Samples.TodoList -> TodoList.Sample.Page
-        | Samples.PhoneExample -> PhoneExample.Sample.Page
-        | Samples.EditablePersonList -> EditablePersonList.Sample.Page
-        | Samples.CheckBoxTest -> CheckBoxTest.Sample.Page
-        | Samples.Calculator -> Calculator.Sample.Page
-        | Samples.ContactFlow -> ContactFlow.Sample.Page
-        | Samples.AnimatedContactFlow -> AnimatedContactFlow.Sample.Page
-        | Samples.MessageBoard -> MessageBoard.Sample.Page
-        | Samples.BobsleighSite -> BobsleighSite.Sample.Page
-        | Samples.RoutedBobsleighSite _ -> RoutedBobsleighSite.Sample.Page
-        | Samples.AnimatedBobsleighSite -> AnimatedBobsleighSite.Sample.Page
-        | Samples.ObjectConstancy -> ObjectConstancy.Sample.Page
-        | Samples.MouseInfo -> MouseInfo.Sample.Page
-        | Samples.KeyboardInfo -> KeyboardInfo.Sample.Page
-        | Samples.SortableBarChart -> SortableBarChart.Sample.Page
+        | Samples.Dashboard -> Dashboard.Sample.Page
+        | Samples.KanbanBoard -> KanbanBoard.Sample.Page
+        | Samples.ExpenseTracker -> ExpenseTracker.Sample.Page
+        | Samples.DataExplorer -> DataExplorer.Sample.Page
+        | Samples.TodoApp -> TodoApp.Sample.Page
+        | Samples.CommunityBoard -> CommunityBoard.Sample.Page
+        | Samples.GameOfLife -> GameOfLife.Sample.Page
+        | Samples.OnboardingFlow -> OnboardingFlow.Sample.Page
+        | Samples.VarPlayground -> VarPlayground.Sample.Page
+        | Samples.CollectionsSuite -> CollectionsSuite.Sample.Page
+        | Samples.InputInspector -> InputInspector.Sample.Page
+        | Samples.ChartLab -> ChartLab.Sample.Page
+        | Samples.MiniSite _ -> MiniSite.Sample.Page
 
     let Main (samples: list<Samples.Sample>) =
         let router = Router.Infer<PageTy>()
@@ -296,7 +162,6 @@ module Site =
         let main =
             var.View.Doc(function
                 | PageTy.Home -> HomePage go
-                | PageTy.About -> AboutPage go
                 | PageTy.Samples pg -> RenderSample pg var samples
             )
         ShellTemplate()

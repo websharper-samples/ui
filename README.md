@@ -1,10 +1,9 @@
 # WebSharper.UI samples
 
-A gallery of **18 interactive samples** for
-[WebSharper.UI](https://websharper.com/docs/ui) — the reactive,
-composable user-interface library for F#. Every sample is compiled from F# to
-JavaScript, and the gallery page itself is a WebSharper.UI single-page
-application.
+A gallery of **eight complete apps** and **five guided suites** built with
+[WebSharper.UI](https://websharper.com/docs/ui) — the reactive, composable
+user-interface library for F#. Everything is compiled from F# to JavaScript and
+runs entirely in the browser; the gallery itself is a WebSharper.UI SPA.
 
 [![WebSharper.UI samples](docs/screenshot.png)](https://websharper-samples.github.io/ui/)
 
@@ -12,38 +11,38 @@ application.
 [WebSharper](https://websharper.com) ·
 [Library source](https://github.com/dotnet-websharper/ui)
 
-## What is in the gallery
+## Apps
 
-| Sample | What it shows |
+Substantive, self-contained applications that combine variables, views,
+collections, forms, async loading and SVG charts.
+
+| App | What it demonstrates |
 |---|---|
-| [SimpleTextBox](https://websharper-samples.github.io/ui/#/samples/SimpleTextBox) | A label mirroring a text box |
-| [InputTransform](https://websharper-samples.github.io/ui/#/samples/InputTransform) | Deriving several views from one reactive source |
-| [InputTransformHtml](https://websharper-samples.github.io/ui/#/samples/InputTransformHtml) | The same sample built with an HTML template |
-| [TodoList](https://websharper-samples.github.io/ui/#/samples/TodoList) | A reactive `ListModel` of to-do items |
-| [PhoneExample](https://websharper-samples.github.io/ui/#/samples/PhoneExample) | Filtering and sorting a list |
-| [EditablePersonList](https://websharper-samples.github.io/ui/#/samples/EditablePersonList) | Inputs bound to `Var`s in a record |
-| [CheckBoxTest](https://websharper-samples.github.io/ui/#/samples/CheckBoxTest) | Check-box groups and radio buttons |
-| [Calculator](https://websharper-samples.github.io/ui/#/samples/Calculator) | Model–view separation |
-| [ContactFlow](https://websharper-samples.github.io/ui/#/samples/ContactFlow) | A multi-step form with `Flow` |
-| [AnimatedContactFlow](https://websharper-samples.github.io/ui/#/samples/AnimatedContactFlow) | Flow transitions and animation |
-| [MessageBoard](https://websharper-samples.github.io/ui/#/samples/MessageBoard) | A small app with auth and state |
-| [BobsleighSite](https://websharper-samples.github.io/ui/#/samples/BobsleighSite) | A mini-site with local state |
-| [RoutedBobsleighSite](https://websharper-samples.github.io/ui/#/samples/RoutedBobsleighSite) | The same mini-site, routed by URL |
-| [AnimatedBobsleighSite](https://websharper-samples.github.io/ui/#/samples/AnimatedBobsleighSite) | The mini-site with page transitions |
-| [ObjectConstancy](https://websharper-samples.github.io/ui/#/samples/ObjectConstancy) | Animated SVG bar charts from CSV data |
-| [MouseInfo](https://websharper-samples.github.io/ui/#/samples/MouseInfo) | Live mouse state as `View`s |
-| [KeyboardInfo](https://websharper-samples.github.io/ui/#/samples/KeyboardInfo) | Live keyboard state as `View`s |
-| [SortableBarChart](https://websharper-samples.github.io/ui/#/samples/SortableBarChart) | Data-driven animated SVG |
+| [Dashboard](https://websharper-samples.github.io/ui/#/samples/Dashboard) | Live KPIs, range controls and an animated trend chart fed by a timer |
+| [Kanban board](https://websharper-samples.github.io/ui/#/samples/KanbanBoard) | Drag-and-drop columns, priorities and search over a `ListModel` |
+| [Expense tracker](https://websharper-samples.github.io/ui/#/samples/ExpenseTracker) | Forms, typed categories, a budget bar and a live breakdown |
+| [Data explorer](https://websharper-samples.github.io/ui/#/samples/DataExplorer) | Async CSV loading, search, sorting, paging and row details |
+| [Todos](https://websharper-samples.github.io/ui/#/samples/TodoApp) | Priorities, filters, progress and bulk actions |
+| [Community board](https://websharper-samples.github.io/ui/#/samples/CommunityBoard) | Sign-in, threads, replies and search over a simulated async service |
+| [Game of Life](https://websharper-samples.github.io/ui/#/samples/GameOfLife) | A cellular automaton with timers, speed control and a reactive grid |
+| [Onboarding flow](https://websharper-samples.github.io/ui/#/samples/OnboardingFlow) | A validated, animated multi-step `Flow` with review and restart |
+
+## Suites
+
+Focused tours of one part of the library, with several demos per page.
+
+| Suite | Contents |
+|---|---|
+| [Reactive basics](https://websharper-samples.github.io/ui/#/samples/VarPlayground) | Vars, derived views, HTML templates and a small calculator |
+| [Collections & selection](https://websharper-samples.github.io/ui/#/samples/CollectionsSuite) | Filterable lists, editable records, check boxes and radios |
+| [Pointer & keyboard](https://websharper-samples.github.io/ui/#/samples/InputInspector) | Live mouse/keyboard views, a click pad and a virtual keyboard |
+| [Chart lab](https://websharper-samples.github.io/ui/#/samples/ChartLab) | Animated CSV-driven bar charts and sortable SVG charts |
+| [Mini-site](https://websharper-samples.github.io/ui/#/samples/MiniSite) | A routed, animated multi-page site nested in the gallery router |
 
 ## How it works
 
-- `src/Sample*.fs` — each sample is a small F# module that builds a `Doc`
-  (and its description) and registers itself with the sample framework.
-- `src/Samples.fs` — the sample catalogue, sidebar and content layout, and the
-  `PageTy` router type.
-- `src/Site.fs` — the shell: home page, about page, navigation and routing.
-- `src/wwwroot/index.html` — the **whole-page template**. Its two typed holes,
-  `ws-hole="Nav"` and `ws-hole="Main"`, are filled by `Site.Main`:
+- `src/wwwroot/index.html` is the **whole-page HTML template**. Its two typed
+  holes — `ws-hole="Nav"` and `ws-hole="Main"` — are filled by the site shell:
 
   ```fsharp
   ShellTemplate()
@@ -52,25 +51,48 @@ application.
       .Bind()
   ```
 
-- Routing is hash-based (`#/samples/TodoList`), so the static build works on
-  GitHub Pages without any server-side rewrites.
+- `src/Samples.fs` defines the sample catalogue, the app/suite grouping and the
+  route type. Routing is hash-based (`#/samples/Dashboard`), so the static build
+  works on GitHub Pages without server rewrites.
+- Each app and suite lives in its own F# file and registers itself with
+  `Samples.Build(...)`. There are no external UI or chart dependencies:
+  the charts in `src/Charts.fs` are small SVG helpers, and the design system in
+  `src/wwwroot/style.css` is self-contained.
 
 ## Project structure
 
 ```
 ui/
   src/
-    *.fs                   # the samples and the site shell
+    Utilities.fs            # shared UI helpers
+    Charts.fs               # dependency-free SVG chart components
+    Samples.fs              # catalogue, sidebar, sample framework
+    Site.fs                 # shell, home page, navigation, routing
+    Client.fs               # [<SPAEntryPoint>]
+    Dashboard.fs            # \
+    KanbanBoard.fs          #  |
+    ExpenseTracker.fs       #  |  apps
+    DataExplorer.fs         #  |
+    TodoApp.fs              #  |
+    CommunityBoard.fs       #  |
+    GameOfLife.fs           #  |
+    OnboardingFlow.fs       # /
+    VarPlayground.fs        # \
+    CollectionsSuite.fs     #  |
+    InputInspector.fs       #  |  suites
+    ChartLab.fs             #  |
+    MiniSite.fs             # /
     InputTransformTemplate.html
     wwwroot/
-      index.html           # whole-page template for the gallery
-      style.css            # the self-contained design system
-      files/               # images used by the About page
-      ObjectConstancy.csv  # data for the ObjectConstancy sample
-      AlphaFrequency.csv   # data for the SortableBarChart sample
-    wsconfig.json          # WebSharper SPA settings
-    package.json           # esbuild
-    esbuild.config.mjs     # bundles the Release output into dist/
+      index.html            # whole-page gallery template
+      style.css             # self-contained design system
+      DataExplorer.csv      # dataset for the data explorer
+      ObjectConstancy.csv   # dataset for the chart lab
+      AlphaFrequency.csv    # dataset for the chart lab
+      files/                # logo
+    wsconfig.json           # WebSharper SPA settings
+    package.json            # esbuild
+    esbuild.config.mjs      # bundles Release output into dist/
   docs/screenshot.png
   .github/workflows/deploy.yml
   README.md
@@ -85,7 +107,7 @@ dotnet build src/WebSharper.UI.Samples.fsproj -c Release
 python3 -m http.server 5290 --bind 127.0.0.1 --directory dist
 ```
 
-Then open <http://127.0.0.1:5290/>.
+Open <http://127.0.0.1:5290/>. (`npm run serve` does the same from `src/`.)
 
 ## Building
 
@@ -100,7 +122,7 @@ WebSharper compiles the F# sources to `src/build/`, and
 
 ## Deployment
 
-Every push to `master` (or `main`) triggers
+Every push to `main` triggers
 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds in
 Release and publishes `dist/` to the `gh-pages` branch with GitHub Pages.
 
